@@ -41,24 +41,24 @@ public class patternProducer : MonoBehaviour{
     public void playA(){
 		optionA.Add(v1);
 		optionA.Add(v7);
-		optionA.Add(v13);
+		optionA.Add(v4);
 		optionA.Add(v5);
 		StartCoroutine(ShowAndHide(optionA));		
     }
 	
 	    public void playB(){
-		optionB.Add(v10);
+		optionB.Add(v1);
 		optionB.Add(v2);
 		optionB.Add(v3);
-		optionB.Add(v11);
+		optionB.Add(v4);
 		StartCoroutine(ShowAndHide(optionB));		
     }
 	
 	    public void playC(){
-		optionC.Add(v2);
-		optionC.Add(v16);
-		optionC.Add(v13);
+		optionC.Add(v9);
+		optionC.Add(v8);
 		optionC.Add(v7);
+		optionC.Add(v6);
 		StartCoroutine(ShowAndHide(optionC));		
     }
 	
