@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+[System.Serializable]
 public class patternProducer : MonoBehaviour{
 	
 	public GameObject v1;
@@ -28,6 +29,10 @@ public class patternProducer : MonoBehaviour{
 	
 	public float Delay = 0.5f;
 	private WaitForSeconds _delay;
+	
+	public string Questionl;
+	public string[] Answers;
+	public int CorrectAnswer;
 	
 	List<GameObject> optionA = new List<GameObject>();
 	List<GameObject> optionB = new List<GameObject>();
@@ -69,6 +74,7 @@ public class patternProducer : MonoBehaviour{
 			go.SetActive(true);
 		}
     }
+	
 	
 
 }

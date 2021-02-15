@@ -2207,6 +2207,9 @@ MonoBehaviour:
   v: {fileID: 21300000, guid: e4731cfea578b034081d73ae2eba7dea, type: 3}
   vsel: {fileID: 21300000, guid: d1f434071b572ed43a4775251f61d1ee, type: 3}
   Delay: 0.7
+  Questionl: 
+  Answers: []
+  CorrectAnswer: 0
 --- !u!114 &1230776639
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3230,7 +3233,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5960467d739794844b3ec573781565ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jsonFile: {fileID: 4900000, guid: c8c35693110b61b47b9148845ad3cd74, type: 3}
+  textAsset: {fileID: 4900000, guid: 1fe69e2be1557a444a7430ea73a39e1b, type: 3}
 --- !u!4 &1932247576
 Transform:
   m_ObjectHideFlags: 0
