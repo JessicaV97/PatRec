@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class Alarm {
+public class Pattern {
     public bool islooped { get; set; } 
     public double duration { get; set; } 
     public int interpolation { get; set; } 

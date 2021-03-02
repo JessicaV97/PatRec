@@ -6,8 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class buttonHandler : MonoBehaviour{
 	 
+	// Class that handles the main menu  
     public void playGame() {  
-	Debug.Log("blub");
         SceneManager.LoadScene("mainGameScreen");  
     }  
     public void goToSettings() {  
