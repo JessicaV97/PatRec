@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class ShowMPC : MonoBehaviour
 {
-    public static bool MPCisShown = false;
+    public static bool MPCisShown = true;
+	public static bool bodyIsShown = false;
 	
 	public GameObject MPCMenuUI;
+	public GameObject bodyMenuUI;
 	
 	// Hide mpc options at initiation
 	public void Start(){
-		MPCMenuUI.SetActive(false);
+		MPCMenuUI.SetActive(true);
 	}
 	
 	// If orange button is clicked, hide panel with all mpc options

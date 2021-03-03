@@ -1,8 +1,10 @@
+using UnityEngine;
+
 
 [System.Serializable]
 public class QuestionAndAnswers
 {
     public string Question;
-    public string[] Answers;
+    public Sprite[] Answers;
     public int CorrectAnswer;
 }
