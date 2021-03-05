@@ -1,9 +1,13 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Newtonsoft.Json;
 using TMPro;
+using Random = UnityEngine.Random;
 
 public class QuizManager : MonoBehaviour
 {
@@ -23,16 +27,102 @@ public class QuizManager : MonoBehaviour
 
     int totalQuestions = 0;
     public int score;
+	
+	//Get json's from inspector
+	public TextAsset alarm;
+	public TextAsset alarm2;
+	public TextAsset angry;
+	public TextAsset applause;
+	public TextAsset end;
+	public TextAsset laughing;
+	public TextAsset question;
+	public TextAsset silence;
+	
+	//Initiate emotion patterns
+	public Pattern alarmPattern;
+	public Pattern alarm2Pattern;
+	public Pattern angryPattern;
+	public Pattern applausePattern;
+	public Pattern endPattern;
+	public Pattern laughingPattern;
+	public Pattern questionPattern;
+	public Pattern silencePattern;
+	
+	//Get sprites from inspector
+	public Sprite alarmPatternIm;
+	public Sprite alarm2PatternIm;
+	public Sprite angryPatternIm;
+	public Sprite applausePatternIm;
+	public Sprite endPatternIm;
+	public Sprite laughingPatternIm;
+	public Sprite questionPatternIm;
+	public Sprite silencePatternIm;
 
-    private void Start()
+	public List<Pattern> emotions = new List<Pattern>();
+	private List<PatternComplete> emotionsComplete = new List<PatternComplete>();
+
+	
+	public System.Random r = new System.Random();	
+
+    public void Start()
     {
-        //Get number of questions
-		totalQuestions = QnA.Count;
+		//Herschrijven tot voor json bestand in mapje doe json.convert.DeserializeObject<Pattern>(naam.text)
+		alarmPattern = JsonConvert.DeserializeObject<Pattern>(alarm.text);
+		emotions.Add(alarmPattern);
+		alarm2Pattern = JsonConvert.DeserializeObject<Pattern>(alarm2.text);
+		emotions.Add(alarm2Pattern);
+		angryPattern = JsonConvert.DeserializeObject<Pattern>(angry.text);
+		emotions.Add(angryPattern);
+		applausePattern = JsonConvert.DeserializeObject<Pattern>(applause.text);
+		endPattern = JsonConvert.DeserializeObject<Pattern>(end.text);
+		laughingPattern = JsonConvert.DeserializeObject<Pattern>(laughing.text);
+		questionPattern = JsonConvert.DeserializeObject<Pattern>(question.text);
+		silencePattern = JsonConvert.DeserializeObject<Pattern>(silence.text);
+		
+		emotionsComplete.Add(new PatternComplete {patternName = "Alarm", patternJson = alarmPattern, patternImage = alarmPatternIm, difficulty = 1});
+		emotionsComplete.Add(new PatternComplete {patternName = "Alarm2", patternJson = alarm2Pattern, patternImage = alarm2PatternIm, difficulty = 1});
+		emotionsComplete.Add(new PatternComplete {patternName = "Angry", patternJson = angryPattern, patternImage = angryPatternIm, difficulty = 1});
+		emotionsComplete.Add(new PatternComplete {patternName = "Applause", patternJson = applausePattern, patternImage = applausePatternIm, difficulty = 2});
+		emotionsComplete.Add(new PatternComplete {patternName = "End", patternJson = endPattern, patternImage = endPatternIm, difficulty = 2});
+		emotionsComplete.Add(new PatternComplete {patternName = "Laughing", patternJson = laughingPattern, patternImage = laughingPatternIm, difficulty = 2});
+		emotionsComplete.Add(new PatternComplete {patternName = "Silence", patternJson = silencePattern, patternImage = silencePatternIm, difficulty = 3});
+		
+		//Get number of questions
+		totalQuestions = emotionsComplete.Count;
 		// Start with a question
         generateQuestion();
 		
 		wrongPanel.SetActive(false);
 		correctPanel.SetActive(false);
+		
+		
+		for (int i = 0; i < emotionsComplete.Count; i++){
+			List<int> listNumbers = new List<int>();
+			int number;
+			
+			for (int j = 0; j < 3; j++){
+				do {
+					number = r.Next(1,  emotionsComplete.Count);
+				} while (listNumbers.Contains(number) || number == i);
+				listNumbers.Add(number);
+			}
+			
+			Sprite[] answerOptions = {
+				emotionsComplete[listNumbers[0]].patternImage,
+				emotionsComplete[listNumbers[1]].patternImage,
+				emotionsComplete[listNumbers[2]].patternImage,
+				emotionsComplete[i].patternImage,
+			};
+
+			for (int k = 0; k < answerOptions.Length - 1; k++){
+				int l = r.Next(k, answerOptions.Length);
+				Sprite temp = answerOptions[k];
+				answerOptions[k] = answerOptions[l];
+				answerOptions[l] = temp;
+			}
+			
+			QnA.Add( new QuestionAndAnswers {Question = emotionsComplete[i].patternName, Answers = answerOptions, CorrectAnswer = 1+Array.IndexOf(answerOptions, emotionsComplete[i].patternImage)});
+		}
     }
 	
 	private void Update(){
@@ -60,8 +150,8 @@ public class QuizManager : MonoBehaviour
 
     IEnumerator waitForNext()
     {
-		// Wait for 1 second and then offer new question. 
-        yield return new WaitForSeconds(1.0f);
+		// Wait for 1.5 second and then offer new question. 
+        yield return new WaitForSeconds(1.5f);
 		if (wrongActive == true){
 			wrongActive = false;
 			wrongPanel.SetActive(false);

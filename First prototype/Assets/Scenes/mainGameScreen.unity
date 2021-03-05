@@ -4790,6 +4790,23 @@ MonoBehaviour:
   wrongActive: 0
   correctActive: 0
   score: 0
+  alarm: {fileID: 4900000, guid: 1fe69e2be1557a444a7430ea73a39e1b, type: 3}
+  alarm2: {fileID: 4900000, guid: d4635a62305a6924885043727c098da1, type: 3}
+  angry: {fileID: 4900000, guid: 88348c359c924e54d8553aca3c76c716, type: 3}
+  applause: {fileID: 4900000, guid: c952cca7e1a973b4b8aa4d2ea8845816, type: 3}
+  end: {fileID: 4900000, guid: c191af38018d26045bb8a0192c8c4b2b, type: 3}
+  laughing: {fileID: 4900000, guid: 0e602534f1fa79143ab119b8465d85eb, type: 3}
+  question: {fileID: 4900000, guid: 60e0a4b180774834d97e514fe0951537, type: 3}
+  silence: {fileID: 4900000, guid: 045997856f0fc9f45821b5d32a7a0ef1, type: 3}
+  alarmPatternIm: {fileID: 21300000, guid: 4f07c0b154c1ab2428d6c46bde95e86e, type: 3}
+  alarm2PatternIm: {fileID: 21300000, guid: 14e52e7bd9391134f8a70e06c365a3af, type: 3}
+  angryPatternIm: {fileID: 21300000, guid: aa2912ef82243fe41aa977c3c315e7dc, type: 3}
+  applausePatternIm: {fileID: 21300000, guid: 2d711df102d106048bf22122081a827b, type: 3}
+  endPatternIm: {fileID: 21300000, guid: f3899f86f7185d746994f6c26db3773c, type: 3}
+  laughingPatternIm: {fileID: 21300000, guid: c46aa02d63bd38c4391e57a3708e7814, type: 3}
+  questionPatternIm: {fileID: 21300000, guid: 1d82c16c3ef394c4ba105b4188167e0b, type: 3}
+  silencePatternIm: {fileID: 21300000, guid: 98760f73d403fa04baf8dc2f4f5fa8f8, type: 3}
+  emotions: []
 --- !u!1 &1926535268
 GameObject:
   m_ObjectHideFlags: 0
@@ -4920,6 +4937,54 @@ MonoBehaviour:
   Delay: 0.5
   isRunning: 0
   fullList: 
+  alarmPattern:
+    <islooped>k__BackingField: 0
+    <duration>k__BackingField: 0
+    <interpolation>k__BackingField: 0
+    <frames>k__BackingField: []
+  alarm2Pattern:
+    <islooped>k__BackingField: 0
+    <duration>k__BackingField: 0
+    <interpolation>k__BackingField: 0
+    <frames>k__BackingField: []
+  angryPattern:
+    <islooped>k__BackingField: 0
+    <duration>k__BackingField: 0
+    <interpolation>k__BackingField: 0
+    <frames>k__BackingField: []
+  applausePattern:
+    <islooped>k__BackingField: 0
+    <duration>k__BackingField: 0
+    <interpolation>k__BackingField: 0
+    <frames>k__BackingField: []
+  endPattern:
+    <islooped>k__BackingField: 0
+    <duration>k__BackingField: 0
+    <interpolation>k__BackingField: 0
+    <frames>k__BackingField: []
+  laughingPattern:
+    <islooped>k__BackingField: 0
+    <duration>k__BackingField: 0
+    <interpolation>k__BackingField: 0
+    <frames>k__BackingField: []
+  questionPattern:
+    <islooped>k__BackingField: 0
+    <duration>k__BackingField: 0
+    <interpolation>k__BackingField: 0
+    <frames>k__BackingField: []
+  silencePattern:
+    <islooped>k__BackingField: 0
+    <duration>k__BackingField: 0
+    <interpolation>k__BackingField: 0
+    <frames>k__BackingField: []
+  alarmPatternIm: {fileID: 21300000, guid: 4f07c0b154c1ab2428d6c46bde95e86e, type: 3}
+  alarm2PatternIm: {fileID: 21300000, guid: 1d82c16c3ef394c4ba105b4188167e0b, type: 3}
+  angryPatternIm: {fileID: 21300000, guid: aa2912ef82243fe41aa977c3c315e7dc, type: 3}
+  applausePatternIm: {fileID: 21300000, guid: 2d711df102d106048bf22122081a827b, type: 3}
+  endPatternIm: {fileID: 21300000, guid: 4e3c6359e5f113d4ca2bf4eb6902e535, type: 3}
+  laughingPatternIm: {fileID: 21300000, guid: f3899f86f7185d746994f6c26db3773c, type: 3}
+  questionPatternIm: {fileID: 21300000, guid: 6755f886378317443ba7cf5c75a80579, type: 3}
+  silencePatternIm: {fileID: 21300000, guid: c46aa02d63bd38c4391e57a3708e7814, type: 3}
   emotions: []
 --- !u!4 &1932247576
 Transform:
