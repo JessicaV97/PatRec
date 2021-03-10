@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using TMPro;
 using Random = UnityEngine.Random;
 
+
 public class QuizManager : MonoBehaviour
 {
     public List<QuestionAndAnswers> QnA;
@@ -57,6 +58,10 @@ public class QuizManager : MonoBehaviour
 	public Sprite laughingPatternIm;
 	public Sprite questionPatternIm;
 	public Sprite silencePatternIm;
+	
+	//Get sound effects
+	public AudioSource correctSound;
+	public AudioSource incorrectSound;
 
 	public List<Pattern> emotions = new List<Pattern>();
 	private List<PatternComplete> emotionsComplete = new List<PatternComplete>();
@@ -64,7 +69,12 @@ public class QuizManager : MonoBehaviour
 	
 	public System.Random r = new System.Random();	
 
-    public void Start()
+    public void Awake(){
+		//Ensure sounds don't play at start
+		this.correctSound.playOnAwake = false;
+		this.incorrectSound.playOnAwake = false;
+	}
+	public void Start()
     {
 		//Herschrijven tot voor json bestand in mapje doe json.convert.DeserializeObject<Pattern>(naam.text)
 		alarmPattern = JsonConvert.DeserializeObject<Pattern>(alarm.text);
@@ -91,9 +101,6 @@ public class QuizManager : MonoBehaviour
 		totalQuestions = emotionsComplete.Count;
 		// Start with a question
         generateQuestion();
-		
-		wrongPanel.SetActive(false);
-		correctPanel.SetActive(false);
 		
 		
 		for (int i = 0; i < emotionsComplete.Count; i++){
@@ -132,7 +139,8 @@ public class QuizManager : MonoBehaviour
     public void correct()
     {
         //If correct answer was chosen, add 1 to score and remove question from possible questions. Start coroutine to offer new question.
-        score += 1;
+		correctSound.Play();
+		score += 1;
         QnA.RemoveAt(currentQuestion);
 		correctPanel.SetActive(true);
 		correctActive = true;
@@ -142,6 +150,7 @@ public class QuizManager : MonoBehaviour
     public void wrong()
     {
         //If wrong answer was chosen, start coroutine to offer new question.
+		incorrectSound.Play();
         // QnA.RemoveAt(currentQuestion);
 		wrongPanel.SetActive(true);
 		wrongActive = true;
@@ -197,7 +206,10 @@ public class QuizManager : MonoBehaviour
         else
         {
 			//Indicate that there are no questions left -> Level complete
-            Debug.Log("Out of Questions");
+            ScoreManager.updateScore(score);
+			Debug.Log("Out of Questions");
+			// ScoreManager.setScore();
+
         }
 
 

@@ -1,29 +1,27 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class ScoreManager : MonoBehaviour
 {	
-	public int totalXP;
-	public int levelXP;
-	
-	
-    // Start is called before the first frame update
-    void Start()
-    {
-        levelXP = 15;
-    }
+	// public static ScoreManager scoreMan;
+	public static int totalXP = 0; 
+	public TextMeshProUGUI status; 
 
-    //Decrease earned XP if a mistake is made
-    public void decreaseLevelScore()
+	// Update  total xp with points obtained in a level
+    public static void updateScore(int levelPoints)
     {
-		levelXP -= 3;
-		Debug.Log("Level score =  " + levelXP);
+		Debug.Log("tralala");
+		totalXP += levelPoints;
+		Debug.Log("Level score =  " + levelPoints);
+		Debug.Log("Total xp = " + totalXP);
+		
     }
 	
-	//Update total XP after a level has been completed with the XP earned in that level
-	public void increaseTotalXP() {
-		totalXP += levelXP; 
+	private void Update(){
+		status.GetComponent<TextMeshProUGUI>().text = totalXP.ToString() + "/10";
 	}
+
 	
 }
