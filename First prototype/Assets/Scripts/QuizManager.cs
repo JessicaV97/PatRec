@@ -22,6 +22,8 @@ public class QuizManager : MonoBehaviour
 
     public TextMeshProUGUI QuestionTxt;
     public TextMeshProUGUI ScoreTxt;
+	public TextMeshProUGUI lives;
+	public static int livesNr = 3;
 	
 	public bool wrongActive = false;
 	public bool correctActive = false; 
@@ -106,60 +108,71 @@ public class QuizManager : MonoBehaviour
 		for (int i = 0; i < emotionsComplete.Count; i++){
 			List<int> listNumbers = new List<int>();
 			int number;
-			
+			//For each element in the list of emotion patterns, grab 3 random integers to select answer options randomly
 			for (int j = 0; j < 3; j++){
 				do {
 					number = r.Next(1,  emotionsComplete.Count);
 				} while (listNumbers.Contains(number) || number == i);
 				listNumbers.Add(number);
 			}
-			
+			//Select answer options using the integers generated before this 
 			Sprite[] answerOptions = {
 				emotionsComplete[listNumbers[0]].patternImage,
 				emotionsComplete[listNumbers[1]].patternImage,
 				emotionsComplete[listNumbers[2]].patternImage,
 				emotionsComplete[i].patternImage,
 			};
-
+			//Randomize answer options order
 			for (int k = 0; k < answerOptions.Length - 1; k++){
 				int l = r.Next(k, answerOptions.Length);
 				Sprite temp = answerOptions[k];
 				answerOptions[k] = answerOptions[l];
 				answerOptions[l] = temp;
 			}
-			
+			//Add question with options to the list of questions and answers
 			QnA.Add( new QuestionAndAnswers {Question = emotionsComplete[i].patternName, Answers = answerOptions, CorrectAnswer = 1+Array.IndexOf(answerOptions, emotionsComplete[i].patternImage)});
 		}
     }
 	
 	private void Update(){
 		ScoreTxt.GetComponent<TextMeshProUGUI>().text = "Score: "+ score.ToString();
+		lives.GetComponent<TextMeshProUGUI>().text = livesNr.ToString();
 	}
 
     public void correct()
     {
-        //If correct answer was chosen, add 1 to score and remove question from possible questions. Start coroutine to offer new question.
+        //If correct answer was chosen
+		//Play sound effect		  
 		correctSound.Play();
+		//add 1 to score
 		score += 1;
+		//Remove question from list
         QnA.RemoveAt(currentQuestion);
+		//Activate green screen with check mark
 		correctPanel.SetActive(true);
 		correctActive = true;
+		//Start Coroutine to deactivate the green screen and initiate a new question
         StartCoroutine(waitForNext());
     }
 
     public void wrong()
     {
-        //If wrong answer was chosen, start coroutine to offer new question.
+        //If wrong answer was chosen
+		//Play sound effect
 		incorrectSound.Play();
+		//Remove 1 life
+		livesNr -= 1; 
         // QnA.RemoveAt(currentQuestion);
+		//Show red screen with cross
 		wrongPanel.SetActive(true);
 		wrongActive = true;
+		//Start coroutine to deactive the red screen and initate a new question
         StartCoroutine(waitForNext());
     }
 
     IEnumerator waitForNext()
     {
-		// Wait for 1.5 second and then offer new question. 
+		// Wait for 1.5 second (deactive active screen) and then offer new question. 
         yield return new WaitForSeconds(1.5f);
 		if (wrongActive == true){
 			wrongActive = false;
@@ -193,7 +206,11 @@ public class QuizManager : MonoBehaviour
 	//Select new question
     void generateQuestion()
     {
-        if(QnA.Count > 0)
+        if (livesNr == 0){
+			Debug.Log("You ran out of lives. Please wait till you have a new one before you continue");
+			// livesManagement.increaseLives();
+		}
+		else if(QnA.Count > 0)
         {	
 			// Select question randomly from list of questions
             currentQuestion = Random.Range(0, QnA.Count);
@@ -208,10 +225,17 @@ public class QuizManager : MonoBehaviour
 			//Indicate that there are no questions left -> Level complete
             ScoreManager.updateScore(score);
 			Debug.Log("Out of Questions");
-			// ScoreManager.setScore();
-
+			// if (livesNr < 3){
+				// livesManagement.increaseLives();
+			// }
         }
 
 
     }
+	
+	public static int getLives(){
+		return livesNr;
+	}
+	
+	
 }
