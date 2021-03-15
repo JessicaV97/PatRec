@@ -19,6 +19,7 @@ public class QuizManager : MonoBehaviour
     public GameObject Quizpanel;
 	public GameObject wrongPanel;
 	public GameObject correctPanel;
+	public GameObject goScreen;
 
     public TextMeshProUGUI QuestionTxt;
     public TextMeshProUGUI ScoreTxt;
@@ -30,43 +31,19 @@ public class QuizManager : MonoBehaviour
 
     int totalQuestions = 0;
     public int score;
-	
-	//Get json's from inspector
-	public TextAsset alarm;
-	public TextAsset alarm2;
-	public TextAsset angry;
-	public TextAsset applause;
-	public TextAsset end;
-	public TextAsset laughing;
-	public TextAsset question;
-	public TextAsset silence;
-	
-	//Initiate emotion patterns
-	public Pattern alarmPattern;
-	public Pattern alarm2Pattern;
-	public Pattern angryPattern;
-	public Pattern applausePattern;
-	public Pattern endPattern;
-	public Pattern laughingPattern;
-	public Pattern questionPattern;
-	public Pattern silencePattern;
-	
-	//Get sprites from inspector
-	public Sprite alarmPatternIm;
-	public Sprite alarm2PatternIm;
-	public Sprite angryPatternIm;
-	public Sprite applausePatternIm;
-	public Sprite endPatternIm;
-	public Sprite laughingPatternIm;
-	public Sprite questionPatternIm;
-	public Sprite silencePatternIm;
+
 	
 	//Get sound effects
 	public AudioSource correctSound;
 	public AudioSource incorrectSound;
 
-	public List<Pattern> emotions = new List<Pattern>();
-	private List<PatternComplete> emotionsComplete = new List<PatternComplete>();
+	// public List<Pattern> emotions = new List<Pattern>();
+	public static List<PatternComplete> emotionsComplete = new List<PatternComplete>();
+	
+	//Get objects for study environment
+	public GameObject patternVisual;
+	public TextMeshProUGUI patternTitle;
+	public int patternIndex = 0;
 
 	
 	public System.Random r = new System.Random();	
@@ -78,33 +55,16 @@ public class QuizManager : MonoBehaviour
 	}
 	public void Start()
     {
-		//Herschrijven tot voor json bestand in mapje doe json.convert.DeserializeObject<Pattern>(naam.text)
-		alarmPattern = JsonConvert.DeserializeObject<Pattern>(alarm.text);
-		emotions.Add(alarmPattern);
-		alarm2Pattern = JsonConvert.DeserializeObject<Pattern>(alarm2.text);
-		emotions.Add(alarm2Pattern);
-		angryPattern = JsonConvert.DeserializeObject<Pattern>(angry.text);
-		emotions.Add(angryPattern);
-		applausePattern = JsonConvert.DeserializeObject<Pattern>(applause.text);
-		endPattern = JsonConvert.DeserializeObject<Pattern>(end.text);
-		laughingPattern = JsonConvert.DeserializeObject<Pattern>(laughing.text);
-		questionPattern = JsonConvert.DeserializeObject<Pattern>(question.text);
-		silencePattern = JsonConvert.DeserializeObject<Pattern>(silence.text);
+		emotionsComplete = buttonHandler.getEmotionsList();
 		
-		emotionsComplete.Add(new PatternComplete {patternName = "Alarm", patternJson = alarmPattern, patternImage = alarmPatternIm, difficulty = 1});
-		emotionsComplete.Add(new PatternComplete {patternName = "Alarm2", patternJson = alarm2Pattern, patternImage = alarm2PatternIm, difficulty = 1});
-		emotionsComplete.Add(new PatternComplete {patternName = "Angry", patternJson = angryPattern, patternImage = angryPatternIm, difficulty = 1});
-		emotionsComplete.Add(new PatternComplete {patternName = "Applause", patternJson = applausePattern, patternImage = applausePatternIm, difficulty = 2});
-		emotionsComplete.Add(new PatternComplete {patternName = "End", patternJson = endPattern, patternImage = endPatternIm, difficulty = 2});
-		emotionsComplete.Add(new PatternComplete {patternName = "Laughing", patternJson = laughingPattern, patternImage = laughingPatternIm, difficulty = 2});
-		emotionsComplete.Add(new PatternComplete {patternName = "Silence", patternJson = silencePattern, patternImage = silencePatternIm, difficulty = 3});
+		goScreen.SetActive(false);
 		
 		//Get number of questions
 		totalQuestions = emotionsComplete.Count;
 		// Start with a question
         generateQuestion();
 		
-		
+		//Create Q&A set
 		for (int i = 0; i < emotionsComplete.Count; i++){
 			List<int> listNumbers = new List<int>();
 			int number;
@@ -132,25 +92,35 @@ public class QuizManager : MonoBehaviour
 			//Add question with options to the list of questions and answers
 			QnA.Add( new QuestionAndAnswers {Question = emotionsComplete[i].patternName, Answers = answerOptions, CorrectAnswer = 1+Array.IndexOf(answerOptions, emotionsComplete[i].patternImage)});
 		}
+		
+		generateQuestion();
     }
 	
 	private void Update(){
 		ScoreTxt.GetComponent<TextMeshProUGUI>().text = "Score: "+ score.ToString();
 		lives.GetComponent<TextMeshProUGUI>().text = livesNr.ToString();
+		if (livesNr == 0){
+			goScreen.SetActive(true);
+		}
 	}
+	
 
     public void correct()
     {
         //If correct answer was chosen
-		//Play sound effect		  
-		correctSound.Play();
+		//Play sound effect	
+		if (settingsHandler.remainingHearing == true){
+			correctSound.Play();
+		}
 		//add 1 to score
 		score += 1;
 		//Remove question from list
         QnA.RemoveAt(currentQuestion);
 		//Activate green screen with check mark
-		correctPanel.SetActive(true);
-		correctActive = true;
+		if (settingsHandler.remainingVision == true){
+			correctPanel.SetActive(true);
+			correctActive = true;
+		}
 		//Start Coroutine to deactivate the green screen and initiate a new question
         StartCoroutine(waitForNext());
     }
@@ -159,13 +129,17 @@ public class QuizManager : MonoBehaviour
     {
         //If wrong answer was chosen
 		//Play sound effect
-		incorrectSound.Play();
+		if (settingsHandler.remainingHearing == true){
+			incorrectSound.Play();
+		}
 		//Remove 1 life
 		livesNr -= 1; 
         // QnA.RemoveAt(currentQuestion);
 		//Show red screen with cross
-		wrongPanel.SetActive(true);
-		wrongActive = true;
+		if (settingsHandler.remainingVision == true){
+			wrongPanel.SetActive(true);
+			wrongActive = true;
+		}
 		//Start coroutine to deactive the red screen and initate a new question
         StartCoroutine(waitForNext());
     }
@@ -189,7 +163,7 @@ public class QuizManager : MonoBehaviour
 		// From given answer options
         for (int i = 0; i < options.Length; i++)
         {
-            options[i].GetComponent<Image>().color = options[i].GetComponent<AnswerScript>().startColor;
+            // options[i].GetComponent<Image>().color = options[i].GetComponent<AnswerScript>().startColor;
 			// By default set answer to be incorrect
             options[i].GetComponent<AnswerScript>().isCorrect = false;
 			// Change text of option buttons to text of possible answers
@@ -237,5 +211,9 @@ public class QuizManager : MonoBehaviour
 		return livesNr;
 	}
 	
+	public void goToHome() {  
+        SceneManager.LoadScene("MainMenu");  
+    } 
 	
+
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class ScoreManager : MonoBehaviour
 {	
@@ -23,6 +24,10 @@ public class ScoreManager : MonoBehaviour
 	private void Update(){
 		status.GetComponent<TextMeshProUGUI>().text = totalXP.ToString() + "/10";
 	}
+	
+	public void goToHome() {  
+        SceneManager.LoadScene("MainMenu");  
+    } 
 
 	
 }
