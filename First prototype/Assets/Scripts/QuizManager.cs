@@ -38,12 +38,13 @@ public class QuizManager : MonoBehaviour
 	public AudioSource incorrectSound;
 
 	// public List<Pattern> emotions = new List<Pattern>();
-	public static List<PatternComplete> emotionsComplete = new List<PatternComplete>();
+	public static List<PatternComplete> patternsComplete = new List<PatternComplete>();
 	
 	//Get objects for study environment
 	public GameObject patternVisual;
 	public TextMeshProUGUI patternTitle;
 	public int patternIndex = 0;
+	public static int levelIndex;
 
 	
 	public System.Random r = new System.Random();	
@@ -55,32 +56,37 @@ public class QuizManager : MonoBehaviour
 	}
 	public void Start()
     {
-		emotionsComplete = buttonHandler.getEmotionsList();
+		levelIndex = levelSwiper.getLevel();
+		if (levelIndex != 5){
+			patternsComplete = buttonHandler.getEmotionsList();
+		} else {
+			patternsComplete = buttonHandler.getGeneralList();
+		}
 		
 		goScreen.SetActive(false);
 		
 		//Get number of questions
-		totalQuestions = emotionsComplete.Count;
+		totalQuestions = patternsComplete.Count;
 		// Start with a question
         generateQuestion();
 		
 		//Create Q&A set
-		for (int i = 0; i < emotionsComplete.Count; i++){
+		for (int i = 0; i < patternsComplete.Count; i++){
 			List<int> listNumbers = new List<int>();
 			int number;
 			//For each element in the list of emotion patterns, grab 3 random integers to select answer options randomly
 			for (int j = 0; j < 3; j++){
 				do {
-					number = r.Next(1,  emotionsComplete.Count);
+					number = r.Next(1,  patternsComplete.Count);
 				} while (listNumbers.Contains(number) || number == i);
 				listNumbers.Add(number);
 			}
 			//Select answer options using the integers generated before this 
 			Sprite[] answerOptions = {
-				emotionsComplete[listNumbers[0]].patternImage,
-				emotionsComplete[listNumbers[1]].patternImage,
-				emotionsComplete[listNumbers[2]].patternImage,
-				emotionsComplete[i].patternImage,
+				patternsComplete[listNumbers[0]].patternImage,
+				patternsComplete[listNumbers[1]].patternImage,
+				patternsComplete[listNumbers[2]].patternImage,
+				patternsComplete[i].patternImage,
 			};
 			//Randomize answer options order
 			for (int k = 0; k < answerOptions.Length - 1; k++){
@@ -90,7 +96,7 @@ public class QuizManager : MonoBehaviour
 				answerOptions[l] = temp;
 			}
 			//Add question with options to the list of questions and answers
-			QnA.Add( new QuestionAndAnswers {Question = emotionsComplete[i].patternName, Answers = answerOptions, CorrectAnswer = 1+Array.IndexOf(answerOptions, emotionsComplete[i].patternImage)});
+			QnA.Add( new QuestionAndAnswers {Question = patternsComplete[i].patternName, Answers = answerOptions, CorrectAnswer = 1+Array.IndexOf(answerOptions, patternsComplete[i].patternImage)});
 		}
 		
 		generateQuestion();

@@ -16,7 +16,7 @@ public class levelSwiper : MonoBehaviour{
 	//Get objects for choosing level
 	public GameObject levelVisual;
 	public TextMeshProUGUI levelTitle;
-	public int levelIndex = 0;
+	public static int levelIndex = 0;
 	
 	
 	private Object[] levels;
@@ -86,8 +86,11 @@ public class levelSwiper : MonoBehaviour{
 			// yield return null;
 		// }
 	// }
+	public static int getLevel(){
+		return levelIndex;
+	}
 	
-	public void studyEmotions() {  
-        SceneManager.LoadScene("studyEnvironment");  
+	public void studyEmotions() { 
+		SceneManager.LoadScene("studyEnvironment");  
     } 
 }

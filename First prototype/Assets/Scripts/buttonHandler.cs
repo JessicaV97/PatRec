@@ -4,42 +4,21 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Newtonsoft.Json;
+using Random = UnityEngine.Random;
 
 
 public class buttonHandler : MonoBehaviour{
 	
-	//Get json's from inspector
-	public TextAsset alarm;
-	public TextAsset alarm2;
-	public TextAsset angry;
-	public TextAsset applause;
-	public TextAsset end;
-	public TextAsset laughing;
-	public TextAsset question;
-	public TextAsset silence;
-	
-	//Initiate emotion patterns
-	public Pattern alarmPattern;
-	public Pattern alarm2Pattern;
-	public Pattern angryPattern;
-	public Pattern applausePattern;
-	public Pattern endPattern;
-	public Pattern laughingPattern;
-	public Pattern questionPattern;
-	public Pattern silencePattern;
-	
-	//Get sprites from inspector
-	public Sprite alarmPatternIm;
-	public Sprite alarm2PatternIm;
-	public Sprite angryPatternIm;
-	public Sprite applausePatternIm;
-	public Sprite endPatternIm;
-	public Sprite laughingPatternIm;
-	public Sprite questionPatternIm;
-	public Sprite silencePatternIm;	
+	private Object[] jsonsEmotions;
+	private Object[] jsonsGeneral;
+	private Object[] emotionImages;
+	private Object[] generalImages;
 	
 	public List<Pattern> emotions = new List<Pattern>();
 	public static List<PatternComplete> emotionsComplete = new List<PatternComplete>();
+	
+	public List<Pattern> general = new List<Pattern>();
+	public static List<PatternComplete> generalComplete = new List<PatternComplete>();
 	
 	// Class that handles the main menu  and reads in the given data
  
@@ -59,29 +38,42 @@ public class buttonHandler : MonoBehaviour{
     } 
 	
 	public void Start(){
-		//Herschrijven tot voor json bestand in mapje doe json.convert.DeserializeObject<Pattern>(naam.text)
-		alarmPattern = JsonConvert.DeserializeObject<Pattern>(alarm.text);
-		emotions.Add(alarmPattern);
-		alarm2Pattern = JsonConvert.DeserializeObject<Pattern>(alarm2.text);
-		emotions.Add(alarm2Pattern);
-		angryPattern = JsonConvert.DeserializeObject<Pattern>(angry.text);
-		emotions.Add(angryPattern);
-		applausePattern = JsonConvert.DeserializeObject<Pattern>(applause.text);
-		endPattern = JsonConvert.DeserializeObject<Pattern>(end.text);
-		laughingPattern = JsonConvert.DeserializeObject<Pattern>(laughing.text);
-		questionPattern = JsonConvert.DeserializeObject<Pattern>(question.text);
-		silencePattern = JsonConvert.DeserializeObject<Pattern>(silence.text);
+		createListOfInput();
+	}
+	
+	void createListOfInput()
+	{
+        jsonsEmotions = Resources.LoadAll("JsonsEmoties", typeof(TextAsset));
+		jsonsGeneral = Resources.LoadAll("JsonsGeneral", typeof(TextAsset));
 		
-		emotionsComplete.Add(new PatternComplete {patternName = "Alarm", patternJson = alarmPattern, patternImage = alarmPatternIm, difficulty = 1});
-		emotionsComplete.Add(new PatternComplete {patternName = "Alarm2", patternJson = alarm2Pattern, patternImage = alarm2PatternIm, difficulty = 1});
-		emotionsComplete.Add(new PatternComplete {patternName = "Angry", patternJson = angryPattern, patternImage = angryPatternIm, difficulty = 1});
-		emotionsComplete.Add(new PatternComplete {patternName = "Applause", patternJson = applausePattern, patternImage = applausePatternIm, difficulty = 2});
-		emotionsComplete.Add(new PatternComplete {patternName = "End", patternJson = endPattern, patternImage = endPatternIm, difficulty = 2});
-		emotionsComplete.Add(new PatternComplete {patternName = "Laughing", patternJson = laughingPattern, patternImage = laughingPatternIm, difficulty = 2});
-		emotionsComplete.Add(new PatternComplete {patternName = "Silence", patternJson = silencePattern, patternImage = silencePatternIm, difficulty = 3});
+		foreach (TextAsset json in jsonsEmotions){
+			emotions.Add(JsonConvert.DeserializeObject<Pattern>(json.ToString()));
+		}
+		
+		foreach (TextAsset json in jsonsGeneral){
+			general.Add(JsonConvert.DeserializeObject<Pattern>(json.ToString()));
+		}
+		
+		emotionImages = Resources.LoadAll("EmotiesEnSfeer", typeof(Sprite));
+		generalImages = Resources.LoadAll("Algemeen", typeof(Sprite));
+		Debug.Log(emotionImages.Length.ToString());
+		Debug.Log(emotions.Count);
+		Debug.Log(generalImages.Length.ToString());
+		Debug.Log(general.Count);
+		for (int i = 0; i < emotionImages.Length; i++){
+			emotionsComplete.Add(new PatternComplete{patternName = emotionImages[i].name, patternJson = emotions[i], patternImage = emotionImages[i] as Sprite, difficulty = Random.Range(1, 4)});
+		}
+		
+		for (int i = 0; i < generalImages.Length; i++){
+			generalComplete.Add(new PatternComplete{patternName = generalImages[i].name, patternJson = general[i], patternImage = generalImages[i] as Sprite, difficulty = Random.Range(1, 4)});
+		}
 	}
 	
 	public static List<PatternComplete> getEmotionsList(){
 		return emotionsComplete;	
+	}
+	
+	public static List<PatternComplete> getGeneralList(){
+		return generalComplete;	
 	}
 }
