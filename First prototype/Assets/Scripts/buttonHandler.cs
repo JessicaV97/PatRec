@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using Random = UnityEngine.Random;
 
 
+
 public class buttonHandler : MonoBehaviour{
 	
 	private Object[] jsonsEmotions;
@@ -76,4 +77,6 @@ public class buttonHandler : MonoBehaviour{
 	public static List<PatternComplete> getGeneralList(){
 		return generalComplete;	
 	}
+
+	
 }
