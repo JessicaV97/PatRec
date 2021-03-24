@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7939076b800f2434884d5a9f555639ce, type: 3}
+  m_Name: SO_Wrong
+  m_EditorClassIdentifier: 
+  patternName: Fout
+  patternJson: {fileID: 4900000, guid: fe2dee3242d9c324c9059702c0ce082d, type: 3}
+  patternImage: {fileID: 21300000, guid: 6e53e3779d24c0e48a0ee321238da29e, type: 3}
+  difficulty: 1

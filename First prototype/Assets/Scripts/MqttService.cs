@@ -71,6 +71,7 @@ namespace Happify.Client
             .WithPayload(payload)
             .Build();
 
+            Debug.Log(payload);
             await _mqttClient.PublishAsync(message, cancellationToken);
         }
     }

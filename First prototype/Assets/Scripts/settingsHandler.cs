@@ -18,32 +18,35 @@ public class settingsHandler : MonoBehaviour
 	public Sprite blind;
 	private int counterb = 0; 
 	
-	public void Start(){
-		if (remainingVision == true){
+	public void Start()
+	{
+		if (remainingVision)
 			blindset.image.overrideSprite = blind;
-		} else {
+		else
 			blindset.image.overrideSprite = blindx;
-		}
 		
-		if (remainingVision == true){
+		if (remainingVision)
 			deafset.image.overrideSprite = doof;
-		} else {
+		else
 			deafset.image.overrideSprite = doofx;
-		}
 	}
 	
-	public void changeDeaf(){
+	public void changeDeaf()
+	{
 		counterd++;
 		if (counterd % 2 == 0){
 			deafset.image.overrideSprite = doofx;
 			remainingHearing = false;
-		} else {
+		} 
+		else 
+		{
 			deafset.image.overrideSprite = doof;
 			remainingHearing = true;
 		}
 	}
 	
-	public void changeBlind(){
+	public void changeBlind()
+	{
 		counterb++;
 		if (counterb % 2 == 0){
 			blindset.image.overrideSprite = blindx;
@@ -54,16 +57,17 @@ public class settingsHandler : MonoBehaviour
 		}
 	}
 	
-	public void backAndSettingsCheck() {  
-		if (remainingHearing == false && remainingVision == false){
+	public void backAndSettingsCheck() 
+	{  
+		if (remainingHearing == false && remainingVision == false)
 			Debug.Log("The app is not yet ready to be used with these settings unfortunately");
-		} else if (remainingHearing == true && remainingVision == false){
+		else if (remainingHearing == true && remainingVision == false)
 			Debug.Log("Settings set for remaining hearing (use of visuals minimalized)");
-		} else if (remainingHearing == false && remainingVision == true){
+		else if (remainingHearing == false && remainingVision == true)
 			Debug.Log("Settings set for remaining vision (auditory cues excluded)");
-		} else {
+		else 
 			Debug.Log("Both auditory and visual cues are included!");
-		}
-        SceneManager.LoadScene("MainMenu");  
+
+        SceneManager.LoadScene("scn_MainMenu");  
     }  
 }

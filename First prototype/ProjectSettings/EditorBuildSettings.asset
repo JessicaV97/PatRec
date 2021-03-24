@@ -6,21 +6,24 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/MainMenu.unity
+    path: Assets/Scenes/scn_MainMenu.unity
     guid: 3b367d917c153924d9e26fba0b5157d1
   - enabled: 1
-    path: Assets/Scenes/mainGameScreen.unity
+    path: Assets/Scenes/scn_MainGameScreen.unity
     guid: ca210867a2d4ba848b8f2d9f89b9350b
   - enabled: 1
-    path: Assets/Scenes/settings.unity
+    path: Assets/Scenes/scn_Settings.unity
     guid: 32609a7153dbe6840be1b81fe0cbbcc1
   - enabled: 1
-    path: Assets/Scenes/achievements.unity
+    path: Assets/Scenes/scn_Achievements.unity
     guid: d7008052a0478fd4ea1fc1657e497b52
   - enabled: 1
-    path: Assets/Scenes/levels.unity
+    path: Assets/Scenes/scn_Levels.unity
     guid: 0f6c0182c692d3f4db296d3472397f0b
   - enabled: 1
-    path: Assets/Scenes/studyEnvironment.unity
+    path: Assets/Scenes/scn_StudyEnvironment.unity
     guid: e43b38591f8aef545a51228f29599d6a
+  - enabled: 1
+    path: Assets/Scenes/scn_Mqtt.unity
+    guid: 3e41ccd6fcc06f449858cab9a80a65a0
   m_configObjects: {}

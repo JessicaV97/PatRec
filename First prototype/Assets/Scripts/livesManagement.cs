@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
@@ -19,23 +17,19 @@ public class livesManagement : MonoBehaviour
     }
 
     // Update is called once per frame
-	private void Update(){
+	private void Update()
+	{
 		Time.timeScale = 1.0f;
 		livesLeft.GetComponent<TextMeshProUGUI>().text = livesNr.ToString();
 		currentTime -= 1* Time.deltaTime;
 		// Debug.Log(currentTime);
 		durationBeforeNewLife.GetComponent<TextMeshProUGUI>().text = currentTime.ToString("0");
-		if (livesNr < 3 && currentTime < 0){
+		if (livesNr < 3 && currentTime < 0)
 			livesNr += 1; 
-		} else if (livesNr ==3){
+		else if (livesNr ==3)
+		{
 			durationBeforeNewLife.GetComponent<TextMeshProUGUI>().text = "Ready to play!";
 			currentTime = 10f;
 		}
 	}
-	
-	public void playGame() {  
-        SceneManager.LoadScene("mainGameScreen");  
-    } 
-	
-
 }
