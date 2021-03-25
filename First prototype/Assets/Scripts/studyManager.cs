@@ -1,9 +1,11 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 using TMPro;
-
+using Happify.Client;
+using Newtonsoft.Json;
+using System.IO;
+using Newtonsoft.Json.Linq;
+using System.Text.RegularExpressions;
 
 public class studyManager : MonoBehaviour
 {
@@ -16,7 +18,10 @@ public class studyManager : MonoBehaviour
 	public int patternIndex = 0;
 	public static int levelIndex;
 
-
+	public async void Awake()
+    {
+		await MqttService.Instance.ConnectAsync();
+	}
 	public void Start()
     {
 		levelIndex = levelSwiper.getLevel();
@@ -25,34 +30,47 @@ public class studyManager : MonoBehaviour
 		else
 			patternsComplete = Resources.LoadAll("ScriptableObjects/SO_General", typeof(SOPattern));
 
-		setPattern();
+		//foreach (SOPattern pattern in patternsComplete)
+  //      {
+		//	pattern.patternJson = JsonConvert.DeserializeObject(pattern.patternJson);
+		//}
+
+		SetPattern();
 	}
 
-	public void nextPattern()
+	public void NextPattern()
 	{
 		if (patternIndex == patternsComplete.Length - 1)
 			patternIndex = 0;
 		else
 			patternIndex += 1;
 
-		setPattern();
+		SetPattern();
 	}
 	
-	public void previousPattern()
+	public void PreviousPattern()
 	{
 		if (patternIndex == 0) 
 			patternIndex = patternsComplete.Length - 1;
 		else 
 			patternIndex -= 1;
 
-		setPattern();
+		SetPattern();
 	}
 	
 	
-	private void setPattern()
+	private void SetPattern()
     {
 		patternVisual.GetComponent<Image>().sprite = (patternsComplete[patternIndex] as SOPattern).patternImage;
 		patternTitle.GetComponent<TextMeshProUGUI>().text = (patternsComplete[patternIndex] as SOPattern).patternName;
 	}
-	
+
+	public async void PlayPattern()
+    {
+		string json = (patternsComplete[patternIndex] as SOPattern).patternJson.text;
+		json = Regex.Replace(json, @"\t|\n|\r", "");
+		json = json.Replace(" ", "");
+		await MqttService.Instance.PublishAsync("happify/tactile-board/test", json);
+    }
+
 }

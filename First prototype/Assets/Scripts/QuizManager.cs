@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 using TMPro;
 using Random = UnityEngine.Random;
 using Happify.Client;
-
+using System.Text.RegularExpressions;
 
 public class QuizManager : MonoBehaviour
 {
@@ -47,7 +47,7 @@ public class QuizManager : MonoBehaviour
 		this.correctSound.playOnAwake = false;
 		this.incorrectSound.playOnAwake = false;
 		await MqttService.Instance.ConnectAsync();
-		await MqttService.Instance.PublishAsync("suitceyes/tactile-board/test", "Hello World");
+		//await MqttService.Instance.PublishAsync("suitceyes/tactile-board/test", "Hello World");
 	}
 
 	public void Start()
@@ -94,7 +94,7 @@ public class QuizManager : MonoBehaviour
 			}
 
 			//Add question with options to the list of questions and answers
-			QnA.Add( new QuestionAndAnswers {Question = (patternsComplete[i] as SOPattern).patternName, Answers = answerOptions, CorrectAnswer = 1+Array.IndexOf(answerOptions, (patternsComplete[i] as SOPattern).patternImage)});
+			QnA.Add( new QuestionAndAnswers {Question = (patternsComplete[i] as SOPattern).patternName, Answers = answerOptions, CorrectAnswer = 1+Array.IndexOf(answerOptions, (patternsComplete[i] as SOPattern).patternImage), Json = (patternsComplete[i] as SOPattern).patternJson});
 		}
 		generateQuestion();
     }
@@ -157,7 +157,7 @@ public class QuizManager : MonoBehaviour
 			correctPanel.SetActive(false);
 		}
         generateQuestion();
-    }
+	}
 
     void SetAnswers()
     {
@@ -179,7 +179,6 @@ public class QuizManager : MonoBehaviour
 	//Select new question
     void generateQuestion()
     {
-		playPattern();
 		if (livesNr == 0){
 			Debug.Log("You ran out of lives. Please wait till you have a new one before you continue");
 			// livesManagement.increaseLives();
@@ -191,10 +190,11 @@ public class QuizManager : MonoBehaviour
 
             // Set question text (i.e. context)
 			QuestionTxt.text = QnA[currentQuestion].Question;
-			// Connect possible answers to question to the buttons 
+            // Connect possible answers to question to the buttons 
             SetAnswers();
-        }
-        else
+			PlayPattern();
+		}
+		else
         {
 			//Indicate that there are no questions left -> Level complete
             ScoreManager.updateScore(score);
@@ -205,11 +205,14 @@ public class QuizManager : MonoBehaviour
         }
     }
 
-	void playPattern()
-    {
-		
+	public async void PlayPattern()
+	{
+		string json = QnA[currentQuestion].Json.text;
+		json = Regex.Replace(json, @"\t|\n|\r", "");
+		json = json.Replace(" ", "");
+		await MqttService.Instance.PublishAsync("happify/tactile-board/test", json);
 	}
-	
+
 	public static int getLives()
 	{
 		return livesNr;
