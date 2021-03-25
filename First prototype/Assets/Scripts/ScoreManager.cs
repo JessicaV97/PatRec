@@ -9,7 +9,7 @@ public class ScoreManager : MonoBehaviour
 	public TextMeshProUGUI status; 
 
 	// Update  total xp with points obtained in a level
-    public static void updateScore(int levelPoints)
+    public static void UpdateScore(int levelPoints)
     {
 		totalXP += levelPoints;
 		Debug.Log("Level score =  " + levelPoints);

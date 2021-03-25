@@ -8,26 +8,19 @@ public class AnswerScript : MonoBehaviour
     public bool isCorrect = false;
     public QuizManager quizManager;
 
-    public Color startColor;
+    //public Color startColor;
 
-    private void Start()
-    {
-        startColor = GetComponent<Image>().color;
-    }
+    //private void Start()
+    //{
+    //    startColor = GetComponent<Image>().color;
+    //}
 
     public void Answer()
     {
-		// If question is correctly answered, change color to green and print it is correct
         if(isCorrect)
-        {
-            Debug.Log("Correct Answer");
-            quizManager.correct();
-        } 
-        else // If question is wrongly answered, change color to red and print it is the wrong answer
-        {
-            Debug.Log("Wrong Answer");
-            quizManager.wrong();
-        }
+            quizManager.Correct();
+        else         
+            quizManager.Wrong();
     }
 
 }

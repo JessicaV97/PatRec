@@ -2,7 +2,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
 
-public class livesManagement : MonoBehaviour
+public class LivesManagement : MonoBehaviour
 {
 	public TextMeshProUGUI livesLeft;
 	public static int livesNr; 
@@ -12,7 +12,7 @@ public class livesManagement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-		livesNr = QuizManager.getLives();
+		livesNr = QuizManager.GetLives();
 		currentTime = 10f;
     }
 

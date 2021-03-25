@@ -2,14 +2,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Happify.Client;
-using Newtonsoft.Json;
-using System.IO;
-using Newtonsoft.Json.Linq;
 using System.Text.RegularExpressions;
 
 public class studyManager : MonoBehaviour
 {
-	//private List<SOPattern> patternsComplete = new List<SOPattern>();
 	private Object[] patternsComplete;
 
 	//Get objects for study environment
@@ -24,16 +20,11 @@ public class studyManager : MonoBehaviour
 	}
 	public void Start()
     {
-		levelIndex = levelSwiper.getLevel();
+		levelIndex = levelSwiper.GetLevel();
 		if (levelIndex != 5)
 			patternsComplete = Resources.LoadAll("ScriptableObjects/SO_Emotions", typeof(SOPattern));
 		else
 			patternsComplete = Resources.LoadAll("ScriptableObjects/SO_General", typeof(SOPattern));
-
-		//foreach (SOPattern pattern in patternsComplete)
-  //      {
-		//	pattern.patternJson = JsonConvert.DeserializeObject(pattern.patternJson);
-		//}
 
 		SetPattern();
 	}
@@ -72,5 +63,4 @@ public class studyManager : MonoBehaviour
 		json = json.Replace(" ", "");
 		await MqttService.Instance.PublishAsync("happify/tactile-board/test", json);
     }
-
 }

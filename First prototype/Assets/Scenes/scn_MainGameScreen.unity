@@ -177,7 +177,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isCorrect: 0
   quizManager: {fileID: 1848499269}
-  startColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &27332280
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1763,7 +1762,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isCorrect: 0
   quizManager: {fileID: 1848499269}
-  startColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &568930850
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1912,7 +1910,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isCorrect: 0
   quizManager: {fileID: 1848499269}
-  startColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &616991372
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2354,7 +2351,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isCorrect: 0
   quizManager: {fileID: 1848499269}
-  startColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &796641819
 GameObject:
   m_ObjectHideFlags: 0
@@ -2634,7 +2630,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1346906187}
         m_TargetAssemblyTypeName: Navigation, Assembly-CSharp
-        m_MethodName: goToHome
+        m_MethodName: GoToHome
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

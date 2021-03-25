@@ -773,7 +773,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 305168744}
         m_TargetAssemblyTypeName: levelSwiper, Assembly-CSharp
-        m_MethodName: nextPattern
+        m_MethodName: NextPattern
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -984,7 +984,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 305168745}
         m_TargetAssemblyTypeName: Navigation, Assembly-CSharp
-        m_MethodName: playGame
+        m_MethodName: PlayGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1280,7 +1280,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 305168744}
         m_TargetAssemblyTypeName: levelSwiper, Assembly-CSharp
-        m_MethodName: previousPattern
+        m_MethodName: PreviousPattern
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1413,7 +1413,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 305168745}
         m_TargetAssemblyTypeName: Navigation, Assembly-CSharp
-        m_MethodName: goToStudyEnvironment
+        m_MethodName: GoToStudyEnvironment
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

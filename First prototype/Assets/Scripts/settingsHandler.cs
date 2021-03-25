@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class settingsHandler : MonoBehaviour
+public class SettingsHandler : MonoBehaviour
 {
 	public static bool remainingHearing = true;
 	public Button deafset;
@@ -31,7 +31,7 @@ public class settingsHandler : MonoBehaviour
 			deafset.image.overrideSprite = doofx;
 	}
 	
-	public void changeDeaf()
+	public void ChangeDeaf()
 	{
 		counterd++;
 		if (counterd % 2 == 0){
@@ -45,7 +45,7 @@ public class settingsHandler : MonoBehaviour
 		}
 	}
 	
-	public void changeBlind()
+	public void ChangeBlind()
 	{
 		counterb++;
 		if (counterb % 2 == 0){
@@ -57,7 +57,7 @@ public class settingsHandler : MonoBehaviour
 		}
 	}
 	
-	public void backAndSettingsCheck() 
+	public void BackAndSettingsCheck() 
 	{  
 		if (remainingHearing == false && remainingVision == false)
 			Debug.Log("The app is not yet ready to be used with these settings unfortunately");

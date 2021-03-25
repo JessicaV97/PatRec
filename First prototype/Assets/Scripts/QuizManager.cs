@@ -47,12 +47,11 @@ public class QuizManager : MonoBehaviour
 		this.correctSound.playOnAwake = false;
 		this.incorrectSound.playOnAwake = false;
 		await MqttService.Instance.ConnectAsync();
-		//await MqttService.Instance.PublishAsync("suitceyes/tactile-board/test", "Hello World");
 	}
 
 	public void Start()
     {
-		levelIndex = levelSwiper.getLevel();
+		levelIndex = levelSwiper.GetLevel();
 		if (levelIndex != 5)
 			patternsComplete = Resources.LoadAll("ScriptableObjects/SO_Emotions", typeof(SOPattern));
 		else
@@ -96,7 +95,7 @@ public class QuizManager : MonoBehaviour
 			//Add question with options to the list of questions and answers
 			QnA.Add( new QuestionAndAnswers {Question = (patternsComplete[i] as SOPattern).patternName, Answers = answerOptions, CorrectAnswer = 1+Array.IndexOf(answerOptions, (patternsComplete[i] as SOPattern).patternImage), Json = (patternsComplete[i] as SOPattern).patternJson});
 		}
-		generateQuestion();
+		GenerateQuestion();
     }
 	
 	private void Update()
@@ -108,55 +107,55 @@ public class QuizManager : MonoBehaviour
 	}
 	
 
-    public void correct()
+    public void Correct()
     {
         //If correct answer was chosen
 		//Play sound effect	
-		if (settingsHandler.remainingHearing == true)
+		if (SettingsHandler.remainingHearing)
 			correctSound.Play();
 		//add 1 to score
 		score += 1;
 		//Remove question from list
         QnA.RemoveAt(currentQuestion);
 		//Activate green screen with check mark
-		if (settingsHandler.remainingVision == true){
+		if (SettingsHandler.remainingVision){
 			correctPanel.SetActive(true);
 			correctActive = true;
 		}
 		//Start Coroutine to deactivate the green screen and initiate a new question
-        StartCoroutine(waitForNext());
+        StartCoroutine(WaitForNext());
     }
 
-    public void wrong()
+    public void Wrong()
     {
         //If wrong answer was chosen
 		//Play sound effect
-		if (settingsHandler.remainingHearing == true)
+		if (SettingsHandler.remainingHearing)
 			incorrectSound.Play();
 		//Remove 1 life
 		livesNr -= 1; 
         // QnA.RemoveAt(currentQuestion);
 		//Show red screen with cross
-		if (settingsHandler.remainingVision == true){
+		if (SettingsHandler.remainingVision){
 			wrongPanel.SetActive(true);
 			wrongActive = true;
 		}
 		//Start coroutine to deactive the red screen and initate a new question
-        StartCoroutine(waitForNext());
+        StartCoroutine(WaitForNext());
     }
 
-    IEnumerator waitForNext()
+    IEnumerator WaitForNext()
     {
 		// Wait for 1.5 second (deactive active screen) and then offer new question. 
         yield return new WaitForSeconds(1.5f);
-		if (wrongActive == true){
+		if (wrongActive){
 			wrongActive = false;
 			wrongPanel.SetActive(false);
-		} else if (correctActive == true){
+		} else if (correctActive){
 			correctActive = false;
 			correctPanel.SetActive(false);
 		}
-        generateQuestion();
+        GenerateQuestion();
 	}
 
     void SetAnswers()
@@ -177,7 +176,7 @@ public class QuizManager : MonoBehaviour
     }
 
 	//Select new question
-    void generateQuestion()
+    void GenerateQuestion()
     {
 		if (livesNr == 0){
 			Debug.Log("You ran out of lives. Please wait till you have a new one before you continue");
@@ -197,7 +196,7 @@ public class QuizManager : MonoBehaviour
 		else
         {
 			//Indicate that there are no questions left -> Level complete
-            ScoreManager.updateScore(score);
+            ScoreManager.UpdateScore(score);
 			Debug.Log("Out of Questions");
 			// if (livesNr < 3){
 				// livesManagement.increaseLives();
@@ -213,15 +212,8 @@ public class QuizManager : MonoBehaviour
 		await MqttService.Instance.PublishAsync("happify/tactile-board/test", json);
 	}
 
-	public static int getLives()
+	public static int GetLives()
 	{
 		return livesNr;
 	}
-	
-	public void goToHome() 
-	{  
-        SceneManager.LoadScene("scn_MainMenu");  
-    } 
-	
-
 }

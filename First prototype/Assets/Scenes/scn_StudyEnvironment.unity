@@ -205,9 +205,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1780109100}
         m_TargetAssemblyTypeName: studyManager, Assembly-CSharp
-        m_MethodName: previousPattern
+        m_MethodName: PreviousPattern
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -602,7 +602,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1780109099}
         m_TargetAssemblyTypeName: Navigation, Assembly-CSharp
-        m_MethodName: goToLevels
+        m_MethodName: GoToLevels
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -961,9 +961,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1780109100}
         m_TargetAssemblyTypeName: studyManager, Assembly-CSharp
-        m_MethodName: nextPattern
+        m_MethodName: NextPattern
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

@@ -17,7 +17,7 @@ public class levelSwiper : MonoBehaviour{
     // Start is called before the first frame update
     void Start()
 	{
-		createListOfLevelSprites();
+		CreateListOfLevelSprites();
     }
 	
 	private void Update()
@@ -26,7 +26,7 @@ public class levelSwiper : MonoBehaviour{
 		levelTitle.GetComponent<TextMeshProUGUI>().text = levelNames[levelIndex];
 	}
 	
-	public void nextPattern()
+	public void NextPattern()
 	{
 		if (levelIndex == levels.Length - 1)
 			levelIndex = 0; 
@@ -34,7 +34,7 @@ public class levelSwiper : MonoBehaviour{
 			levelIndex += 1;
 	}
 	
-	public void previousPattern()
+	public void PreviousPattern()
 	{ 
 		if (levelIndex == 0) 
 			levelIndex = levels.Length - 1;
@@ -42,12 +42,12 @@ public class levelSwiper : MonoBehaviour{
 			levelIndex -= 1;
 	}
 	
-	void createListOfLevelSprites()
+	void CreateListOfLevelSprites()
 	{
         levels = Resources.LoadAll("sprt_Levels", typeof(Sprite));
 	}
 
-	public static int getLevel()
+	public static int GetLevel()
 	{
 		return levelIndex;
 	} 

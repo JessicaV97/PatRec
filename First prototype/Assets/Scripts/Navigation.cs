@@ -5,31 +5,31 @@ using UnityEngine.SceneManagement;
 
 public class Navigation : MonoBehaviour
 {
-    public void goToSettings()
+    public void GoToSettings()
     {
         SceneManager.LoadScene("scn_Settings");
     }
 
-    public void goToAchievements()
+    public void GoToAchievements()
     {
         SceneManager.LoadScene("scn_Achievements");
     }
 
-    public void goToHome()
+    public void GoToHome()
     {
         SceneManager.LoadScene("scn_MainMenu");
     }
-    public void goToLevels()
+    public void GoToLevels()
     {
         SceneManager.LoadScene("scn_Levels");
     }
 
-    public void goToStudyEnvironment()
+    public void GoToStudyEnvironment()
     {
         SceneManager.LoadScene("scn_StudyEnvironment");
     }
 
-    public void playGame()
+    public void PlayGame()
     {
         SceneManager.LoadScene("scn_MainGameScreen");
     }
