@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7939076b800f2434884d5a9f555639ce, type: 3}
-  m_Name: New Pattern
+  m_Name: SO_OkeQuestion
   m_EditorClassIdentifier: 
   patternName: Oke?
   patternJson: {fileID: 4900000, guid: 1667468bb063e674fb31be368e95e552, type: 3}

@@ -15,4 +15,4 @@ MonoBehaviour:
   patternName: Blij
   patternJson: {fileID: 4900000, guid: a4470281779ece54e88c05dfbe21991d, type: 3}
   patternImage: {fileID: 21300000, guid: 14e52e7bd9391134f8a70e06c365a3af, type: 3}
-  difficulty: 0
+  difficulty: 1

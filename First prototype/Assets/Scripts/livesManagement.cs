@@ -1,6 +1,5 @@
 using UnityEngine;
 using TMPro;
-using UnityEngine.SceneManagement;
 
 public class LivesManagement : MonoBehaviour
 {
@@ -12,7 +11,8 @@ public class LivesManagement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-		livesNr = QuizManager.GetLives();
+		//livesNr = QuizManager.GetLives();
+		livesNr = UserCreator.user1.NrOfLives;
 		currentTime = 10f;
     }
 
@@ -20,15 +20,14 @@ public class LivesManagement : MonoBehaviour
 	private void Update()
 	{
 		Time.timeScale = 1.0f;
-		livesLeft.GetComponent<TextMeshProUGUI>().text = livesNr.ToString();
+		livesLeft/*.GetComponent<TextMeshProUGUI>()*/.text = livesNr.ToString();
 		currentTime -= 1* Time.deltaTime;
-		// Debug.Log(currentTime);
-		durationBeforeNewLife.GetComponent<TextMeshProUGUI>().text = currentTime.ToString("0");
+		durationBeforeNewLife/*.GetComponent<TextMeshProUGUI>()*/.text = currentTime.ToString("0");
 		if (livesNr < 3 && currentTime < 0)
 			livesNr += 1; 
 		else if (livesNr ==3)
 		{
-			durationBeforeNewLife.GetComponent<TextMeshProUGUI>().text = "Ready to play!";
+			durationBeforeNewLife/*.GetComponent<TextMeshProUGUI>()*/.text = "Ready to play!";
 			currentTime = 10f;
 		}
 	}

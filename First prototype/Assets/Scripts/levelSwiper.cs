@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
 
-public class levelSwiper : MonoBehaviour{ 
+public class LevelSwiper : MonoBehaviour{ 
 
 	//Get objects for choosing level
 	public GameObject levelVisual;

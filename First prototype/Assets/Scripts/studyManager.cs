@@ -4,7 +4,7 @@ using TMPro;
 using Happify.Client;
 using System.Text.RegularExpressions;
 
-public class studyManager : MonoBehaviour
+public class StudyManager : MonoBehaviour
 {
 	private Object[] patternsComplete;
 
@@ -20,7 +20,7 @@ public class studyManager : MonoBehaviour
 	}
 	public void Start()
     {
-		levelIndex = levelSwiper.GetLevel();
+		levelIndex = LevelSwiper.GetLevel();
 		if (levelIndex != 5)
 			patternsComplete = Resources.LoadAll("ScriptableObjects/SO_Emotions", typeof(SOPattern));
 		else

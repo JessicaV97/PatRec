@@ -6,54 +6,56 @@ using UnityEngine.SceneManagement;
 
 public class SettingsHandler : MonoBehaviour
 {
-	public static bool remainingHearing = true;
+	public static bool remainingHearing = UserCreator.user1.RemainingHearing;
 	public Button deafset;
-	public Sprite doofx;
-	public Sprite doof;
-	private int counterd = 0; 
-	
-	public static bool remainingVision = true;
+	public Sprite NoAudioPerception;
+	public Sprite AudioPerception;
+
+	public static bool remainingVision = UserCreator.user1.RemainingVision;
 	public Button blindset;
-	public Sprite blindx;
-	public Sprite blind;
-	private int counterb = 0; 
+	public Sprite NoVisualPerception;
+	public Sprite VisualPerception;
 	
 	public void Start()
 	{
 		if (remainingVision)
-			blindset.image.overrideSprite = blind;
+			blindset.image.overrideSprite = VisualPerception;
 		else
-			blindset.image.overrideSprite = blindx;
+			blindset.image.overrideSprite = NoVisualPerception;
 		
-		if (remainingVision)
-			deafset.image.overrideSprite = doof;
+		if (remainingHearing)
+			deafset.image.overrideSprite = AudioPerception;
 		else
-			deafset.image.overrideSprite = doofx;
+			deafset.image.overrideSprite = NoAudioPerception;
 	}
 	
 	public void ChangeDeaf()
 	{
-		counterd++;
-		if (counterd % 2 == 0){
-			deafset.image.overrideSprite = doofx;
-			remainingHearing = false;
+		if (remainingHearing)
+		{
+			deafset.image.overrideSprite = NoAudioPerception;
+			UserCreator.user1.RemainingHearing = false;
+			remainingHearing = false; 
 		} 
 		else 
 		{
-			deafset.image.overrideSprite = doof;
+			deafset.image.overrideSprite = AudioPerception;
+			UserCreator.user1.RemainingHearing = true;
 			remainingHearing = true;
 		}
 	}
 	
 	public void ChangeBlind()
 	{
-		counterb++;
-		if (counterb % 2 == 0){
-			blindset.image.overrideSprite = blindx;
+		if (remainingVision)
+		{
+			blindset.image.overrideSprite = NoVisualPerception;
+			UserCreator.user1.RemainingVision = false;
 			remainingVision = false;
 		} else {
-			blindset.image.overrideSprite = blind;
-			remainingVision = true; 
+			blindset.image.overrideSprite = VisualPerception;
+			UserCreator.user1.RemainingVision = true;
+			remainingVision = true;
 		}
 	}
 	

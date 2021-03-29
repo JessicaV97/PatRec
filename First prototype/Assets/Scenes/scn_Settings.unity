@@ -205,9 +205,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2113507047}
-        m_TargetAssemblyTypeName: settingsHandler, Assembly-CSharp
-        m_MethodName: backAndSettingsCheck
+      - m_Target: {fileID: 1453767076}
+        m_TargetAssemblyTypeName: SettingsHandler, Assembly-CSharp
+        m_MethodName: BackAndSettingsCheck
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -500,9 +500,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2113507047}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: changeBlind
+      - m_Target: {fileID: 1453767076}
+        m_TargetAssemblyTypeName: SettingsHandler, Assembly-CSharp
+        m_MethodName: ChangeBlind
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -562,6 +562,7 @@ GameObject:
   - component: {fileID: 1453767073}
   - component: {fileID: 1453767072}
   - component: {fileID: 1453767075}
+  - component: {fileID: 1453767076}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -629,6 +630,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 368250f92c4296f41a5fd22e0275ea66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1453767076
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1453767071}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86fff2cec3388d349adeabdecda93299, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  deafset: {fileID: 1842335157}
+  NoAudioPerception: {fileID: 21300000, guid: 2c09355f95c977a4fad6c58d0b9e5e6c, type: 3}
+  AudioPerception: {fileID: 21300000, guid: 4737469bb66ce194b861a27e4d161c0f, type: 3}
+  blindset: {fileID: 1120056110}
+  NoVisualPerception: {fileID: 21300000, guid: 985255f7436bebf4d949d69cba41bb0f, type: 3}
+  VisualPerception: {fileID: 21300000, guid: e3094517ebef05e4bb5a34027f884682, type: 3}
 --- !u!1 &1842335153
 GameObject:
   m_ObjectHideFlags: 0
@@ -749,9 +768,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2113507047}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: changeDeaf
+      - m_Target: {fileID: 1453767076}
+        m_TargetAssemblyTypeName: SettingsHandler, Assembly-CSharp
+        m_MethodName: ChangeDeaf
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -772,7 +791,6 @@ GameObject:
   - component: {fileID: 2113507045}
   - component: {fileID: 2113507044}
   - component: {fileID: 2113507043}
-  - component: {fileID: 2113507047}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -845,21 +863,3 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2113507047
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2113507042}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86fff2cec3388d349adeabdecda93299, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  deafset: {fileID: 1842335157}
-  doofx: {fileID: 21300000, guid: 2c09355f95c977a4fad6c58d0b9e5e6c, type: 3}
-  doof: {fileID: 21300000, guid: 4737469bb66ce194b861a27e4d161c0f, type: 3}
-  blindset: {fileID: 1120056110}
-  blindx: {fileID: 21300000, guid: 985255f7436bebf4d949d69cba41bb0f, type: 3}
-  blind: {fileID: 21300000, guid: e3094517ebef05e4bb5a34027f884682, type: 3}

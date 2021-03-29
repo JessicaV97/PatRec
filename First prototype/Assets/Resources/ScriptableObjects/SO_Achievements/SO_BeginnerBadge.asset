@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e12f491897608348b944296c52fa8a6, type: 3}
+  m_Name: SO_BeginnerBadge
+  m_EditorClassIdentifier: 
+  AchievementText: Beginner Badge - 10 XP
+  PopUpText: Je hebt een goede start gemaakt! Omdat je al 10XP hebt verdiend krijg
+    je de beginners badge. Ga zo door en verschillende badges zullen volgen!
+  BadgeImage: {fileID: 21300000, guid: 2b6fc825a69a73542aa6cb82fd30f1d7, type: 3}
+  AchievementTopic: Niveau
+  AchievementLevel: 1

@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 using TMPro;
 using Random = UnityEngine.Random;
 using Happify.Client;
@@ -11,99 +10,117 @@ using System.Text.RegularExpressions;
 
 public class QuizManager : MonoBehaviour
 {
-    public List<QuestionAndAnswers> QnA;
-    public GameObject[] options;
-    public int currentQuestion;
+	public List<QuestionAndAnswers> QnA;
+	public GameObject[] Options;
+	public int CurrentQuestion;
 
-    public GameObject Quizpanel;
-	public GameObject wrongPanel;
-	public GameObject correctPanel;
-	public GameObject goScreen;
+	public GameObject Quizpanel;
+	public GameObject WrongPanel;
+	public GameObject CorrectPanel;
+	public GameObject GoScreen;
+	public GameObject LevelCompletePanel;
 
-    public TextMeshProUGUI QuestionTxt;
-    public TextMeshProUGUI ScoreTxt;
-	public TextMeshProUGUI lives;
+	public TextMeshProUGUI QuestionTxt;
+	public TextMeshProUGUI ScoreTxt;
+	public TextMeshProUGUI Lives;
+	public TextMeshProUGUI LevelCompleteTxt;
 	public static int livesNr = 3;
-	
-	public bool wrongActive = false;
-	public bool correctActive = false; 
 
-    public int score;
+	public bool WrongActive = false;
+	public bool CorrectActive = false;
 
-	
+	public int score = 0;
+
+
 	//Get sound effects
-	public AudioSource correctSound;
-	public AudioSource incorrectSound;
+	public AudioSource CorrectSound;
+	public AudioSource IncorrectSound;
 
-	public object[] patternsComplete;
-	
-	public static int levelIndex;
+	public object[] PatternsComplete;
 
-	public System.Random r = new System.Random();	
+	public static int LevelIndex;
+	public static string Topic;
 
-    public async void Awake()
+	public System.Random r = new System.Random();
+
+	public async void Awake()
 	{
 		//Ensure sounds don't play at start
-		this.correctSound.playOnAwake = false;
-		this.incorrectSound.playOnAwake = false;
+		this.CorrectSound.playOnAwake = false;
+		this.IncorrectSound.playOnAwake = false;
 		await MqttService.Instance.ConnectAsync();
 	}
 
+	public static int UserSkill;
+
 	public void Start()
-    {
-		levelIndex = levelSwiper.GetLevel();
-		if (levelIndex != 5)
-			patternsComplete = Resources.LoadAll("ScriptableObjects/SO_Emotions", typeof(SOPattern));
-		else
-			patternsComplete = Resources.LoadAll("ScriptableObjects/SO_General", typeof(SOPattern));
-
-		goScreen.SetActive(false);
-		
-		//Create Q&A set
-		for (int i = 0; i < patternsComplete.Length; i++)
+	{
+		LevelIndex = LevelSwiper.GetLevel();
+		if (LevelIndex != 5)
 		{
-			List<int> listNumbers = new List<int>();
-			int number;
-			//For each element in the list of emotion patterns, grab 3 random integers to select answer options randomly
-			for (int j = 0; j < 3; j++)
-			{
-				do
-				{
-					number = r.Next(1,  patternsComplete.Length);
-				} while (listNumbers.Contains(number) || number == i);
-				
-				listNumbers.Add(number);
-			}
-			//Select answer options using the integers generated before this 
-			Sprite[] answerOptions = 
-				{
-				(patternsComplete[listNumbers[0]] as SOPattern).patternImage,
-				(patternsComplete[listNumbers[1]] as SOPattern).patternImage,
-				(patternsComplete[listNumbers[2]] as SOPattern).patternImage,
-				(patternsComplete[i] as SOPattern).patternImage,
-				};
+			PatternsComplete = Resources.LoadAll("ScriptableObjects/SO_Emotions", typeof(SOPattern));
+			UserSkill = UserCreator.user1.EmotionsLevel;
+			Topic = "Emoties en sfeer";
+		}
+		else
+		{
+			PatternsComplete = Resources.LoadAll("ScriptableObjects/SO_General", typeof(SOPattern));
+			UserSkill = UserCreator.user1.GeneralLevel;
+			Topic = "Algemeen";
+		}
 
-			//Randomize answer options order
-			for (int k = 0; k < answerOptions.Length - 1; k++)
-			{
-				int l = r.Next(k, answerOptions.Length);
-				Sprite temp = answerOptions[k];
-				answerOptions[k] = answerOptions[l];
-				answerOptions[l] = temp;
-			}
+		GoScreen.SetActive(false);
+		LevelCompletePanel.SetActive(false);
+		ScoreTxt.GetComponent<TextMeshProUGUI>().text = "Score: " + score;
 
-			//Add question with options to the list of questions and answers
-			QnA.Add( new QuestionAndAnswers {Question = (patternsComplete[i] as SOPattern).patternName, Answers = answerOptions, CorrectAnswer = 1+Array.IndexOf(answerOptions, (patternsComplete[i] as SOPattern).patternImage), Json = (patternsComplete[i] as SOPattern).patternJson});
+		//Create Q&A set
+		for (int i = 0; i < PatternsComplete.Length; i++)
+		{
+			if ((PatternsComplete[i] as SOPattern).difficulty <= UserSkill)
+			{ 
+				List<int> listNumbers = new List<int>();
+				int number;
+				//For each element in the list of emotion patterns, grab 3 random integers to select answer options randomly
+				for (int j = 0; j < 3; j++)
+				{
+					do
+					{
+						number = r.Next(1, PatternsComplete.Length);
+					} while (listNumbers.Contains(number) || number == i);
+
+					listNumbers.Add(number);
+				}
+				//Select answer options using the integers generated before this 
+				Sprite[] AnswerOptions =
+					{
+						(PatternsComplete[listNumbers[0]] as SOPattern).patternImage,
+						(PatternsComplete[listNumbers[1]] as SOPattern).patternImage,
+						(PatternsComplete[listNumbers[2]] as SOPattern).patternImage,
+						(PatternsComplete[i] as SOPattern).patternImage,
+						};
+
+				//Randomize answer options order
+				for (int k = 0; k < AnswerOptions.Length - 1; k++)
+				{
+					int l = r.Next(k, AnswerOptions.Length);
+					Sprite temp = AnswerOptions[k];
+					AnswerOptions[k] = AnswerOptions[l];
+					AnswerOptions[l] = temp;
+				}
+
+				//Add question with options to the list of questions and answers
+				QnA.Add(new QuestionAndAnswers { Question = (PatternsComplete[i] as SOPattern).patternName, Answers = AnswerOptions, CorrectAnswer = 1 + Array.IndexOf(AnswerOptions, (PatternsComplete[i] as SOPattern).patternImage), Json = (PatternsComplete[i] as SOPattern).patternJson });
+			}
 		}
 		GenerateQuestion();
     }
 	
 	private void Update()
 	{
-		ScoreTxt.GetComponent<TextMeshProUGUI>().text = "Score: "+ score;
-		lives.GetComponent<TextMeshProUGUI>().text = livesNr.ToString();
+		
+		Lives.GetComponent<TextMeshProUGUI>().text = livesNr.ToString();
 		if (livesNr == 0)
-			goScreen.SetActive(true);
+			GoScreen.SetActive(true);
 	}
 	
 
@@ -112,33 +129,37 @@ public class QuizManager : MonoBehaviour
         //If correct answer was chosen
 		//Play sound effect	
 		if (SettingsHandler.remainingHearing)
-			correctSound.Play();
+			CorrectSound.Play();
 		//add 1 to score
-		score += 1;
+		score++;
+		ScoreTxt.GetComponent<TextMeshProUGUI>().text = "Score: " + score;
 		//Remove question from list
-        QnA.RemoveAt(currentQuestion);
+		QnA.RemoveAt(CurrentQuestion);
 		//Activate green screen with check mark
 		if (SettingsHandler.remainingVision){
-			correctPanel.SetActive(true);
-			correctActive = true;
+			CorrectPanel.SetActive(true);
+			CorrectActive = true;
 		}
 		//Start Coroutine to deactivate the green screen and initiate a new question
-        StartCoroutine(WaitForNext());
+		StartCoroutine(WaitForNext());
     }
 
     public void Wrong()
     {
-        //If wrong answer was chosen
+		//If wrong answer was chosen
+		score--;
+		ScoreTxt.GetComponent<TextMeshProUGUI>().text = "Score: " + score;
 		//Play sound effect
-		if (SettingsHandler.remainingHearing)
-			incorrectSound.Play();
+		//if (SettingsHandler.remainingHearing)
+		if (UserCreator.user1.RemainingHearing)
+			IncorrectSound.Play();
 		//Remove 1 life
-		livesNr -= 1; 
-        // QnA.RemoveAt(currentQuestion);
+		//livesNr -= 1;
+		UserCreator.user1.NrOfLives -= 1;
 		//Show red screen with cross
-		if (SettingsHandler.remainingVision){
-			wrongPanel.SetActive(true);
-			wrongActive = true;
+		if (UserCreator.user1.RemainingVision){
+			WrongPanel.SetActive(true);
+			WrongActive = true;
 		}
 		//Start coroutine to deactive the red screen and initate a new question
         StartCoroutine(WaitForNext());
@@ -148,36 +169,38 @@ public class QuizManager : MonoBehaviour
     {
 		// Wait for 1.5 second (deactive active screen) and then offer new question. 
         yield return new WaitForSeconds(1.5f);
-		if (wrongActive){
-			wrongActive = false;
-			wrongPanel.SetActive(false);
-		} else if (correctActive){
-			correctActive = false;
-			correctPanel.SetActive(false);
+		if (WrongActive){
+			WrongActive = false;
+			WrongPanel.SetActive(false);
+		} else if (CorrectActive){
+			CorrectActive = false;
+			CorrectPanel.SetActive(false);
 		}
-        GenerateQuestion();
+		GenerateQuestion();
 	}
 
-    void SetAnswers()
+	void SetAnswers()
     {
 		// From given answer options
-        for (int i = 0; i < options.Length; i++)
+        for (int i = 0; i < Options.Length; i++)
         {
-            // options[i].GetComponent<Image>().color = options[i].GetComponent<AnswerScript>().startColor;
+			// options[i].GetComponent<Image>().color = options[i].GetComponent<AnswerScript>().startColor;
 			// By default set answer to be incorrect
-            options[i].GetComponent<AnswerScript>().isCorrect = false;
+			Options[i].GetComponent<AnswerScript>().isCorrect = false;
 			// Change text of option buttons to text of possible answers
-            options[i].transform.GetChild(0).GetComponent<Image>().sprite = QnA[currentQuestion].Answers[i];
+			Options[i].transform.GetChild(0).GetComponent<Image>().sprite = QnA[CurrentQuestion].Answers[i];
 
 			// Set answer to be the correct one if it has been indicated as corrrect answer to the question.
-			if (QnA[currentQuestion].CorrectAnswer == i + 1)
-				options[i].GetComponent<AnswerScript>().isCorrect = true;
+			if (QnA[CurrentQuestion].CorrectAnswer == i + 1)
+				Options[i].GetComponent<AnswerScript>().isCorrect = true;
         }
     }
 
 	//Select new question
     void GenerateQuestion()
     {
+		Debug.Log(QnA.Count);
+
 		if (livesNr == 0){
 			Debug.Log("You ran out of lives. Please wait till you have a new one before you continue");
 			// livesManagement.increaseLives();
@@ -185,19 +208,40 @@ public class QuizManager : MonoBehaviour
 		else if(QnA.Count > 0)
         {	
 			// Select question randomly from list of questions
-            currentQuestion = Random.Range(0, QnA.Count);
+            CurrentQuestion = Random.Range(0, QnA.Count);
 
             // Set question text (i.e. context)
-			QuestionTxt.text = QnA[currentQuestion].Question;
+			QuestionTxt.text = QnA[CurrentQuestion].Question;
             // Connect possible answers to question to the buttons 
             SetAnswers();
 			PlayPattern();
 		}
 		else
         {
-			//Indicate that there are no questions left -> Level complete
+			//Level Complete
             ScoreManager.UpdateScore(score);
+			////Check for xp badges
+			//if (ScoreManager.TotalXP >= 100)
+			//	AchievementsCollector.AddXPBadge(4);
+			//else if (ScoreManager.TotalXP >= 50)
+			//	AchievementsCollector.AddXPBadge(3);
+			//else if (ScoreManager.TotalXP >= 25)
+			//	AchievementsCollector.AddXPBadge(2);
+			//else if (ScoreManager.TotalXP >= 10)
+			//	AchievementsCollector.AddXPBadge(1);
+
 			Debug.Log("Out of Questions");
+			Debug.Log(Topic);
+			Debug.Log(UserSkill);
+			LevelCompleteTxt.text = AchievementsCollector.PopUpAchievement(Topic, UserSkill);
+
+			if (Topic == "Emoties en sfeer")
+				UserCreator.user1.EmotionsLevel++;
+			else
+				UserCreator.user1.GeneralLevel++;
+			LevelCompletePanel.SetActive(true);
+			
+
 			// if (livesNr < 3){
 				// livesManagement.increaseLives();
 			// }
@@ -206,7 +250,7 @@ public class QuizManager : MonoBehaviour
 
 	public async void PlayPattern()
 	{
-		string json = QnA[currentQuestion].Json.text;
+		string json = QnA[CurrentQuestion].Json.text;
 		json = Regex.Replace(json, @"\t|\n|\r", "");
 		json = json.Replace(" ", "");
 		await MqttService.Instance.PublishAsync("happify/tactile-board/test", json);
