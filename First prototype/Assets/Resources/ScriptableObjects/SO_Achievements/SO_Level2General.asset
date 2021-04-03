@@ -16,4 +16,4 @@ MonoBehaviour:
   PopUpText: 'Super! Je hebt nu de basis gelegd op het gebied van de algemene patronen. '
   BadgeImage: {fileID: 21300000, guid: 6e73281555084c0449feaadc6e87f0c1, type: 3}
   AchievementTopic: Algemeen
-  AchievementLevel: 0
+  AchievementLevel: 2

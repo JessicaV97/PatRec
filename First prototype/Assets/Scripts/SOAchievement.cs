@@ -8,4 +8,5 @@ public class SOAchievement : ScriptableObject
     public Sprite BadgeImage;
     public string AchievementTopic;
     public int AchievementLevel;
+    //internal int achievementlevel;
 }

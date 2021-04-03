@@ -6,12 +6,12 @@ using TMPro;
 public class LevelSwiper : MonoBehaviour{ 
 
 	//Get objects for choosing level
-	public GameObject levelVisual;
-	public TextMeshProUGUI levelTitle;
-	public static int levelIndex = 0;
+	public GameObject LevelVisual;
+	public TextMeshProUGUI LevelTitle;
+	public static int LevelIndex = 0;
 	
 	
-	private Object[] levels;
+	private Object[] _levels;
 	string[] levelNames = new string[] { "Emoties en Sfeer", "Eten en drinken", "Personen", "Objecten", "Ruimtes en Richting", "Algemeen"};
 
     // Start is called before the first frame update
@@ -20,35 +20,34 @@ public class LevelSwiper : MonoBehaviour{
 		CreateListOfLevelSprites();
     }
 	
-	private void Update()
-	{
-		levelVisual.GetComponent<Image>().sprite = levels[levelIndex] as Sprite;
-		levelTitle.GetComponent<TextMeshProUGUI>().text = levelNames[levelIndex];
-	}
-	
 	public void NextPattern()
 	{
-		if (levelIndex == levels.Length - 1)
-			levelIndex = 0; 
+		if (LevelIndex == _levels.Length - 1)
+			LevelIndex = 0; 
 		else 
-			levelIndex += 1;
+			LevelIndex++;
+		LevelVisual.GetComponent<Image>().sprite = _levels[LevelIndex] as Sprite;
+		LevelTitle.GetComponent<TextMeshProUGUI>().text = levelNames[LevelIndex];
 	}
 	
 	public void PreviousPattern()
-	{ 
-		if (levelIndex == 0) 
-			levelIndex = levels.Length - 1;
+	{
+		Debug.Log(_levels.Length);
+		if (LevelIndex == 0) 
+			LevelIndex = _levels.Length - 1;
 		else 
-			levelIndex -= 1;
+			LevelIndex--;
+		LevelVisual.GetComponent<Image>().sprite = _levels[LevelIndex] as Sprite;
+		LevelTitle.GetComponent<TextMeshProUGUI>().text = levelNames[LevelIndex];
 	}
 	
 	void CreateListOfLevelSprites()
 	{
-        levels = Resources.LoadAll("sprt_Levels", typeof(Sprite));
+        _levels = Resources.LoadAll("sprt_Levels", typeof(Sprite));
 	}
 
 	public static int GetLevel()
 	{
-		return levelIndex;
+		return LevelIndex;
 	} 
 }

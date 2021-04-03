@@ -9,10 +9,10 @@ public class StudyManager : MonoBehaviour
 	private Object[] patternsComplete;
 
 	//Get objects for study environment
-	public GameObject patternVisual;
-	public TextMeshProUGUI patternTitle;
-	public int patternIndex = 0;
-	public static int levelIndex;
+	public GameObject PatternVisual;
+	public TextMeshProUGUI PatternTitle;
+	public int PatternIndex = 0;
+	public static int LevelIndex;
 
 	public async void Awake()
     {
@@ -20,8 +20,8 @@ public class StudyManager : MonoBehaviour
 	}
 	public void Start()
     {
-		levelIndex = LevelSwiper.GetLevel();
-		if (levelIndex != 5)
+		LevelIndex = LevelSwiper.GetLevel();
+		if (LevelIndex != 5)
 			patternsComplete = Resources.LoadAll("ScriptableObjects/SO_Emotions", typeof(SOPattern));
 		else
 			patternsComplete = Resources.LoadAll("ScriptableObjects/SO_General", typeof(SOPattern));
@@ -31,20 +31,20 @@ public class StudyManager : MonoBehaviour
 
 	public void NextPattern()
 	{
-		if (patternIndex == patternsComplete.Length - 1)
-			patternIndex = 0;
+		if (PatternIndex == patternsComplete.Length - 1)
+			PatternIndex = 0;
 		else
-			patternIndex += 1;
+			PatternIndex += 1;
 
 		SetPattern();
 	}
 	
 	public void PreviousPattern()
 	{
-		if (patternIndex == 0) 
-			patternIndex = patternsComplete.Length - 1;
+		if (PatternIndex == 0) 
+			PatternIndex = patternsComplete.Length - 1;
 		else 
-			patternIndex -= 1;
+			PatternIndex -= 1;
 
 		SetPattern();
 	}
@@ -52,13 +52,13 @@ public class StudyManager : MonoBehaviour
 	
 	private void SetPattern()
     {
-		patternVisual.GetComponent<Image>().sprite = (patternsComplete[patternIndex] as SOPattern).patternImage;
-		patternTitle.GetComponent<TextMeshProUGUI>().text = (patternsComplete[patternIndex] as SOPattern).patternName;
+		PatternVisual.GetComponent<Image>().sprite = (patternsComplete[PatternIndex] as SOPattern).PatternImage;
+		PatternTitle.GetComponent<TextMeshProUGUI>().text = (patternsComplete[PatternIndex] as SOPattern).PatternName;
 	}
 
 	public async void PlayPattern()
     {
-		string json = (patternsComplete[patternIndex] as SOPattern).patternJson.text;
+		string json = (patternsComplete[PatternIndex] as SOPattern).PatternJson.text;
 		json = Regex.Replace(json, @"\t|\n|\r", "");
 		json = json.Replace(" ", "");
 		await MqttService.Instance.PublishAsync("happify/tactile-board/test", json);

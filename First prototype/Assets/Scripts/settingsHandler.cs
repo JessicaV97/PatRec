@@ -1,71 +1,69 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class SettingsHandler : MonoBehaviour
 {
-	public static bool remainingHearing = UserCreator.user1.RemainingHearing;
-	public Button deafset;
+	public static bool RemainingHearing = UserCreator.User1.RemainingHearing;
+	public Button DeafSet;
 	public Sprite NoAudioPerception;
 	public Sprite AudioPerception;
 
-	public static bool remainingVision = UserCreator.user1.RemainingVision;
+	public static bool RemainingVision = UserCreator.User1.RemainingVision;
 	public Button blindset;
 	public Sprite NoVisualPerception;
 	public Sprite VisualPerception;
 	
 	public void Start()
 	{
-		if (remainingVision)
+		if (RemainingVision)
 			blindset.image.overrideSprite = VisualPerception;
 		else
 			blindset.image.overrideSprite = NoVisualPerception;
 		
-		if (remainingHearing)
-			deafset.image.overrideSprite = AudioPerception;
+		if (RemainingHearing)
+			DeafSet.image.overrideSprite = AudioPerception;
 		else
-			deafset.image.overrideSprite = NoAudioPerception;
+			DeafSet.image.overrideSprite = NoAudioPerception;
 	}
 	
 	public void ChangeDeaf()
 	{
-		if (remainingHearing)
+		if (RemainingHearing)
 		{
-			deafset.image.overrideSprite = NoAudioPerception;
-			UserCreator.user1.RemainingHearing = false;
-			remainingHearing = false; 
+			DeafSet.image.overrideSprite = NoAudioPerception;
+			UserCreator.User1.RemainingHearing = false;
+			RemainingHearing = false; 
 		} 
 		else 
 		{
-			deafset.image.overrideSprite = AudioPerception;
-			UserCreator.user1.RemainingHearing = true;
-			remainingHearing = true;
+			DeafSet.image.overrideSprite = AudioPerception;
+			UserCreator.User1.RemainingHearing = true;
+			RemainingHearing = true;
 		}
 	}
 	
 	public void ChangeBlind()
 	{
-		if (remainingVision)
+		if (RemainingVision)
 		{
 			blindset.image.overrideSprite = NoVisualPerception;
-			UserCreator.user1.RemainingVision = false;
-			remainingVision = false;
+			UserCreator.User1.RemainingVision = false;
+			RemainingVision = false;
 		} else {
 			blindset.image.overrideSprite = VisualPerception;
-			UserCreator.user1.RemainingVision = true;
-			remainingVision = true;
+			UserCreator.User1.RemainingVision = true;
+			RemainingVision = true;
 		}
 	}
 	
 	public void BackAndSettingsCheck() 
 	{  
-		if (remainingHearing == false && remainingVision == false)
+		if (RemainingHearing == false && RemainingVision == false)
 			Debug.Log("The app is not yet ready to be used with these settings unfortunately");
-		else if (remainingHearing == true && remainingVision == false)
+		else if (RemainingHearing == true && RemainingVision == false)
 			Debug.Log("Settings set for remaining hearing (use of visuals minimalized)");
-		else if (remainingHearing == false && remainingVision == true)
+		else if (RemainingHearing == false && RemainingVision == true)
 			Debug.Log("Settings set for remaining vision (auditory cues excluded)");
 		else 
 			Debug.Log("Both auditory and visual cues are included!");

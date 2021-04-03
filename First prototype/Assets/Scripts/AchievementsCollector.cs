@@ -8,42 +8,39 @@ public class AchievementsCollector : MonoBehaviour
 {
     public static object[] PossibleAchievements; 
     public static List<SOAchievement> EarnedAchievements = new List<SOAchievement>();
-	public int BadgeIndex = 0;
+	private int _badgeIndex = 0;
     public GameObject NoBadges;
     public GameObject BadgeSprite;
     public GameObject BadgeText;
     public GameObject BadgeTopic;
-    // Start is called before the first frame update
+    public GameObject Status;
+    public GameObject Next;
+    public GameObject Previous;
 
-    private void Awake()
-    {
-
-    }
     void Start()
     {
-        
+        Status.GetComponent<TextMeshProUGUI>().text = ScoreManager.TotalXP + "XP";
+
         if (EarnedAchievements.Count == 0)
         {
             NoBadges.SetActive(true);
             BadgeSprite.SetActive(false);
             BadgeText.SetActive(false);
             BadgeTopic.SetActive(false);
+            Next.SetActive(false);
+            Previous.SetActive(false);
         }
         else
         {
             NoBadges.SetActive(false);
             BadgeSprite.SetActive(true);
             BadgeText.SetActive(true);
-            BadgeText.GetComponent<TextMeshProUGUI>().text = EarnedAchievements[BadgeIndex].AchievementText;
-            BadgeSprite.GetComponent<Image>().sprite = EarnedAchievements[BadgeIndex].BadgeImage;
-            BadgeTopic.GetComponent<TextMeshProUGUI>().text = EarnedAchievements[BadgeIndex].AchievementTopic;
+            BadgeText.GetComponent<TextMeshProUGUI>().text = EarnedAchievements[_badgeIndex].AchievementText;
+            BadgeSprite.GetComponent<Image>().sprite = EarnedAchievements[_badgeIndex].BadgeImage;
+            BadgeTopic.GetComponent<TextMeshProUGUI>().text = EarnedAchievements[_badgeIndex].AchievementTopic;
+            Next.SetActive(true);
+            Previous.SetActive(true);
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public static string PopUpAchievement(string topic, int userLevel)
@@ -52,41 +49,43 @@ public class AchievementsCollector : MonoBehaviour
         SOAchievement Badge = Array.Find(PossibleAchievements, element => topic.Equals((element as SOAchievement).AchievementTopic) && (element as SOAchievement).AchievementLevel == userLevel) as SOAchievement;
         EarnedAchievements.Add(Badge);
         string PUText = Badge.PopUpText;
-        Debug.Log(PUText);
         return PUText;
     }
 
 	public void NextBadge()
 	{
-		if (BadgeIndex == EarnedAchievements.Count - 1)
-			BadgeIndex = 0;
+		if (_badgeIndex == EarnedAchievements.Count - 1)
+			_badgeIndex = 0;
 		else
-			BadgeIndex += 1;
-        BadgeText.GetComponent<TextMeshProUGUI>().text = EarnedAchievements[BadgeIndex].AchievementText;
-        BadgeSprite.GetComponent<Image>().sprite = EarnedAchievements[BadgeIndex].BadgeImage;
-        BadgeTopic.GetComponent<TextMeshProUGUI>().text = EarnedAchievements[BadgeIndex].AchievementTopic;
+			_badgeIndex += 1;
+        BadgeText.GetComponent<TextMeshProUGUI>().text = EarnedAchievements[_badgeIndex].AchievementText;
+        BadgeSprite.GetComponent<Image>().sprite = EarnedAchievements[_badgeIndex].BadgeImage;
+        BadgeTopic.GetComponent<TextMeshProUGUI>().text = EarnedAchievements[_badgeIndex].AchievementTopic;
     }
 
 	public void PreviousBadge()
 	{
-		if (BadgeIndex == 0)
-			BadgeIndex = EarnedAchievements.Count - 1;
+		if (_badgeIndex == 0)
+			_badgeIndex = EarnedAchievements.Count - 1;
 		else
-			BadgeIndex -= 1;
-        BadgeText.GetComponent<TextMeshProUGUI>().text = EarnedAchievements[BadgeIndex].AchievementText;
-        BadgeSprite.GetComponent<Image>().sprite = EarnedAchievements[BadgeIndex].BadgeImage;
-        BadgeTopic.GetComponent<TextMeshProUGUI>().text = EarnedAchievements[BadgeIndex].AchievementTopic;
+			_badgeIndex -= 1;
+        BadgeText.GetComponent<TextMeshProUGUI>().text = EarnedAchievements[_badgeIndex].AchievementText;
+        BadgeSprite.GetComponent<Image>().sprite = EarnedAchievements[_badgeIndex].BadgeImage;
+        BadgeTopic.GetComponent<TextMeshProUGUI>().text = EarnedAchievements[_badgeIndex].AchievementTopic;
     }
 
-    //public static string AddXPBadge(int xp)
-    //{
-    //    PossibleAchievements = Resources.LoadAll("ScriptableObjects/SO_Achievements", typeof(SOAchievement));
-    //    if (xp == 10)
-    //    {
-    //        SOAchievement Badge = Array.Find(PossibleAchievements, element => "niveau".Equals((element as SOAchievement).AchievementTopic) && (element as SOAchievement).AchievementLevel == 1) as SOAchievement;
-    //        EarnedAchievements.Add(Badge);
-    //        string PUText = Badge.PopUpText;
-    //        return PUText;
-    //    }
-    //}
+    public static string AddXpBadge(int level)
+    {
+        PossibleAchievements = Resources.LoadAll("ScriptableObjects/SO_Achievements", typeof(SOAchievement));
+        SOAchievement Badge = Array.Find(PossibleAchievements, element => "Niveau".Equals((element as SOAchievement).AchievementTopic) && (element as SOAchievement).AchievementLevel == level) as SOAchievement;
+
+        Debug.Log(Badge.PopUpText);
+        if (!EarnedAchievements.Contains(Badge))
+        {
+            EarnedAchievements.Add(Badge);
+            string PUText = Badge.PopUpText;
+            return PUText;
+        }
+        return "";
+    }
 }

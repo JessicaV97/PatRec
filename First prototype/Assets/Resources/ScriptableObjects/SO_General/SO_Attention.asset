@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7939076b800f2434884d5a9f555639ce, type: 3}
   m_Name: SO_Attention
   m_EditorClassIdentifier: 
-  patternName: Attention
-  patternJson: {fileID: 4900000, guid: 8857819cde2692546b14d57625a89ab5, type: 3}
-  patternImage: {fileID: 21300000, guid: f4ed81e1d54554541b1133dee71396f1, type: 3}
-  difficulty: 1
+  PatternName: Aandacht
+  PatternJson: {fileID: 4900000, guid: 8857819cde2692546b14d57625a89ab5, type: 3}
+  PatternImage: {fileID: 21300000, guid: f4ed81e1d54554541b1133dee71396f1, type: 3}
+  Difficulty: 2

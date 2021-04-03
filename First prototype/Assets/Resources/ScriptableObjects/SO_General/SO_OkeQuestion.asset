@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7939076b800f2434884d5a9f555639ce, type: 3}
   m_Name: SO_OkeQuestion
   m_EditorClassIdentifier: 
-  patternName: Oke?
-  patternJson: {fileID: 4900000, guid: 1667468bb063e674fb31be368e95e552, type: 3}
-  patternImage: {fileID: 21300000, guid: e751e8b495de3ee4782350b8dff1759a, type: 3}
-  difficulty: 2
+  PatternName: Oke?
+  PatternJson: {fileID: 4900000, guid: 1667468bb063e674fb31be368e95e552, type: 3}
+  PatternImage: {fileID: 21300000, guid: e751e8b495de3ee4782350b8dff1759a, type: 3}
+  Difficulty: 2

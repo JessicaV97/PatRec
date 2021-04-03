@@ -2,15 +2,15 @@ using UnityEngine;
 
 public class AnswerScript : MonoBehaviour
 {
-    public bool isCorrect = false;
-    public QuizManager quizManager;
+    public bool IsCorrect = false;
+    public QuizManager QuizManager;
 
     public void Answer()
     {
-        if(isCorrect)
-            quizManager.Correct();
+        if(IsCorrect)
+            QuizManager.Correct();
         else         
-            quizManager.Wrong();
+            QuizManager.Wrong();
     }
 
 }

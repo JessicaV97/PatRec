@@ -499,8 +499,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: XP
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
-  m_sharedMaterial: {fileID: 2164040, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 3bc5838cacadb7e448574674b02687f1, type: 2}
+  m_sharedMaterial: {fileID: -3618393318910826551, guid: 3bc5838cacadb7e448574674b02687f1,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -534,7 +535,7 @@ MonoBehaviour:
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: 0
+  m_characterSpacing: 1.5
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -798,11 +799,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b45724c0f6111b44ab4134b714910eb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BadgeIndex: 0
   NoBadges: {fileID: 278740909}
   BadgeSprite: {fileID: 38474442}
   BadgeText: {fileID: 1174383529}
   BadgeTopic: {fileID: 1504013470}
+  Status: {fileID: 332912816}
+  Next: {fileID: 1735452553}
+  Previous: {fileID: 2062389575}
 --- !u!1 &1174383529
 GameObject:
   m_ObjectHideFlags: 0
@@ -899,7 +902,7 @@ MonoBehaviour:
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: 0
+  m_characterSpacing: 1.5
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -1059,8 +1062,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: Topic
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 3bc5838cacadb7e448574674b02687f1, type: 2}
+  m_sharedMaterial: {fileID: -3618393318910826551, guid: 3bc5838cacadb7e448574674b02687f1,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1094,7 +1098,7 @@ MonoBehaviour:
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: 0
+  m_characterSpacing: 1.5
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -1314,7 +1318,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 298b0788f298a834fa83a44297f4109d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  status: {fileID: 332912818}
 --- !u!1 &2062389575
 GameObject:
   m_ObjectHideFlags: 0

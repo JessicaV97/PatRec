@@ -206,7 +206,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1780109100}
-        m_TargetAssemblyTypeName: studyManager, Assembly-CSharp
+        m_TargetAssemblyTypeName: StudyManager, Assembly-CSharp
         m_MethodName: PreviousPattern
         m_Mode: 1
         m_Arguments:
@@ -553,7 +553,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -264, y: -590}
+  m_AnchoredPosition: {x: -264, y: -565}
   m_SizeDelta: {x: 512, y: 512}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1348492718
@@ -742,9 +742,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d032478ed136a34cac057cf9be6c735, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  patternVisual: {fileID: 1961766660}
-  patternTitle: {fileID: 1780699003}
-  patternIndex: 0
+  PatternVisual: {fileID: 0}
+  PatternTitle: {fileID: 0}
+  PatternIndex: 0
 --- !u!1 &1780699001
 GameObject:
   m_ObjectHideFlags: 0
@@ -804,8 +804,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: Pattern name
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 3bc5838cacadb7e448574674b02687f1, type: 2}
+  m_sharedMaterial: {fileID: -3618393318910826551, guid: 3bc5838cacadb7e448574674b02687f1,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -829,8 +830,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 80
-  m_fontSizeBase: 80
+  m_fontSize: 100
+  m_fontSizeBase: 100
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -865,7 +866,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 1
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: 0, w: -53.464817}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -962,7 +963,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1780109100}
-        m_TargetAssemblyTypeName: studyManager, Assembly-CSharp
+        m_TargetAssemblyTypeName: StudyManager, Assembly-CSharp
         m_MethodName: NextPattern
         m_Mode: 1
         m_Arguments:
@@ -1094,7 +1095,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1780109100}
-        m_TargetAssemblyTypeName: studyManager, Assembly-CSharp
+        m_TargetAssemblyTypeName: StudyManager, Assembly-CSharp
         m_MethodName: PlayPattern
         m_Mode: 1
         m_Arguments:
