@@ -7,6 +7,8 @@ using TMPro;
 using Random = UnityEngine.Random;
 using Happify.Client;
 using System.Text.RegularExpressions;
+using UnityEngine.Networking;
+using UnityEngine.EventSystems;
 
 public class QuizManager : MonoBehaviour
 {
@@ -33,10 +35,10 @@ public class QuizManager : MonoBehaviour
 
 	private int _score = 0;
 
-
 	//Get sound effects
 	public AudioSource CorrectSound;
 	public AudioSource IncorrectSound;
+	public AudioSource _audio;
 
 	public object[] PatternsComplete;
 
@@ -44,6 +46,8 @@ public class QuizManager : MonoBehaviour
 	public static string Topic;
 
 	public System.Random r = new System.Random();
+
+
 
 	public async void Awake()
 	{
@@ -79,7 +83,7 @@ public class QuizManager : MonoBehaviour
 		for (int i = 0; i < PatternsComplete.Length; i++)
 		{
 			if ((PatternsComplete[i] as SOPattern).Difficulty <= UserSkill)
-			{ 
+			{
 				List<int> listNumbers = new List<int>();
 				int number;
 				//For each element in the list of emotion patterns, grab 3 random integers to select answer options randomly
@@ -101,25 +105,37 @@ public class QuizManager : MonoBehaviour
 						(PatternsComplete[i] as SOPattern).PatternImage,
 						};
 
+				string[] AnswerStringsForTTS =
+					{
+						(PatternsComplete[listNumbers[0]] as SOPattern).PatternName,
+						(PatternsComplete[listNumbers[1]] as SOPattern).PatternName,
+						(PatternsComplete[listNumbers[2]] as SOPattern).PatternName,
+						(PatternsComplete[i] as SOPattern).PatternName,
+						};
+
+
 				//Randomize answer options order
 				for (int k = 0; k < AnswerOptions.Length - 1; k++)
 				{
 					int l = r.Next(k, AnswerOptions.Length);
 					Sprite temp = AnswerOptions[k];
+					string temp2 = AnswerStringsForTTS[k];
 					AnswerOptions[k] = AnswerOptions[l];
+					AnswerStringsForTTS[k] = AnswerStringsForTTS[l];
 					AnswerOptions[l] = temp;
+					AnswerStringsForTTS[l] = temp2;
 				}
 
 				//Add question with options to the list of questions and answers
-				QnA.Add(new QuestionAndAnswers { Question = (PatternsComplete[i] as SOPattern).PatternName, Answers = AnswerOptions, CorrectAnswer = 1 + Array.IndexOf(AnswerOptions, (PatternsComplete[i] as SOPattern).PatternImage), Json = (PatternsComplete[i] as SOPattern).PatternJson });
+				QnA.Add(new QuestionAndAnswers { Question = (PatternsComplete[i] as SOPattern).PatternName, Answers = AnswerOptions, AnswersAudio = AnswerStringsForTTS, CorrectAnswer = 1 + Array.IndexOf(AnswerOptions, (PatternsComplete[i] as SOPattern).PatternImage), Json = (PatternsComplete[i] as SOPattern).PatternJson });
 			}
 		}
 		GenerateQuestion();
-    }
-	
-    public void Correct()
-    {
-        //If correct answer was chosen
+	}
+
+	public void Correct()
+	{
+		//If correct answer was chosen
 		//Play sound effect	
 		if (UserCreator.User1.RemainingHearing)
 			CorrectSound.Play();
@@ -136,10 +152,10 @@ public class QuizManager : MonoBehaviour
 		}
 		//Start Coroutine to deactivate the green screen and initiate a new question
 		StartCoroutine(WaitForNext());
-    }
+	}
 
-    public void Wrong()
-    {
+	public void Wrong()
+	{
 		//If wrong answer was chosen
 		_score--;
 		ScoreTxt.GetComponent<TextMeshProUGUI>().text = "Score: " + _score;
@@ -147,12 +163,13 @@ public class QuizManager : MonoBehaviour
 		//if (SettingsHandler.remainingHearing)
 		if (UserCreator.User1.RemainingHearing)
 			IncorrectSound.Play();
-        //Remove 1 life
-        //livesNr -= 1;
-        UserCreator.User1.NrOfLives -= 1;
+		//Remove 1 life
+		//livesNr -= 1;
+		UserCreator.User1.NrOfLives -= 1;
 		Lives.GetComponent<TextMeshProUGUI>().text = UserCreator.User1.NrOfLives.ToString();
 		//Show red screen with cross
-		if (UserCreator.User1.RemainingVision){
+		if (UserCreator.User1.RemainingVision)
+		{
 			WrongPanel.SetActive(true);
 			WrongActive = true;
 		}
@@ -160,16 +177,19 @@ public class QuizManager : MonoBehaviour
 			GoScreen.SetActive(true);
 		//Start coroutine to deactive the red screen and initate a new question
 		StartCoroutine(WaitForNext());
-    }
+	}
 
-    IEnumerator WaitForNext()
-    {
+	IEnumerator WaitForNext()
+	{
 		// Wait for 1.5 second (deactive active screen) and then offer new question. 
-        yield return new WaitForSeconds(1.5f);
-		if (WrongActive){
+		yield return new WaitForSeconds(1.5f);
+		if (WrongActive)
+		{
 			WrongActive = false;
 			WrongPanel.SetActive(false);
-		} else if (CorrectActive){
+		}
+		else if (CorrectActive)
+		{
 			CorrectActive = false;
 			CorrectPanel.SetActive(false);
 		}
@@ -177,79 +197,98 @@ public class QuizManager : MonoBehaviour
 	}
 
 	void SetAnswers()
-    {
+	{
 		// From given answer options
-        for (int i = 0; i < Options.Length; i++)
-        {
+		for (int i = 0; i < Options.Length; i++)
+		{
 			// options[i].GetComponent<Image>().color = options[i].GetComponent<AnswerScript>().startColor;
 			// By default set answer to be incorrect
 			Options[i].GetComponent<AnswerScript>().IsCorrect = false;
 			// Change text of option buttons to text of possible answers
 			Options[i].transform.GetChild(0).GetComponent<Image>().sprite = QnA[CurrentQuestion].Answers[i];
+			Options[i].GetComponent<AnswerScript>().AudioName = QnA[CurrentQuestion].AnswersAudio[i];
 
 			// Set answer to be the correct one if it has been indicated as corrrect answer to the question.
 			if (QnA[CurrentQuestion].CorrectAnswer == i + 1)
 				Options[i].GetComponent<AnswerScript>().IsCorrect = true;
-        }
-    }
+		}
+	}
 
 	//Select new question
-    void GenerateQuestion()
-    {
-		Debug.Log(QnA.Count);
+	void GenerateQuestion()
+	{
 
-		if (UserCreator.User1.NrOfLives == 0){
+		if (UserCreator.User1.NrOfLives == 0)
+		{
 			Debug.Log("You ran out of lives. Please wait till you have a new one before you continue");
 			// livesManagement.increaseLives();
 		}
-		else if(QnA.Count > 0)
-        {	
+		else if (QnA.Count > 0)
+		{
 			// Select question randomly from list of questions
-            CurrentQuestion = Random.Range(0, QnA.Count);
+			CurrentQuestion = Random.Range(0, QnA.Count);
 
-            // Set question text (i.e. context)
-			QuestionTxt.text = QnA[CurrentQuestion].Question;
-            // Connect possible answers to question to the buttons 
-            SetAnswers();
+			// Connect possible answers to question to the buttons 
+			SetAnswers();
+			if (!UserCreator.User1.RemainingVision && UserCreator.User1.RemainingHearing)
+			{
+				QuestionTxt.text = "... ";
+				StartCoroutine(DownloadTheAudio(QnA[CurrentQuestion].Question));
+			}
+			else
+			{
+				// Set question text (i.e. context)
+				QuestionTxt.text = QnA[CurrentQuestion].Question;
+			}
 			PlayPattern();
 		}
 		else
-        {
+		{
 			Debug.Log("Level Complete");
 			//Level Complete
-            ScoreManager.UpdateScore(_score);
+			ScoreManager.UpdateScore(_score);
 
 			////Check for xp badges
 			if (ScoreManager.TotalXP >= 100)
 			{
 				XPBadgeTxt.text = AchievementsCollector.AddXpBadge(4);
 				XPBadgePanel.SetActive(true);
+				if (!UserCreator.User1.RemainingVision && UserCreator.User1.RemainingHearing)
+					ReadPattern(XPBadgeTxt.text);
 			}
 			else if (ScoreManager.TotalXP >= 50)
 			{
 				XPBadgeTxt.text = AchievementsCollector.AddXpBadge(3);
 				XPBadgePanel.SetActive(true);
+				if (!UserCreator.User1.RemainingVision && UserCreator.User1.RemainingHearing)
+					ReadPattern(XPBadgeTxt.text);
 			}
 			else if (ScoreManager.TotalXP >= 25)
 			{
 				XPBadgeTxt.text = AchievementsCollector.AddXpBadge(2);
 				XPBadgePanel.SetActive(true);
+				if (!UserCreator.User1.RemainingVision && UserCreator.User1.RemainingHearing)
+					ReadPattern(XPBadgeTxt.text);
 			}
 			else if (ScoreManager.TotalXP >= 10)
 			{
 				XPBadgeTxt.text = AchievementsCollector.AddXpBadge(1);
 				XPBadgePanel.SetActive(true);
+				if (!UserCreator.User1.RemainingVision && UserCreator.User1.RemainingHearing)
+					ReadPattern(XPBadgeTxt.text);
 			}
 
 			LevelCompleteTxt.text = AchievementsCollector.PopUpAchievement(Topic, UserSkill);
+			if (!UserCreator.User1.RemainingVision && UserCreator.User1.RemainingHearing)
+				ReadPattern(AchievementsCollector.PopUpAchievement(Topic, UserSkill));
 
 			if (Topic == "Emoties en sfeer")
 				UserCreator.User1.EmotionsLevel++;
 			else
 				UserCreator.User1.GeneralLevel++;
 			LevelCompletePanel.SetActive(true);
-			}
-    }
+		}
+	}
 
 	public async void PlayPattern()
 	{
@@ -263,4 +302,29 @@ public class QuizManager : MonoBehaviour
 	{
 		XPBadgePanel.SetActive(false);
 	}
+
+	IEnumerator DownloadTheAudio(string message)
+	{
+		using (UnityWebRequest website = UnityWebRequestMultimedia.GetAudioClip("https://translate.google.com/translate_tts?ie=UTF-8&total=1&idx=0&textlen=32&client=tw-ob&q=" + message + "&tl=NL", AudioType.MPEG))
+		{
+			yield return website.SendWebRequest();
+
+			if (website.result == UnityWebRequest.Result.ConnectionError)
+			{
+				Debug.Log(website.error);
+			}
+			else
+			{
+				AudioClip myClip = DownloadHandlerAudioClip.GetContent(website);
+				_audio.clip = myClip;
+				_audio.Play();
+			}
+		}
+	}
+	public void ReadPattern(string message)
+	{
+		StartCoroutine(DownloadTheAudio(message));
+	}
+
+
 }

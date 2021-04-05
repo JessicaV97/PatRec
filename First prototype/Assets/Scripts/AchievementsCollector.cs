@@ -1,7 +1,9 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 
 public class AchievementsCollector : MonoBehaviour
@@ -17,8 +19,17 @@ public class AchievementsCollector : MonoBehaviour
     public GameObject Next;
     public GameObject Previous;
 
+    public QuizManager QuizManager;
+
+    public AudioSource _audio;
+
     void Start()
     {
+        if (!UserCreator.User1.RemainingVision && UserCreator.User1.RemainingHearing)
+        {
+            StartCoroutine(DownloadTheAudio("Badges"));
+            StartCoroutine(DownloadTheAudio(ScoreManager.TotalXP.ToString()));
+        }
         Status.GetComponent<TextMeshProUGUI>().text = ScoreManager.TotalXP + "XP";
 
         if (EarnedAchievements.Count == 0)
@@ -29,6 +40,8 @@ public class AchievementsCollector : MonoBehaviour
             BadgeTopic.SetActive(false);
             Next.SetActive(false);
             Previous.SetActive(false);
+            if (!UserCreator.User1.RemainingVision && UserCreator.User1.RemainingHearing)
+                StartCoroutine(DownloadTheAudio("Helaas! Je hebt nog geen badges behaald. Probeer de quiz om een badge te verdienen."));
         }
         else
         {
@@ -41,6 +54,8 @@ public class AchievementsCollector : MonoBehaviour
             Next.SetActive(true);
             Previous.SetActive(true);
         }
+        if (!UserCreator.User1.RemainingVision && UserCreator.User1.RemainingHearing)
+            readBadges();
     }
 
     public static string PopUpAchievement(string topic, int userLevel)
@@ -58,10 +73,15 @@ public class AchievementsCollector : MonoBehaviour
 			_badgeIndex = 0;
 		else
 			_badgeIndex += 1;
+        
         BadgeText.GetComponent<TextMeshProUGUI>().text = EarnedAchievements[_badgeIndex].AchievementText;
         BadgeSprite.GetComponent<Image>().sprite = EarnedAchievements[_badgeIndex].BadgeImage;
         BadgeTopic.GetComponent<TextMeshProUGUI>().text = EarnedAchievements[_badgeIndex].AchievementTopic;
+        
+        if (!UserCreator.User1.RemainingVision && UserCreator.User1.RemainingHearing)
+            readBadges();
     }
+
 
 	public void PreviousBadge()
 	{
@@ -72,6 +92,9 @@ public class AchievementsCollector : MonoBehaviour
         BadgeText.GetComponent<TextMeshProUGUI>().text = EarnedAchievements[_badgeIndex].AchievementText;
         BadgeSprite.GetComponent<Image>().sprite = EarnedAchievements[_badgeIndex].BadgeImage;
         BadgeTopic.GetComponent<TextMeshProUGUI>().text = EarnedAchievements[_badgeIndex].AchievementTopic;
+
+        if (!UserCreator.User1.RemainingVision && UserCreator.User1.RemainingHearing)
+            readBadges();
     }
 
     public static string AddXpBadge(int level)
@@ -87,5 +110,32 @@ public class AchievementsCollector : MonoBehaviour
             return PUText;
         }
         return "";
+    }
+
+    IEnumerator DownloadTheAudio(string message)
+    {
+        using (UnityWebRequest website = UnityWebRequestMultimedia.GetAudioClip("https://translate.google.com/translate_tts?ie=UTF-8&total=1&idx=0&textlen=32&client=tw-ob&q=" + message + "&tl=NL", AudioType.MPEG))
+        {
+            yield return website.SendWebRequest();
+
+            if (website.result == UnityWebRequest.Result.ConnectionError)
+            {
+                Debug.Log(website.error);
+            }
+            else
+            {
+                AudioClip myClip = DownloadHandlerAudioClip.GetContent(website);
+                _audio.clip = myClip;
+                _audio.Play();
+            }
+        }
+    }
+
+    void readBadges()
+    {
+        StartCoroutine(DownloadTheAudio("Onderwerp"));
+        StartCoroutine(DownloadTheAudio(EarnedAchievements[_badgeIndex].AchievementTopic));
+        StartCoroutine(DownloadTheAudio("Inhoud"));
+        StartCoroutine(DownloadTheAudio(EarnedAchievements[_badgeIndex].AchievementText));
     }
 }

@@ -3,8 +3,9 @@ using UnityEngine;
 [System.Serializable]
 public class QuestionAndAnswers
 {
-    public string Question; // Do not get from inspector but use existing lists
+    public string Question;
     public Sprite[] Answers;
+    public string[] AnswersAudio;
     public int CorrectAnswer;
     public TextAsset Json;
 }
