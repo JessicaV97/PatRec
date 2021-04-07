@@ -8,6 +8,7 @@ using Random = UnityEngine.Random;
 using Happify.Client;
 using System.Text.RegularExpressions;
 using UnityEngine.Networking;
+using Happify.User;
 
 public class QuizManager : MonoBehaviour
 {
@@ -56,7 +57,7 @@ public class QuizManager : MonoBehaviour
 		await MqttService.Instance.ConnectAsync();
 	}
 
-	public static int UserSkill;
+	public static Level UserSkill;
 
 	public void Start()
 	{

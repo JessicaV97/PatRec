@@ -1,3 +1,4 @@
+using Happify.User;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -5,10 +6,11 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
+using System.Linq;
 
 public class AchievementsCollector : MonoBehaviour
 {
-    public static object[] PossibleAchievements; 
+    public static SOAchievement[] PossibleAchievements; 
     public static List<SOAchievement> EarnedAchievements = new List<SOAchievement>();
 	private int _badgeIndex = 0;
     public GameObject NoBadges;
@@ -33,7 +35,8 @@ public class AchievementsCollector : MonoBehaviour
         }
         else
             _coroutineQueue.Enqueue(DownloadTheAudio("Badge"));
-        
+
+
         if (!UserCreator.User1.RemainingVision && UserCreator.User1.RemainingHearing)
         {
             if (runningCoroutine == null)
@@ -75,12 +78,20 @@ public class AchievementsCollector : MonoBehaviour
             ReadBadges();
     }
 
-    public static string PopUpAchievement(string topic, int userLevel)
+    public static string PopUpAchievement(string topic, Level userLevel)
     {
-        PossibleAchievements = Resources.LoadAll("ScriptableObjects/SO_Achievements", typeof(SOAchievement));
-        SOAchievement Badge = Array.Find(PossibleAchievements, element => topic.Equals((element as SOAchievement).AchievementTopic) && (element as SOAchievement).AchievementLevel == userLevel) as SOAchievement;
-        EarnedAchievements.Add(Badge);
-        string PUText = Badge.PopUpText;
+        PossibleAchievements = Resources.LoadAll<SOAchievement>("ScriptableObjects/SO_Achievements");
+        SOAchievement badge = PossibleAchievements.FirstOrDefault(element => element.AchievementTopic == topic && 
+                                                                             element.AchievementLevel == (int)userLevel);
+
+        if(badge == null)
+        {
+            Debug.LogError($"Could not find achievement for topic: {topic}");
+            return string.Empty;
+        }
+
+        EarnedAchievements.Add(badge);
+        string PUText = badge.PopUpText;
         return PUText;
     }
 
@@ -116,14 +127,21 @@ public class AchievementsCollector : MonoBehaviour
 
     public static string AddXpBadge(int level)
     {
-        PossibleAchievements = Resources.LoadAll("ScriptableObjects/SO_Achievements", typeof(SOAchievement));
-        SOAchievement Badge = Array.Find(PossibleAchievements, element => "Niveau".Equals((element as SOAchievement).AchievementTopic) && (element as SOAchievement).AchievementLevel == level) as SOAchievement;
+        PossibleAchievements = Resources.LoadAll<SOAchievement>("ScriptableObjects/SO_Achievements");
+        SOAchievement badge = PossibleAchievements.FirstOrDefault(x => x.AchievementTopic == "Niveau" &&
+                                                                       x.AchievementLevel == level);
 
-        Debug.Log(Badge.PopUpText);
-        if (!EarnedAchievements.Contains(Badge))
+        if(badge == null)
         {
-            EarnedAchievements.Add(Badge);
-            string PUText = Badge.PopUpText;
+            Debug.LogError($"Could not find XP Badge for level: {level}");
+            return string.Empty;
+        }
+
+        Debug.Log(badge.PopUpText);
+        if (!EarnedAchievements.Contains(badge))
+        {
+            EarnedAchievements.Add(badge);
+            string PUText = badge.PopUpText;
             return PUText;
         }
         return "";

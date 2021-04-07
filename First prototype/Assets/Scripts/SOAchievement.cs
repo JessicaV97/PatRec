@@ -1,3 +1,4 @@
+using Happify.User;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Achievement", menuName = "Achievements")]
