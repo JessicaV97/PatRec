@@ -8,7 +8,6 @@ using Random = UnityEngine.Random;
 using Happify.Client;
 using System.Text.RegularExpressions;
 using UnityEngine.Networking;
-using UnityEngine.EventSystems;
 
 public class QuizManager : MonoBehaviour
 {
@@ -295,6 +294,7 @@ public class QuizManager : MonoBehaviour
 		string json = QnA[CurrentQuestion].Json.text;
 		json = Regex.Replace(json, @"\t|\n|\r", "");
 		json = json.Replace(" ", "");
+		json = json.Replace("255", "1.0");
 		await MqttService.Instance.PublishAsync("happify/tactile-board/test", json);
 	}
 

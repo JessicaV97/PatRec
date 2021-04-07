@@ -1,6 +1,6 @@
 {
   "islooped": false,
-  "duration": 1200,
+  "duration": 1.200,
   "interpolation": 0,
   "frames": [
     {
@@ -45,7 +45,7 @@
       ]
     },
     {
-      "time": 480,
+      "time": 0.480,
       "actuators": [
         {
           "pin": 2,
@@ -86,7 +86,7 @@
       ]
     },
     {
-      "time": 960,
+      "time": 0.960,
       "actuators": [
         {
           "pin": 2,

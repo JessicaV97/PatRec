@@ -20,9 +20,9 @@ public class AnswerScript : MonoBehaviour, IPointerClickHandler
         if (!UserCreator.User1.RemainingVision && UserCreator.User1.RemainingHearing)
         {
             if (clickCount == 2)
-                OnSingleClick();
+                OnSingleClick(); //Name is conflicting
             else if (clickCount == 1)
-                OnDoubleClick();
+                OnDoubleClick(); //Name is conflicting
         }
         else
             OnSingleClick();

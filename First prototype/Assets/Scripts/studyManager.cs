@@ -79,8 +79,10 @@ public class StudyManager : MonoBehaviour
 		}
 
 		string json = (patternsComplete[PatternIndex] as SOPattern).PatternJson.text;
-		json = Regex.Replace(json, @"\t|\n|\r", "");
-		json = json.Replace(" ", "");
+        json = Regex.Replace(json, @"\t|\n|\r", "");
+        //json = json.Replace(" ", "");
+        json = json.Replace("255", "1.0");
+		json = json.Replace("islooped", "isLooped");
 		await MqttService.Instance.PublishAsync("happify/tactile-board/test", json);
 		
 

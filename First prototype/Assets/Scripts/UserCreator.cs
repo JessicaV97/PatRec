@@ -3,6 +3,6 @@ using UnityEngine;
 
 public class UserCreator : MonoBehaviour
 {
-    public static UserDescription User1 = new UserDescription("Jessica", 1, 1, 3, true, false);
+    public static UserDescription User1 = new UserDescription("Jessica", 1, 1, 3, false, false);
 
 }

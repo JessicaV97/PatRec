@@ -1,0 +1,37 @@
+{
+	"isLooped": false,
+	"duration": 1.200,
+	"interpolation": 0,
+	"frames": [{
+			"time": 0,
+			"actuators": [{
+				"pin": 8,
+				"value": 255
+			}]
+		},
+		{
+			"time": 0.480,
+			"actuators": [{
+					"pin": 8,
+					"value": 0
+				},
+				{
+					"pin": 9,
+					"value": 255
+				}
+			]
+		},
+		{
+			"time": 0.960,
+			"actuators": [{
+					"pin": 9,
+					"value": 0
+				},
+				{
+					"pin": 3,
+					"value": 255
+				}
+			]
+		}
+	]
+}
