@@ -5,6 +5,8 @@ using Happify.Client;
 using System.Text.RegularExpressions;
 using UnityEngine.Networking;
 using System.Collections;
+using Happify.User;
+using Happify.Levels;
 
 public class StudyManager : MonoBehaviour
 {
@@ -18,8 +20,8 @@ public class StudyManager : MonoBehaviour
 
     public AudioSource _audio;
 
-    public async void Awake()
-    {
+	public async void Awake()
+	{ 
 		await MqttService.Instance.ConnectAsync();
 	}
 	public void Start()
@@ -33,35 +35,32 @@ public class StudyManager : MonoBehaviour
 			patternsComplete = Resources.LoadAll("ScriptableObjects/SO_General", typeof(SOPattern));
 
 		SetPattern();
-		
-		//TextToSpeech TTS = gameObject.GetComponent<TextToSpeech>();
-	
-		//TTS.ReadSpeech((patternsComplete[PatternIndex] as SOPattern).PatternName);
 	}
 
 	public void NextPattern()
 	{
+		UserDescription currentUser = UserManager.Instance.CurrentUser;
 		if (PatternIndex == patternsComplete.Length - 1)
 			PatternIndex = 0;
 		else
 			PatternIndex++;
 
 		SetPattern();
-		StartCoroutine(DownloadTheAudio((patternsComplete[PatternIndex] as SOPattern).PatternName));
+		if (!currentUser.RemainingVision)
+			StartCoroutine(DownloadTheAudio((patternsComplete[PatternIndex] as SOPattern).PatternName));
 	}
 	
 	public void PreviousPattern()
 	{
+		UserDescription currentUser = UserManager.Instance.CurrentUser;
 		if (PatternIndex == 0) 
 			PatternIndex = patternsComplete.Length - 1;
 		else 
 			PatternIndex--;
 
 		SetPattern();
-        if (!UserCreator.User1.RemainingVision)
-        {
+        if (!currentUser.RemainingVision)
             StartCoroutine(DownloadTheAudio((patternsComplete[PatternIndex] as SOPattern).PatternName));
-        }
     }
 	
 	
@@ -73,7 +72,8 @@ public class StudyManager : MonoBehaviour
 
 	public async void PlayPattern()
     {
-		if (!UserCreator.User1.RemainingVision)
+		UserDescription currentUser = UserManager.Instance.CurrentUser;
+		if (!currentUser.RemainingVision)
 		{
 			StartCoroutine(DownloadTheAudio((patternsComplete[PatternIndex] as SOPattern).PatternName));
 		}
@@ -83,7 +83,7 @@ public class StudyManager : MonoBehaviour
         //json = json.Replace(" ", "");
         json = json.Replace("255", "1.0");
 		json = json.Replace("islooped", "isLooped");
-		await MqttService.Instance.PublishAsync("happify/tactile-board/test", json);
+		await MqttService.Instance.PublishAsync("suitceyes/tactile-board/play", json);
 		
 
 	}

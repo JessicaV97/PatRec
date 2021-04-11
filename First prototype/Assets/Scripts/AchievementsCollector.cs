@@ -28,7 +28,8 @@ public class AchievementsCollector : MonoBehaviour
 
     void Start()
     {
-        if (runningCoroutine == null)
+        UserDescription currentUser = UserManager.Instance.CurrentUser;
+        if (runningCoroutine == null && currentUser.RemainingHearing && !currentUser.RemainingVision)
         {
             runningCoroutine = (DownloadTheAudio("Badges"));
             StartCoroutine(runningCoroutine);
@@ -36,8 +37,8 @@ public class AchievementsCollector : MonoBehaviour
         else
             _coroutineQueue.Enqueue(DownloadTheAudio("Badge"));
 
-
-        if (!UserCreator.User1.RemainingVision && UserCreator.User1.RemainingHearing)
+        
+        if (!currentUser.RemainingVision && currentUser.RemainingHearing)
         {
             if (runningCoroutine == null)
             {
@@ -57,7 +58,7 @@ public class AchievementsCollector : MonoBehaviour
             BadgeTopic.SetActive(false);
             Next.SetActive(false);
             Previous.SetActive(false);
-            if (!UserCreator.User1.RemainingVision && UserCreator.User1.RemainingHearing)
+            if (!currentUser.RemainingVision && currentUser.RemainingHearing)
                 if (runningCoroutine == null)
                     StartCoroutine(DownloadTheAudio("Helaas! Je hebt nog geen badges behaald. Probeer de quiz om een badge te verdienen."));
                 else
@@ -73,9 +74,11 @@ public class AchievementsCollector : MonoBehaviour
             BadgeTopic.GetComponent<TextMeshProUGUI>().text = EarnedAchievements[_badgeIndex].AchievementTopic;
             Next.SetActive(true);
             Previous.SetActive(true);
+
+            if (!currentUser.RemainingVision && currentUser.RemainingHearing)
+                ReadBadges();
         }
-        if (!UserCreator.User1.RemainingVision && UserCreator.User1.RemainingHearing)
-            ReadBadges();
+        
     }
 
     public static string PopUpAchievement(string topic, Level userLevel)
@@ -97,7 +100,8 @@ public class AchievementsCollector : MonoBehaviour
 
 	public void NextBadge()
 	{
-		if (_badgeIndex == EarnedAchievements.Count - 1)
+        UserDescription currentUser = UserManager.Instance.CurrentUser;
+        if (_badgeIndex == EarnedAchievements.Count - 1)
 			_badgeIndex = 0;
 		else
 			_badgeIndex += 1;
@@ -106,14 +110,15 @@ public class AchievementsCollector : MonoBehaviour
         BadgeSprite.GetComponent<Image>().sprite = EarnedAchievements[_badgeIndex].BadgeImage;
         BadgeTopic.GetComponent<TextMeshProUGUI>().text = EarnedAchievements[_badgeIndex].AchievementTopic;
         
-        if (!UserCreator.User1.RemainingVision && UserCreator.User1.RemainingHearing)
+        if (!currentUser.RemainingVision && currentUser.RemainingHearing)
             ReadBadges();
     }
 
 
 	public void PreviousBadge()
 	{
-		if (_badgeIndex == 0)
+        UserDescription currentUser = UserManager.Instance.CurrentUser;
+        if (_badgeIndex == 0)
 			_badgeIndex = EarnedAchievements.Count - 1;
 		else
 			_badgeIndex -= 1;
@@ -121,7 +126,7 @@ public class AchievementsCollector : MonoBehaviour
         BadgeSprite.GetComponent<Image>().sprite = EarnedAchievements[_badgeIndex].BadgeImage;
         BadgeTopic.GetComponent<TextMeshProUGUI>().text = EarnedAchievements[_badgeIndex].AchievementTopic;
 
-        if (!UserCreator.User1.RemainingVision && UserCreator.User1.RemainingHearing)
+        if (!currentUser.RemainingVision && currentUser.RemainingHearing)
             ReadBadges();
     }
 

@@ -375,9 +375,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Happify
-
-'
+  m_text: Happify
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3bc5838cacadb7e448574674b02687f1, type: 2}
   m_sharedMaterial: {fileID: -3618393318910826551, guid: 3bc5838cacadb7e448574674b02687f1,
@@ -733,6 +731,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40b38bbee6f772742ade15f96c73650d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _maximumLives: 3
+  _newLifeDuration: 10
 --- !u!4 &1045899222
 Transform:
   m_ObjectHideFlags: 0
@@ -826,7 +826,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 368250f92c4296f41a5fd22e0275ea66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _audio: {fileID: 0}
+  _audio: {fileID: 519420033}
 --- !u!1 &1565073752
 GameObject:
   m_ObjectHideFlags: 0

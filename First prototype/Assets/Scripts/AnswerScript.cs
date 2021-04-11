@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Happify.User;
 
 public class AnswerScript : MonoBehaviour, IPointerClickHandler
 {
@@ -16,8 +17,9 @@ public class AnswerScript : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        UserDescription currentUser = UserManager.Instance.CurrentUser;
         int clickCount = eventData.clickCount;
-        if (!UserCreator.User1.RemainingVision && UserCreator.User1.RemainingHearing)
+        if (!currentUser.RemainingVision && currentUser.RemainingHearing)
         {
             if (clickCount == 2)
                 OnSingleClick(); //Name is conflicting

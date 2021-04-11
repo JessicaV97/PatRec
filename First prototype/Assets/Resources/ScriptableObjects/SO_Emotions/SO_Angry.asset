@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: SO_Angry
   m_EditorClassIdentifier: 
   PatternName: Boos
-  PatternJson: {fileID: 4900000, guid: f722a508c57e8e34388e4ac10b72fe7e, type: 3}
+  PatternJson: {fileID: 4900000, guid: 0030a137073afe34aa953624bdf23c6b, type: 3}
   PatternImage: {fileID: 21300000, guid: aa2912ef82243fe41aa977c3c315e7dc, type: 3}
   Difficulty: 1

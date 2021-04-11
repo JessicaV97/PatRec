@@ -9,6 +9,7 @@ using Happify.Client;
 using System.Text.RegularExpressions;
 using UnityEngine.Networking;
 using Happify.User;
+using Happify.Levels;
 
 public class QuizManager : MonoBehaviour
 {
@@ -47,8 +48,6 @@ public class QuizManager : MonoBehaviour
 
 	public System.Random r = new System.Random();
 
-
-
 	public async void Awake()
 	{
 		//Ensure sounds don't play at start
@@ -61,17 +60,18 @@ public class QuizManager : MonoBehaviour
 
 	public void Start()
 	{
+		UserDescription currentUser = UserManager.Instance.CurrentUser;
 		LevelIndex = LevelSwiper.GetLevel();
 		if (LevelIndex != 5)
 		{
 			PatternsComplete = Resources.LoadAll("ScriptableObjects/SO_Emotions", typeof(SOPattern));
-			UserSkill = UserCreator.User1.EmotionsLevel;
+			UserSkill = currentUser.EmotionsLevel;
 			Topic = "Emoties en sfeer";
 		}
 		else
 		{
 			PatternsComplete = Resources.LoadAll("ScriptableObjects/SO_General", typeof(SOPattern));
-			UserSkill = UserCreator.User1.GeneralLevel;
+			UserSkill = currentUser.GeneralLevel;
 			Topic = "Algemeen";
 		}
 
@@ -135,9 +135,10 @@ public class QuizManager : MonoBehaviour
 
 	public void Correct()
 	{
+		UserDescription currentUser = UserManager.Instance.CurrentUser;
 		//If correct answer was chosen
 		//Play sound effect	
-		if (UserCreator.User1.RemainingHearing)
+		if (currentUser.RemainingHearing)
 			CorrectSound.Play();
 		//add 1 to score
 		_score++;
@@ -145,7 +146,7 @@ public class QuizManager : MonoBehaviour
 		//Remove question from list
 		QnA.RemoveAt(CurrentQuestion);
 		//Activate green screen with check mark
-		if (UserCreator.User1.RemainingVision)
+		if (currentUser.RemainingVision)
 		{
 			CorrectPanel.SetActive(true);
 			CorrectActive = true;
@@ -156,24 +157,25 @@ public class QuizManager : MonoBehaviour
 
 	public void Wrong()
 	{
+		UserDescription currentUser = UserManager.Instance.CurrentUser;
 		//If wrong answer was chosen
 		_score--;
 		ScoreTxt.GetComponent<TextMeshProUGUI>().text = "Score: " + _score;
 		//Play sound effect
 		//if (SettingsHandler.remainingHearing)
-		if (UserCreator.User1.RemainingHearing)
+		if (currentUser.RemainingHearing)
 			IncorrectSound.Play();
 		//Remove 1 life
 		//livesNr -= 1;
-		UserCreator.User1.NrOfLives -= 1;
-		Lives.GetComponent<TextMeshProUGUI>().text = UserCreator.User1.NrOfLives.ToString();
+		currentUser.NrOfLives -= 1;
+		Lives.GetComponent<TextMeshProUGUI>().text = currentUser.NrOfLives.ToString();
 		//Show red screen with cross
-		if (UserCreator.User1.RemainingVision)
+		if (currentUser.RemainingVision)
 		{
 			WrongPanel.SetActive(true);
 			WrongActive = true;
 		}
-		if (UserCreator.User1.NrOfLives == 0)
+		if (currentUser.NrOfLives == 0)
 			GoScreen.SetActive(true);
 		//Start coroutine to deactive the red screen and initate a new question
 		StartCoroutine(WaitForNext());
@@ -217,8 +219,8 @@ public class QuizManager : MonoBehaviour
 	//Select new question
 	void GenerateQuestion()
 	{
-
-		if (UserCreator.User1.NrOfLives == 0)
+		UserDescription currentUser = UserManager.Instance.CurrentUser;
+		if (currentUser.NrOfLives == 0)
 		{
 			Debug.Log("You ran out of lives. Please wait till you have a new one before you continue");
 			// livesManagement.increaseLives();
@@ -230,7 +232,7 @@ public class QuizManager : MonoBehaviour
 
 			// Connect possible answers to question to the buttons 
 			SetAnswers();
-			if (!UserCreator.User1.RemainingVision && UserCreator.User1.RemainingHearing)
+			if (!currentUser.RemainingVision && currentUser.RemainingHearing)
 			{
 				QuestionTxt.text = "... ";
 				StartCoroutine(DownloadTheAudio(QnA[CurrentQuestion].Question));
@@ -253,39 +255,39 @@ public class QuizManager : MonoBehaviour
 			{
 				XPBadgeTxt.text = AchievementsCollector.AddXpBadge(4);
 				XPBadgePanel.SetActive(true);
-				if (!UserCreator.User1.RemainingVision && UserCreator.User1.RemainingHearing)
+				if (!currentUser.RemainingVision && currentUser.RemainingHearing)
 					ReadPattern(XPBadgeTxt.text);
 			}
 			else if (ScoreManager.TotalXP >= 50)
 			{
 				XPBadgeTxt.text = AchievementsCollector.AddXpBadge(3);
 				XPBadgePanel.SetActive(true);
-				if (!UserCreator.User1.RemainingVision && UserCreator.User1.RemainingHearing)
+				if (!currentUser.RemainingVision && currentUser.RemainingHearing)
 					ReadPattern(XPBadgeTxt.text);
 			}
 			else if (ScoreManager.TotalXP >= 25)
 			{
 				XPBadgeTxt.text = AchievementsCollector.AddXpBadge(2);
 				XPBadgePanel.SetActive(true);
-				if (!UserCreator.User1.RemainingVision && UserCreator.User1.RemainingHearing)
+				if (!currentUser.RemainingVision && currentUser.RemainingHearing)
 					ReadPattern(XPBadgeTxt.text);
 			}
 			else if (ScoreManager.TotalXP >= 10)
 			{
 				XPBadgeTxt.text = AchievementsCollector.AddXpBadge(1);
 				XPBadgePanel.SetActive(true);
-				if (!UserCreator.User1.RemainingVision && UserCreator.User1.RemainingHearing)
+				if (!currentUser.RemainingVision && currentUser.RemainingHearing)
 					ReadPattern(XPBadgeTxt.text);
 			}
 
 			LevelCompleteTxt.text = AchievementsCollector.PopUpAchievement(Topic, UserSkill);
-			if (!UserCreator.User1.RemainingVision && UserCreator.User1.RemainingHearing)
+			if (!currentUser.RemainingVision && currentUser.RemainingHearing)
 				ReadPattern(AchievementsCollector.PopUpAchievement(Topic, UserSkill));
 
 			if (Topic == "Emoties en sfeer")
-				UserCreator.User1.EmotionsLevel++;
+				currentUser.EmotionsLevel++;
 			else
-				UserCreator.User1.GeneralLevel++;
+				currentUser.GeneralLevel++;
 			LevelCompletePanel.SetActive(true);
 		}
 	}
@@ -296,7 +298,7 @@ public class QuizManager : MonoBehaviour
 		json = Regex.Replace(json, @"\t|\n|\r", "");
 		json = json.Replace(" ", "");
 		json = json.Replace("255", "1.0");
-		await MqttService.Instance.PublishAsync("happify/tactile-board/test", json);
+		await MqttService.Instance.PublishAsync("suitceyes/tactile-board/play", json);
 	}
 
 	public void ClosePanel()

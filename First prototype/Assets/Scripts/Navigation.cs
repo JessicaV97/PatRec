@@ -1,20 +1,20 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
+using Happify.User;
 
 public class Navigation : MonoBehaviour, IPointerClickHandler
 {
-
     public AudioSource _audio;
 
     public void OnPointerClick(PointerEventData eventData)
     {
         int clickCount = eventData.clickCount;
         string objName = eventData.selectedObject.name;
-        if (!UserCreator.User1.RemainingVision && UserCreator.User1.RemainingHearing)
+        UserDescription currentUser = UserManager.Instance.CurrentUser;
+        if (!currentUser.RemainingVision && currentUser.RemainingHearing)
         {
             if (clickCount == 2)
             {
@@ -36,14 +36,22 @@ public class Navigation : MonoBehaviour, IPointerClickHandler
             StartCoroutine(DownloadTheAudio("Naar levels"));
         else if (button.Equals("Settings"))
             StartCoroutine(DownloadTheAudio("Naar instellingen"));
-        else if (button.Equals("Achievements"))
+        else if (button.Equals("Achievements") || button.Equals("BackToAchievements"))
             StartCoroutine(DownloadTheAudio("Naar badges collectie"));
+        else if (button.Equals("ListOfScores"))
+            StartCoroutine(DownloadTheAudio("Naar de lijst met scores per persoon"));
         else if (button.Equals("BackToHome"))
             StartCoroutine(DownloadTheAudio("Terug naar menu"));
-        else if (button.Equals("StudySymbols"))
-            StartCoroutine(DownloadTheAudio("Patronen bestuderen"));
-        else if (button.Equals("PlayGame"))
-            StartCoroutine(DownloadTheAudio("Speel het spel"));
+        //else if (button.Equals("StudySymbols"))
+        //    StartCoroutine(DownloadTheAudio("Patronen bestuderen"));
+        //else if (button.Equals("PlayGame"))
+        //    StartCoroutine(DownloadTheAudio("Speel het spel"));
+        //else if (button.Equals("Previous"))
+        //    StartCoroutine(DownloadTheAudio("Vorige"));
+        //else if (button.Equals("Next"))
+        //    StartCoroutine(DownloadTheAudio("Volgende"));
+        else if (button.Equals("replayPattern"))
+            StartCoroutine(DownloadTheAudio("Speel patroon opnieuw"));
     }
 
     void OnSingleClick(string button)
@@ -56,12 +64,10 @@ public class Navigation : MonoBehaviour, IPointerClickHandler
             SceneManager.LoadScene("scn_Achievements");
         else if (button.Equals("BackToHome"))
             SceneManager.LoadScene("scn_MainMenu");
-        else if (button.Equals("StudySymbols"))
-            SceneManager.LoadScene("scn_StudyEnvironment");
-        else if (button.Equals("PlayGame"))
-            SceneManager.LoadScene("scn_MainGameScreen");
-        else if (button.Equals("PlayGame"))
-            SceneManager.LoadScene("scn_MainGameScreen");
+        //else if (button.Equals("StudySymbols"))
+        //    SceneManager.LoadScene("scn_StudyEnvironment");
+        //else if (button.Equals("PlayGame"))
+        //    SceneManager.LoadScene("scn_MainGameScreen");
     }
     IEnumerator DownloadTheAudio(string message)
     {
