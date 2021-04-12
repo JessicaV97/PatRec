@@ -26,9 +26,14 @@ public class AchievementsCollector : MonoBehaviour
     IEnumerator runningCoroutine = null;
     private Queue<IEnumerator> _coroutineQueue = new Queue<IEnumerator>();
 
+    private UserDescription currentUser;
+    private void Awake()
+    {
+        currentUser = UserManager.Instance.CurrentUser;
+    }
+
     void Start()
     {
-        UserDescription currentUser = UserManager.Instance.CurrentUser;
         if (runningCoroutine == null && currentUser.RemainingHearing && !currentUser.RemainingVision)
         {
             runningCoroutine = (DownloadTheAudio("Badges"));
@@ -100,7 +105,6 @@ public class AchievementsCollector : MonoBehaviour
 
 	public void NextBadge()
 	{
-        UserDescription currentUser = UserManager.Instance.CurrentUser;
         if (_badgeIndex == EarnedAchievements.Count - 1)
 			_badgeIndex = 0;
 		else
@@ -117,7 +121,6 @@ public class AchievementsCollector : MonoBehaviour
 
 	public void PreviousBadge()
 	{
-        UserDescription currentUser = UserManager.Instance.CurrentUser;
         if (_badgeIndex == 0)
 			_badgeIndex = EarnedAchievements.Count - 1;
 		else

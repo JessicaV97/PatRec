@@ -10,14 +10,16 @@ public class AnswerScript : MonoBehaviour, IPointerClickHandler
 
     public static AnswerScript AS;
 
+    private UserDescription currentUser;
+
     private void Awake() 
     { 
         AS = this;
+        currentUser = UserManager.Instance.CurrentUser;
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        UserDescription currentUser = UserManager.Instance.CurrentUser;
         int clickCount = eventData.clickCount;
         if (!currentUser.RemainingVision && currentUser.RemainingHearing)
         {

@@ -12,11 +12,18 @@ public class LevelsTTS : MonoBehaviour, IPointerClickHandler
 
     public AudioSource _audio;
 	// Start is called before the first frame update
+
+	private UserDescription currentUser;
+	
+	void Awake()
+    {
+		currentUser = UserManager.Instance.CurrentUser;
+	}
+
 	public void OnPointerClick(PointerEventData eventData)
 	{
 		int clickCount = eventData.clickCount;
 		string objName = eventData.selectedObject.name;
-		UserDescription currentUser = UserManager.Instance.CurrentUser;
 		if (!currentUser.RemainingVision && currentUser.RemainingHearing)
 		{
 			if (clickCount == 2)

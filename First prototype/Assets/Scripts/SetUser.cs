@@ -24,13 +24,21 @@ public class SetUser : MonoBehaviour
 
     private int userIndex = 0;
 
+    private UserDescription currentUser;
+    IReadOnlyList<UserDescription> allUsers;
+
+
+
+    void Awake()
+    {
+        currentUser= UserManager.Instance.CurrentUser;
+        allUsers = UserManager.Instance.AllUsers;
+    }
     // Start is called before the first frame update
     void Start()
     {
         AddUserPanel.SetActive(false);
         SelectUserPanel.SetActive(false);
-        IReadOnlyList<UserDescription> allUsers = UserManager.Instance.AllUsers;
-        UserDescription currentUser = UserManager.Instance.CurrentUser;
         PlayerName.text = currentUser.Name;
         CurrentPlayerName.text = currentUser.Name;
         userIndex = GetIndex.IndexOf(allUsers, currentUser);
@@ -62,7 +70,6 @@ public class SetUser : MonoBehaviour
 
     public void PreviousUser()
     {
-        IReadOnlyList<UserDescription>  allUsers = UserManager.Instance.AllUsers;
         if (userIndex == 0)
             userIndex = allUsers.Count - 1; 
         else
@@ -72,7 +79,6 @@ public class SetUser : MonoBehaviour
 
     public void NextUser()
     {
-        IReadOnlyList<UserDescription> allUsers = UserManager.Instance.AllUsers;
         if (userIndex == allUsers.Count - 1)
             userIndex = 0; 
         else 
@@ -83,8 +89,17 @@ public class SetUser : MonoBehaviour
 
     public void setUser()
     {
-        IReadOnlyList<UserDescription> allUsers = UserManager.Instance.AllUsers;
         UserManager.Instance.SetCurrentUser(allUsers[userIndex]);
+        currentUser = UserManager.Instance.CurrentUser;
+        CurrentPlayerName.text = currentUser.Name;
+        if (currentUser.RemainingHearing)
+            DeafSet.image.overrideSprite = AudioPerception;
+        else
+            DeafSet.image.overrideSprite = NoAudioPerception;
+        if (currentUser.RemainingVision)
+            BlindSet.image.overrideSprite = VisualPerception;
+        else
+            BlindSet.image.overrideSprite = NoVisualPerception;
         SelectUserPanel.SetActive(false);
     }
 
@@ -108,15 +123,28 @@ public class SetUser : MonoBehaviour
     {
         string name = nameInput.GetComponent<TMP_InputField>().text;
         nameInput.GetComponent<TMP_InputField>().text = "";
+        
         bool remainingHearing = false;
-        if (DeafSet.image.overrideSprite == AudioPerception)
+        if (DeafSet.image.overrideSprite.Equals("doof"))
+        {
             remainingHearing = true;
+            DeafSet.image.overrideSprite = AudioPerception;
+        }
+        else
+            DeafSet.image.overrideSprite = NoAudioPerception;
+ 
         bool remainingVision = false;
-        if (BlindSet.image.overrideSprite == VisualPerception)
+        if (BlindSet.image.overrideSprite.Equals("blind"))
+        {
             remainingVision = true;
+            BlindSet.image.overrideSprite = VisualPerception;
+        }
+        else
+            BlindSet.image.overrideSprite = NoVisualPerception;
+            
         UserManager.Instance.AddUser(new UserDescription(name, Level.Easy, Level.Easy, 3, remainingHearing, remainingVision));
-        UserDescription currentUser = UserManager.Instance.CurrentUser;
-        CurrentPlayerName.text = currentUser.Name;
+        currentUser = UserManager.Instance.CurrentUser;
+   
         AddUserPanel.SetActive(false);
     }
 

@@ -43,7 +43,6 @@ namespace Happify.User
             UserManager[] userManager = FindObjectsOfType<UserManager>();
             Assert.IsTrue(userManager.Length == 1, "There is more than one user manager in the scene!");
             _userManager = this;
-            //AddUser(new UserDescription("Jessica", Level.Easy, Level.Easy, 3, false, false));
             // Ensure that script does not get destroyed when changing scene.
             DontDestroyOnLoad(this);
             Load();

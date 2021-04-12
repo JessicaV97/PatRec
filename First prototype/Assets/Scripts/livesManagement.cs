@@ -8,8 +8,15 @@ public class LivesManagement : MonoBehaviour
 	public TextMeshProUGUI DurationBeforeNewLife;
 	private float _currentTime = 10f;
 
-	// Start is called before the first frame update
-	void Start()
+	private UserDescription currentUser;
+
+    private void Awake()
+    {
+		currentUser = UserManager.Instance.CurrentUser;
+	}
+
+    // Start is called before the first frame update
+    void Start()
     {
 		_currentTime = 10f;
     }
@@ -17,7 +24,6 @@ public class LivesManagement : MonoBehaviour
     // Update is called once per frame
 	private void Update()
 	{
-		UserDescription currentUser = UserManager.Instance.CurrentUser;
 		Time.timeScale = 1.0f;
 		LivesLeft/*.GetComponent<TextMeshProUGUI>()*/.text = currentUser.NrOfLives.ToString();
 		_currentTime -= 1* Time.deltaTime;

@@ -2526,8 +2526,8 @@ GameObject:
   - component: {fileID: 1453767073}
   - component: {fileID: 1453767072}
   - component: {fileID: 1453767075}
-  - component: {fileID: 1453767076}
   - component: {fileID: 1453767077}
+  - component: {fileID: 1453767076}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -2595,7 +2595,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 368250f92c4296f41a5fd22e0275ea66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _audio: {fileID: 0}
+  _audio: {fileID: 2113507046}
 --- !u!114 &1453767076
 MonoBehaviour:
   m_ObjectHideFlags: 0

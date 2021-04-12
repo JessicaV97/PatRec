@@ -20,9 +20,12 @@ public class StudyManager : MonoBehaviour
 
     public AudioSource _audio;
 
+	private UserDescription currentUser;
+
 	public async void Awake()
 	{ 
 		await MqttService.Instance.ConnectAsync();
+		currentUser = UserManager.Instance.CurrentUser;
 	}
 	public void Start()
 	{
@@ -39,7 +42,6 @@ public class StudyManager : MonoBehaviour
 
 	public void NextPattern()
 	{
-		UserDescription currentUser = UserManager.Instance.CurrentUser;
 		if (PatternIndex == patternsComplete.Length - 1)
 			PatternIndex = 0;
 		else
@@ -52,7 +54,6 @@ public class StudyManager : MonoBehaviour
 	
 	public void PreviousPattern()
 	{
-		UserDescription currentUser = UserManager.Instance.CurrentUser;
 		if (PatternIndex == 0) 
 			PatternIndex = patternsComplete.Length - 1;
 		else 
@@ -72,7 +73,6 @@ public class StudyManager : MonoBehaviour
 
 	public async void PlayPattern()
     {
-		UserDescription currentUser = UserManager.Instance.CurrentUser;
 		if (!currentUser.RemainingVision)
 		{
 			StartCoroutine(DownloadTheAudio((patternsComplete[PatternIndex] as SOPattern).PatternName));

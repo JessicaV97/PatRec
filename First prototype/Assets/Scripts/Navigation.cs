@@ -9,13 +9,18 @@ public class Navigation : MonoBehaviour, IPointerClickHandler
 {
     public AudioSource _audio;
     private float interval = 0.3f;
-    int tap; 
+    int tap = 0;
 
+    private UserDescription currentUser; 
+
+    public void Awake()
+    {
+        currentUser = UserManager.Instance.CurrentUser;
+    }
     public void OnPointerClick(PointerEventData eventData)
     {
         //int clickCount = eventData.clickCount;
         string objName = eventData.selectedObject.name;
-        UserDescription currentUser = UserManager.Instance.CurrentUser;
         //if (!currentUser.RemainingVision && currentUser.RemainingHearing)
         //{
         //    //if (clickCount == 2)
@@ -57,15 +62,10 @@ public class Navigation : MonoBehaviour, IPointerClickHandler
 
     void OnDoubleClick(string button)
     {
-        UserDescription currentUser = UserManager.Instance.CurrentUser;
         if (button.Equals("Play") || button.Equals("BackToLevels"))
             StartCoroutine(DownloadTheAudio("Naar levels"));
         else if (button.Equals("Settings"))
-        {
             StartCoroutine(DownloadTheAudio("Naar instellingen"));
-            Debug.Log("3 " + currentUser.RemainingHearing);
-        }
-            
         else if (button.Equals("Achievements") || button.Equals("BackToAchievements"))
             StartCoroutine(DownloadTheAudio("Naar badges collectie"));
         else if (button.Equals("ListOfScores"))

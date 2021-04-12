@@ -48,6 +48,8 @@ public class QuizManager : MonoBehaviour
 
 	public System.Random r = new System.Random();
 
+	private UserDescription currentUser;
+
 	public async void Awake()
 	{
 		//Ensure sounds don't play at start
@@ -60,8 +62,9 @@ public class QuizManager : MonoBehaviour
 
 	public void Start()
 	{
-		UserDescription currentUser = UserManager.Instance.CurrentUser;
+		currentUser = UserManager.Instance.CurrentUser;
 		LevelIndex = LevelSwiper.GetLevel();
+		Debug.Log(currentUser.EmotionsLevel);
 		if (LevelIndex != 5)
 		{
 			PatternsComplete = Resources.LoadAll("ScriptableObjects/SO_Emotions", typeof(SOPattern));
@@ -135,7 +138,6 @@ public class QuizManager : MonoBehaviour
 
 	public void Correct()
 	{
-		UserDescription currentUser = UserManager.Instance.CurrentUser;
 		//If correct answer was chosen
 		//Play sound effect	
 		if (currentUser.RemainingHearing)
@@ -157,7 +159,6 @@ public class QuizManager : MonoBehaviour
 
 	public void Wrong()
 	{
-		UserDescription currentUser = UserManager.Instance.CurrentUser;
 		//If wrong answer was chosen
 		_score--;
 		ScoreTxt.GetComponent<TextMeshProUGUI>().text = "Score: " + _score;
@@ -219,7 +220,6 @@ public class QuizManager : MonoBehaviour
 	//Select new question
 	void GenerateQuestion()
 	{
-		UserDescription currentUser = UserManager.Instance.CurrentUser;
 		if (currentUser.NrOfLives == 0)
 		{
 			Debug.Log("You ran out of lives. Please wait till you have a new one before you continue");

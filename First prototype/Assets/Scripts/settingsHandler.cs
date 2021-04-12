@@ -12,10 +12,12 @@ public class SettingsHandler : MonoBehaviour
 	public Button blindset;
 	public Sprite NoVisualPerception;
 	public Sprite VisualPerception;
-	
-	public void Start()
+
+	private UserDescription currentUser;
+
+    public void Start()
 	{
-		UserDescription currentUser = UserManager.Instance.CurrentUser;
+		currentUser = UserManager.Instance.CurrentUser;
 		if (currentUser.RemainingVision)
 			blindset.image.overrideSprite = VisualPerception;
 		else
@@ -29,7 +31,6 @@ public class SettingsHandler : MonoBehaviour
 	
 	public void ChangeDeaf()
 	{
-		UserDescription currentUser = UserManager.Instance.CurrentUser;
 		if (currentUser.RemainingHearing)
 		{
 			DeafSet.image.overrideSprite = NoAudioPerception;
@@ -44,7 +45,6 @@ public class SettingsHandler : MonoBehaviour
 	
 	public void ChangeBlind()
 	{
-		UserDescription currentUser = UserManager.Instance.CurrentUser;
 		if (currentUser.RemainingVision)
 		{
 			blindset.image.overrideSprite = NoVisualPerception;
@@ -57,7 +57,6 @@ public class SettingsHandler : MonoBehaviour
 	
 	public void BackAndSettingsCheck() 
 	{
-		UserDescription currentUser = UserManager.Instance.CurrentUser;
 		if (currentUser.RemainingHearing == false && currentUser.RemainingVision == false)
 			Debug.Log("The app is not yet ready to be used with these settings unfortunately");
 		else if (currentUser.RemainingHearing == true && currentUser.RemainingVision == false)
