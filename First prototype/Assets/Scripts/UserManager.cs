@@ -19,7 +19,7 @@ namespace Happify.User
         [SerializeField, Tooltip("The time it takes in seconds to receive a new life.")]
         private float _newLifeDuration = 10.0f; // in seconds
 
-        private static UserManager _userManager;
+        private static UserManager _instance;
         private List<UserDescription> _allUsers = new List<UserDescription>();
         private UserDescription _currentUser;
 
@@ -38,7 +38,7 @@ namespace Happify.User
         /// </summary>
         public UserDescription CurrentUser => _currentUser;
 
-        public static UserManager Instance => _userManager;
+        public static UserManager Instance => _instance;
 
         /// <summary>
         /// An event that gets invoked when the current user's lives changes.
@@ -47,13 +47,18 @@ namespace Happify.User
 
         private void Awake()
         {
-            UserManager[] userManager = FindObjectsOfType<UserManager>();
-            Assert.IsTrue(userManager.Length == 1, "There is more than one user manager in the scene!");
-            _userManager = this;
-            // Ensure that script does not get destroyed when changing scene.
-            DontDestroyOnLoad(this);
-            Load();
-            AddUser(new UserDescription("Jessica", Level.Easy, Level.Easy, 3, false, false)); //Maybe position this elsewhere
+            if(_instance == null)
+            {
+                _instance = this;
+                // Ensure that script does not get destroyed when changing scene.
+                DontDestroyOnLoad(this);
+                Load();
+                AddUser(new UserDescription("Jessica", Level.Easy, Level.Easy, 3, false, false)); //Maybe position this elsewhere
+            }
+            else
+            {
+                Destroy(this);
+            }
         }
 
         public void AddUser(UserDescription user, bool setAsCurrentUser = true)
@@ -86,7 +91,10 @@ namespace Happify.User
                 }
 
                 string json = File.ReadAllText(path);
-                _allUsers = JsonConvert.DeserializeObject<List<UserDescription>>(json);
+                if (string.IsNullOrWhiteSpace(json))
+                    _allUsers = new List<UserDescription>();
+                else
+                    _allUsers = JsonConvert.DeserializeObject<List<UserDescription>>(json);
             }
             catch (Exception e)
             {
