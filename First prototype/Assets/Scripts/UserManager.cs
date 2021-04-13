@@ -2,8 +2,10 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.UI;
 
 namespace Happify.User
 {
@@ -20,6 +22,11 @@ namespace Happify.User
         private static UserManager _userManager;
         private List<UserDescription> _allUsers = new List<UserDescription>();
         private UserDescription _currentUser;
+
+        private float _difference;
+
+        public float Difference => _difference; // Added
+        public float NewLifeDuration => _newLifeDuration; //Added
 
         /// <summary>
         /// Gets all users.
@@ -114,10 +121,13 @@ namespace Happify.User
             // Check if time has passed
             double timeNow = DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
 
+
+            _difference = Convert.ToSingle(timeNow - _currentUser.LastLifeReceivedTimestamp); // added
             // Increment the number of lives
             if(timeNow - _currentUser.LastLifeReceivedTimestamp >= _newLifeDuration)
             {
                 _currentUser.NrOfLives++;
+                _currentUser.LastLifeReceivedTimestamp = timeNow; //added
                 CurrentUserLivesChanged?.Invoke();
             }
         }

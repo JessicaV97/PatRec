@@ -161,15 +161,14 @@ public class QuizManager : MonoBehaviour
 	{
 		//If wrong answer was chosen
 		_score--;
-		ScoreTxt.GetComponent<TextMeshProUGUI>().text = "Score: " + _score;
+		ScoreTxt/*.GetComponent<TextMeshProUGUI>()*/.text = "Score: " + _score;
 		//Play sound effect
 		//if (SettingsHandler.remainingHearing)
 		if (currentUser.RemainingHearing)
 			IncorrectSound.Play();
 		//Remove 1 life
-		//livesNr -= 1;
-		currentUser.NrOfLives -= 1;
-		Lives.GetComponent<TextMeshProUGUI>().text = currentUser.NrOfLives.ToString();
+		currentUser.NrOfLives--;
+		Lives./*GetComponent<TextMeshProUGUI>().*/text = currentUser.NrOfLives.ToString();
 		//Show red screen with cross
 		if (currentUser.RemainingVision)
 		{
@@ -220,12 +219,7 @@ public class QuizManager : MonoBehaviour
 	//Select new question
 	void GenerateQuestion()
 	{
-		if (currentUser.NrOfLives == 0)
-		{
-			Debug.Log("You ran out of lives. Please wait till you have a new one before you continue");
-			// livesManagement.increaseLives();
-		}
-		else if (QnA.Count > 0)
+		if (QnA.Count > 0)
 		{
 			// Select question randomly from list of questions
 			CurrentQuestion = Random.Range(0, QnA.Count);
@@ -246,7 +240,6 @@ public class QuizManager : MonoBehaviour
 		}
 		else
 		{
-			Debug.Log("Level Complete");
 			//Level Complete
 			ScoreManager.UpdateScore(_score);
 

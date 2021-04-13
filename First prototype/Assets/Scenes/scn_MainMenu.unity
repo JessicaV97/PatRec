@@ -732,7 +732,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maximumLives: 3
-  _newLifeDuration: 10
+  _newLifeDuration: 30
 --- !u!4 &1045899222
 Transform:
   m_ObjectHideFlags: 0
