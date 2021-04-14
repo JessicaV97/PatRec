@@ -1,37 +1,33 @@
 {
   "islooped": false,
-  "duration": 720,
+  "duration": 0.72,
   "interpolation": 0,
   "frames": [
     {
       "time": 0,
       "actuators": [
         {
-          "pin": 2,
+          "pin": 0,
           "value": 0
-        },
-        {
-          "pin": 4,
-          "value": 0
-        },
-        {
-          "pin": 5,
-          "value": 0
-        },
-        {
-          "pin": 8,
-          "value": 0
-        },
-        {
-          "pin": 9,
-          "value": 255
         },
         {
           "pin": 1,
           "value": 0
         },
         {
+          "pin": 2,
+          "value": 0
+        },
+        {
           "pin": 3,
+          "value": 0
+        },
+        {
+          "pin": 4,
+          "value": 255
+        },
+        {
+          "pin": 5,
           "value": 0
         },
         {
@@ -40,16 +36,32 @@
         },
         {
           "pin": 7,
+          "value": 0
+        },
+        {
+          "pin": 8,
           "value": 0
         }
       ]
     },
     {
-      "time": 240,
+      "time": 0.24,
       "actuators": [
+        {
+          "pin": 0,
+          "value": 255
+        },
+        {
+          "pin": 1,
+          "value": 0
+        },
         {
           "pin": 2,
           "value": 255
+        },
+        {
+          "pin": 3,
+          "value": 0
         },
         {
           "pin": 4,
@@ -57,14 +69,27 @@
         },
         {
           "pin": 5,
-          "value": 255
-        },
-        {
-          "pin": 8,
           "value": 0
         },
         {
-          "pin": 9,
+          "pin": 6,
+          "value": 255
+        },
+        {
+          "pin": 7,
+          "value": 0
+        },
+        {
+          "pin": 8,
+          "value": 255
+        }
+      ]
+    },
+ {
+      "time": 0.718,
+      "actuators": [
+        {
+          "pin": 0,
           "value": 0
         },
         {
@@ -72,8 +97,20 @@
           "value": 0
         },
         {
+          "pin": 2,
+          "value": 0
+        },
+        {
           "pin": 3,
-          "value": 255
+          "value": 0
+        },
+        {
+          "pin": 4,
+          "value": 0
+        },
+        {
+          "pin": 5,
+          "value": 0
         },
         {
           "pin": 6,
@@ -81,7 +118,11 @@
         },
         {
           "pin": 7,
-          "value": 255
+          "value": 0
+        },
+        {
+          "pin": 8,
+          "value": 0
         }
       ]
     }

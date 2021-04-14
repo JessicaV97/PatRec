@@ -1,14 +1,313 @@
 {
-  "islooped": false,
-  "duration": 480,
+  "islooped": "false",
+  "duration": 2.352,
   "interpolation": 0,
   "frames": [
     {
       "time": 0,
       "actuators": [
         {
+          "pin": 0,
+          "value": 255
+        },
+        {
+          "pin": 1,
+          "value": 0
+        },
+        {
+          "pin": 2,
+          "value": 0
+        },
+        {
+          "pin": 3,
+          "value": 0
+        },
+        {
+          "pin": 4,
+          "value": 0
+        },
+        {
+          "pin": 5,
+          "value": 0
+        },
+        {
+          "pin": 6,
+          "value": 0
+        },
+        {
+          "pin": 7,
+          "value": 0
+        },
+        {
+          "pin": 8,
+          "value": 0
+        }
+      ]
+    },
+    {
+      "time": 0.168,
+      "actuators": [
+        {
+          "pin": 0,
+          "value": 255
+        },
+        {
+          "pin": 1,
+          "value": 255
+        },
+        {
+          "pin": 2,
+          "value": 0
+        },
+        {
+          "pin": 3,
+          "value": 0
+        },
+        {
+          "pin": 4,
+          "value": 0
+        },
+        {
+          "pin": 5,
+          "value": 0
+        },
+        {
+          "pin": 6,
+          "value": 0
+        },
+        {
+          "pin": 7,
+          "value": 0
+        },
+        {
+          "pin": 8,
+          "value": 0
+        }
+      ]
+    },
+    {
+      "time": 0.336,
+      "actuators": [
+        {
+          "pin": 0,
+          "value": 0
+        },
+        {
+          "pin": 1,
+          "value": 255
+        },
+        {
+          "pin": 2,
+          "value": 0
+        },
+        {
+          "pin": 3,
+          "value": 0
+        },
+        {
+          "pin": 4,
+          "value": 0
+        },
+        {
+          "pin": 5,
+          "value": 0
+        },
+        {
+          "pin": 6,
+          "value": 0
+        },
+        {
+          "pin": 7,
+          "value": 0
+        },
+        {
+          "pin": 8,
+          "value": 0
+        }
+      ]
+    },
+    {
+      "time": 0.504,
+      "actuators": [
+        {
+          "pin": 0,
+          "value": 0
+        },
+        {
+          "pin": 1,
+          "value": 255
+        },
+        {
           "pin": 2,
           "value": 255
+        },
+        {
+          "pin": 3,
+          "value": 0
+        },
+        {
+          "pin": 4,
+          "value": 0
+        },
+        {
+          "pin": 5,
+          "value": 0
+        },
+        {
+          "pin": 6,
+          "value": 0
+        },
+        {
+          "pin": 7,
+          "value": 0
+        },
+        {
+          "pin": 8,
+          "value": 0
+        }
+      ]
+    },
+    {
+      "time": 0.672,
+      "actuators": [
+        {
+          "pin": 0,
+          "value": 0
+        },
+        {
+          "pin": 1,
+          "value": 0
+        },
+        {
+          "pin": 2,
+          "value": 255
+        },
+        {
+          "pin": 3,
+          "value": 0
+        },
+        {
+          "pin": 4,
+          "value": 0
+        },
+        {
+          "pin": 5,
+          "value": 0
+        },
+        {
+          "pin": 6,
+          "value": 0
+        },
+        {
+          "pin": 7,
+          "value": 0
+        },
+        {
+          "pin": 8,
+          "value": 0
+        }
+      ]
+    },
+    {
+      "time": 0.84,
+      "actuators": [
+        {
+          "pin": 0,
+          "value": 0
+        },
+        {
+          "pin": 1,
+          "value": 0
+        },
+        {
+          "pin": 2,
+          "value": 255
+        },
+        {
+          "pin": 3,
+          "value": 0
+        },
+        {
+          "pin": 4,
+          "value": 0
+        },
+        {
+          "pin": 5,
+          "value": 255
+        },
+        {
+          "pin": 6,
+          "value": 0
+        },
+        {
+          "pin": 7,
+          "value": 0
+        },
+        {
+          "pin": 8,
+          "value": 0
+        }
+      ]
+    },
+    {
+      "time": 1.008,
+      "actuators": [
+        {
+          "pin": 0,
+          "value": 0
+        },
+        {
+          "pin": 1,
+          "value": 0
+        },
+        {
+          "pin": 2,
+          "value": 0
+        },
+        {
+          "pin": 3,
+          "value": 0
+        },
+        {
+          "pin": 4,
+          "value": 0
+        },
+        {
+          "pin": 5,
+          "value": 255
+        },
+        {
+          "pin": 6,
+          "value": 0
+        },
+        {
+          "pin": 7,
+          "value": 0
+        },
+        {
+          "pin": 8,
+          "value": 0
+        }
+      ]
+    },
+    {
+      "time": 1.176,
+      "actuators": [
+        {
+          "pin": 0,
+          "value": 0
+        },
+        {
+          "pin": 1,
+          "value": 0
+        },
+        {
+          "pin": 2,
+          "value": 0
+        },
+        {
+          "pin": 3,
+          "value": 0
         },
         {
           "pin": 4,
@@ -19,28 +318,139 @@
           "value": 255
         },
         {
-          "pin": 8,
-          "value": 255
+          "pin": 6,
+          "value": 0
         },
         {
-          "pin": 9,
-          "value": 255
+          "pin": 7,
+          "value": 0
+        },
+        {
+          "pin": 8,
+          "value": 0
+        }
+      ]
+    },
+    {
+      "time": 1.344,
+      "actuators": [
+        {
+          "pin": 0,
+          "value": 0
         },
         {
           "pin": 1,
-          "value": 255
+          "value": 0
+        },
+        {
+          "pin": 2,
+          "value": 0
         },
         {
           "pin": 3,
+          "value": 0
+        },
+        {
+          "pin": 4,
           "value": 255
         },
         {
+          "pin": 5,
+          "value": 0
+        },
+        {
           "pin": 6,
+          "value": 0
+        },
+        {
+          "pin": 7,
+          "value": 0
+        },
+        {
+          "pin": 8,
+          "value": 0
+        }
+      ]
+    },
+    {
+      "time": 1.512,
+      "actuators": [
+        {
+          "pin": 0,
+          "value": 0
+        },
+        {
+          "pin": 1,
+          "value": 0
+        },
+        {
+          "pin": 2,
+          "value": 0
+        },
+        {
+          "pin": 3,
+          "value": 0
+        },
+        {
+          "pin": 4,
           "value": 255
+        },
+        {
+          "pin": 5,
+          "value": 0
+        },
+        {
+          "pin": 6,
+          "value": 0
         },
         {
           "pin": 7,
           "value": 255
+        },
+        {
+          "pin": 8,
+          "value": 0
+        }
+      ]
+    },
+    {
+      "time": 2.112,
+      "actuators": [
+        {
+          "pin": 0,
+          "value": 0
+        },
+        {
+          "pin": 1,
+          "value": 0
+        },
+        {
+          "pin": 2,
+          "value": 0
+        },
+        {
+          "pin": 3,
+          "value": 0
+        },
+        {
+          "pin": 4,
+          "value": 0
+        },
+        {
+          "pin": 5,
+          "value": 0
+        },
+        {
+          "pin": 6,
+          "value": 0
+        },
+        {
+          "pin": 7,
+          "value": 255
+        },
+        {
+          "pin": 8,
+          "value": 0
         }
       ]
     }

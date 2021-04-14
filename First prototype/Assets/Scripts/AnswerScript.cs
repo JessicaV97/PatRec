@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Happify.User;
+using System.Collections;
 
 public class AnswerScript : MonoBehaviour, IPointerClickHandler
 {
@@ -12,6 +13,9 @@ public class AnswerScript : MonoBehaviour, IPointerClickHandler
 
     private UserDescription currentUser;
 
+    private float interval = 0.3f;
+    int tap = 0;
+
     private void Awake() 
     { 
         AS = this;
@@ -20,16 +24,30 @@ public class AnswerScript : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        int clickCount = eventData.clickCount;
+        string objName = eventData.selectedObject.name;
         if (!currentUser.RemainingVision && currentUser.RemainingHearing)
         {
-            if (clickCount == 2)
-                OnSingleClick(); //Name is conflicting
-            else if (clickCount == 1)
-                OnDoubleClick(); //Name is conflicting
+            tap++;
+
+            if (tap == 1)
+            {
+                StartCoroutine(DoubleTapInterval());
+                OnDoubleClick(/*objName*/);
+            }
+            else if (tap > 1)
+            {
+                OnSingleClick(/*objName*/);
+                tap = 0;
+            }
         }
         else
-            OnSingleClick();
+            OnSingleClick(/*objName*/);
+    }
+
+    IEnumerator DoubleTapInterval()
+    {
+        yield return new WaitForSeconds(interval);
+        this.tap = 0;
     }
 
     void OnSingleClick()

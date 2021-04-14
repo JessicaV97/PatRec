@@ -80,10 +80,10 @@ public class StudyManager : MonoBehaviour
 
 		string json = (patternsComplete[PatternIndex] as SOPattern).PatternJson.text;
         json = Regex.Replace(json, @"\t|\n|\r", "");
-        //json = json.Replace(" ", "");
+        json = json.Replace(" ", "");
         json = json.Replace("255", "1.0");
 		json = json.Replace("islooped", "isLooped");
-		await MqttService.Instance.PublishAsync("suitceyes/tactile-board/play", json);
+		await MqttService.Instance.PublishAsync("happify/play", json);
 		
 
 	}

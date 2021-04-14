@@ -58,12 +58,12 @@ public class QuizManager : MonoBehaviour
 		await MqttService.Instance.ConnectAsync();
 	}
 
-	public static Level UserSkill;
+	public static Level UserSkill;	
 
 	public void Start()
 	{
-		currentUser = UserManager.Instance.CurrentUser;
-		LevelIndex = LevelSwiper.GetLevel();
+        currentUser = UserManager.Instance.CurrentUser;
+        LevelIndex = LevelSwiper.GetLevel();
 		Debug.Log(currentUser.EmotionsLevel);
 		if (LevelIndex != 5)
 		{
@@ -159,16 +159,23 @@ public class QuizManager : MonoBehaviour
 
 	public void Wrong()
 	{
-		//If wrong answer was chosen
-		_score--;
-		ScoreTxt/*.GetComponent<TextMeshProUGUI>()*/.text = "Score: " + _score;
 		//Play sound effect
-		//if (SettingsHandler.remainingHearing)
 		if (currentUser.RemainingHearing)
 			IncorrectSound.Play();
+
+
+		//If wrong answer was chosen remove 1 live and score - 1 
+		UserManager.Instance.decreaseLives();
+		_score--;
+
+		//Update texts
+		ScoreTxt.text = "Score: " + _score;
+		Lives.text = currentUser.NrOfLives.ToString();
 		//Remove 1 life
-		currentUser.NrOfLives--;
-		Lives./*GetComponent<TextMeshProUGUI>().*/text = currentUser.NrOfLives.ToString();
+
+		UserManager.Instance.Save();
+		Debug.Log(currentUser.NrOfLives);
+
 		//Show red screen with cross
 		if (currentUser.RemainingVision)
 		{
@@ -177,8 +184,10 @@ public class QuizManager : MonoBehaviour
 		}
 		if (currentUser.NrOfLives == 0)
 			GoScreen.SetActive(true);
+
 		//Start coroutine to deactive the red screen and initate a new question
 		StartCoroutine(WaitForNext());
+		
 	}
 
 	IEnumerator WaitForNext()
@@ -219,6 +228,7 @@ public class QuizManager : MonoBehaviour
 	//Select new question
 	void GenerateQuestion()
 	{
+		currentUser = UserManager.Instance.CurrentUser;
 		if (QnA.Count > 0)
 		{
 			// Select question randomly from list of questions
@@ -291,7 +301,8 @@ public class QuizManager : MonoBehaviour
 		json = Regex.Replace(json, @"\t|\n|\r", "");
 		json = json.Replace(" ", "");
 		json = json.Replace("255", "1.0");
-		await MqttService.Instance.PublishAsync("suitceyes/tactile-board/play", json);
+		json = json.Replace("islooped", "isLooped");
+		await MqttService.Instance.PublishAsync("happify/play", json);
 	}
 
 	public void ClosePanel()

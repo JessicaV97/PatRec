@@ -135,9 +135,15 @@ namespace Happify.User
             if(timeNow - _currentUser.LastLifeReceivedTimestamp >= _newLifeDuration)
             {
                 _currentUser.NrOfLives++;
+                Save();
                 _currentUser.LastLifeReceivedTimestamp = timeNow; //added
                 CurrentUserLivesChanged?.Invoke();
             }
+        }
+
+        public void decreaseLives()
+        {
+            _currentUser.NrOfLives--;
         }
     }
 }

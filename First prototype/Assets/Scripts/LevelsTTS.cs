@@ -14,7 +14,10 @@ public class LevelsTTS : MonoBehaviour, IPointerClickHandler
 	// Start is called before the first frame update
 
 	private UserDescription currentUser;
-	
+
+	private float interval = 0.3f;
+	int tap = 0;
+
 	void Awake()
     {
 		currentUser = UserManager.Instance.CurrentUser;
@@ -22,24 +25,48 @@ public class LevelsTTS : MonoBehaviour, IPointerClickHandler
 
 	public void OnPointerClick(PointerEventData eventData)
 	{
-		int clickCount = eventData.clickCount;
+		//int clickCount = eventData.clickCount;
 		string objName = eventData.selectedObject.name;
+		//if (!currentUser.RemainingVision && currentUser.RemainingHearing)
+		//{
+		//	if (clickCount == 2)
+		//	{
+		//		OnSingleClick(objName);
+		//	}
+		//	else if (clickCount == 1)
+		//	{
+		//		OnDoubleClick(objName);
+		//	}
+		//}
+		//else
+		//{
+		//	//string objName = eventData.selectedObject.name;
+		//	OnSingleClick(objName);
+		//}
+
 		if (!currentUser.RemainingVision && currentUser.RemainingHearing)
 		{
-			if (clickCount == 2)
+			tap++;
+
+			if (tap == 1)
+			{
+				StartCoroutine(DoubleTapInterval());
+				OnDoubleClick(objName);
+			}
+			else if (tap > 1)
 			{
 				OnSingleClick(objName);
-			}
-			else if (clickCount == 1)
-			{
-				OnDoubleClick(objName);
+				tap = 0;
 			}
 		}
 		else
-		{
-			//string objName = eventData.selectedObject.name;
 			OnSingleClick(objName);
-		}
+	}
+
+	IEnumerator DoubleTapInterval()
+	{
+		yield return new WaitForSeconds(interval);
+		this.tap = 0;
 	}
 
 	void OnDoubleClick(string button)

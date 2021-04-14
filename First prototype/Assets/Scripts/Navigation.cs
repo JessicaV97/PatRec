@@ -19,21 +19,7 @@ public class Navigation : MonoBehaviour, IPointerClickHandler
     }
     public void OnPointerClick(PointerEventData eventData)
     {
-        //int clickCount = eventData.clickCount;
         string objName = eventData.selectedObject.name;
-        //if (!currentUser.RemainingVision && currentUser.RemainingHearing)
-        //{
-        //    //if (clickCount == 2)
-        //    //{
-        //    //    OnSingleClick(objName);
-        //    //}
-        //    //else if (clickCount == 1)
-        //    //{
-        //    //    OnDoubleClick(objName);
-        //    //}
-        //}
-        //else
-        //    OnSingleClick(objName);
 
         if (!currentUser.RemainingVision && currentUser.RemainingHearing)
         {

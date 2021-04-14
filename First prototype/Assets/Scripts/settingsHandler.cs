@@ -41,6 +41,7 @@ public class SettingsHandler : MonoBehaviour
 			DeafSet.image.overrideSprite = AudioPerception;
 			currentUser.RemainingHearing = true;
 		}
+		
 	}
 	
 	public void ChangeBlind()
@@ -53,6 +54,7 @@ public class SettingsHandler : MonoBehaviour
 			blindset.image.overrideSprite = VisualPerception;
 			currentUser.RemainingVision = true;
 		}
+		  
 	}
 	
 	public void BackAndSettingsCheck() 
@@ -65,7 +67,7 @@ public class SettingsHandler : MonoBehaviour
 			Debug.Log("Settings set for remaining vision (auditory cues excluded)");
 		else 
 			Debug.Log("Both auditory and visual cues are included!");
-
-        SceneManager.LoadScene("scn_MainMenu");  
+		UserManager.Instance.Save(); //Add this in multiple places 
+		SceneManager.LoadScene("scn_MainMenu");  
     }  
 }

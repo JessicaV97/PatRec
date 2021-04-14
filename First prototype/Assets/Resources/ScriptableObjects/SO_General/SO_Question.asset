@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: SO_Question
   m_EditorClassIdentifier: 
   PatternName: Vraag
-  PatternJson: {fileID: 4900000, guid: e6f1341a24c5be342882754f5caf6977, type: 3}
+  PatternJson: {fileID: 4900000, guid: c94eeeb6123d0594cbc3dac20325cdba, type: 3}
   PatternImage: {fileID: 21300000, guid: 4e48d8835cc0ede4c8076307afce6245, type: 3}
   Difficulty: 1

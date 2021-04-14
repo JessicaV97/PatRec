@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: SO_Wrong
   m_EditorClassIdentifier: 
   PatternName: Fout
-  PatternJson: {fileID: 4900000, guid: fe2dee3242d9c324c9059702c0ce082d, type: 3}
+  PatternJson: {fileID: 4900000, guid: 7aa165e4399235140ac49a11b139ac54, type: 3}
   PatternImage: {fileID: 21300000, guid: 6e53e3779d24c0e48a0ee321238da29e, type: 3}
   Difficulty: 1
