@@ -46,16 +46,5 @@ public class LivesManagement : MonoBehaviour
             loadingText.text = Mathf.Round(UserManager.Instance.Difference / UserManager.Instance.NewLifeDuration*100).ToString() + "%";
             loadingBar.value = Mathf.Clamp01(UserManager.Instance.Difference / UserManager.Instance.NewLifeDuration );
         }
-        
-        
-        //_currentTime -= 1* Time.deltaTime;
-        //DurationBeforeNewLife.text = _currentTime.ToString("0");
-        //if (currentUser.NrOfLives < 3 && _currentTime < 0)
-        //	currentUser.NrOfLives++; 
-        //else if (currentUser.NrOfLives == 3)
-        //{
-        //	DurationBeforeNewLife.text = "Ready to play!";
-        //	_currentTime = 10f;
-        //}
     }
 }

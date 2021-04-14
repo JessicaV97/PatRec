@@ -35,6 +35,7 @@ public class QuizManager : MonoBehaviour
 	public bool CorrectActive = false;
 
 	private int _score = 0;
+	private int _lives;
 
 	//Get sound effects
 	public AudioSource CorrectSound;
@@ -63,7 +64,9 @@ public class QuizManager : MonoBehaviour
 	public void Start()
 	{
         currentUser = UserManager.Instance.CurrentUser;
-        LevelIndex = LevelSwiper.GetLevel();
+		_lives = currentUser.NrOfLives;
+		Lives.text = _lives.ToString();
+		LevelIndex = LevelSwiper.GetLevel();
 		Debug.Log(currentUser.EmotionsLevel);
 		if (LevelIndex != 5)
 		{
@@ -165,16 +168,16 @@ public class QuizManager : MonoBehaviour
 
 
 		//If wrong answer was chosen remove 1 live and score - 1 
-		UserManager.Instance.decreaseLives();
+		//UserManager.Instance.CurrentUser.NrOfLives--;
+		_lives--;
+		UserManager.Instance.CurrentUser.NrOfLives = _lives;
+		UserManager.Instance.Save();
 		_score--;
 
 		//Update texts
 		ScoreTxt.text = "Score: " + _score;
-		Lives.text = currentUser.NrOfLives.ToString();
-		//Remove 1 life
-
-		UserManager.Instance.Save();
-		Debug.Log(currentUser.NrOfLives);
+		//Lives.text = UserManager.Instance.CurrentUser.NrOfLives.ToString();
+		Lives.text = _lives.ToString();
 
 		//Show red screen with cross
 		if (currentUser.RemainingVision)
@@ -182,9 +185,13 @@ public class QuizManager : MonoBehaviour
 			WrongPanel.SetActive(true);
 			WrongActive = true;
 		}
-		if (currentUser.NrOfLives == 0)
+		if (/*currentUser.NrOfLives*/_lives == 0)
+		{
 			GoScreen.SetActive(true);
-
+			UserManager.Instance.CurrentUser.NrOfLives = 0;
+			UserManager.Instance.Save();
+		}
+		
 		//Start coroutine to deactive the red screen and initate a new question
 		StartCoroutine(WaitForNext());
 		
@@ -228,7 +235,6 @@ public class QuizManager : MonoBehaviour
 	//Select new question
 	void GenerateQuestion()
 	{
-		currentUser = UserManager.Instance.CurrentUser;
 		if (QnA.Count > 0)
 		{
 			// Select question randomly from list of questions
@@ -252,6 +258,8 @@ public class QuizManager : MonoBehaviour
 		{
 			//Level Complete
 			ScoreManager.UpdateScore(_score);
+			UserManager.Instance.CurrentUser.NrOfLives = _lives;
+			UserManager.Instance.Save();
 
 			////Check for xp badges
 			if (ScoreManager.TotalXP >= 100)
@@ -292,6 +300,7 @@ public class QuizManager : MonoBehaviour
 			else
 				currentUser.GeneralLevel++;
 			LevelCompletePanel.SetActive(true);
+			//UserManager.Instance.Save();
 		}
 	}
 

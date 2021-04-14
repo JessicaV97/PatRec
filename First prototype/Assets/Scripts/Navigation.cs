@@ -13,7 +13,7 @@ public class Navigation : MonoBehaviour, IPointerClickHandler
 
     private UserDescription currentUser; 
 
-    public void Awake()
+    public void Start()
     {
         currentUser = UserManager.Instance.CurrentUser;
     }

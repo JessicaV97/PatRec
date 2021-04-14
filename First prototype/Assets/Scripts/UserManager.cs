@@ -53,12 +53,17 @@ namespace Happify.User
                 // Ensure that script does not get destroyed when changing scene.
                 DontDestroyOnLoad(this);
                 Load();
-                AddUser(new UserDescription("Jessica", Level.Easy, Level.Easy, 3, false, false)); //Maybe position this elsewhere
+                 //Maybe position this elsewhere
             }
             else
             {
                 Destroy(this);
             }
+        }
+
+        private void Start()
+        {
+            AddUser(new UserDescription("Jessica", Level.Easy, Level.Easy, 3, false, false));
         }
 
         public void AddUser(UserDescription user, bool setAsCurrentUser = true)
@@ -139,11 +144,6 @@ namespace Happify.User
                 _currentUser.LastLifeReceivedTimestamp = timeNow; //added
                 CurrentUserLivesChanged?.Invoke();
             }
-        }
-
-        public void decreaseLives()
-        {
-            _currentUser.NrOfLives--;
         }
     }
 }
