@@ -103,4 +103,9 @@ public class Navigation : MonoBehaviour, IPointerClickHandler
             }
         }
     }
+
+    void NextLevel()
+    {
+
+    }
 }

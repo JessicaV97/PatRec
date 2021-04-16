@@ -71,27 +71,31 @@ public class LevelsTTS : MonoBehaviour, IPointerClickHandler
 
 	void OnDoubleClick(string button)
 	{
+		int topic = LevelSwiper.GetLevel();
 		if (button.Equals("Next"))
 			StartCoroutine(DownloadTheAudio("Volgende"));
 		else if (button.Equals("Previous"))
 			StartCoroutine(DownloadTheAudio("Vorige"));
 		else if (button.Equals("StudySymbols"))
-        {
-			int topic = LevelSwiper.GetLevel();
+		{ 
 			if (topic == 5)
 				StartCoroutine(DownloadTheAudio("Bestudeer patronen in de algemene context"));
 			else
 				StartCoroutine(DownloadTheAudio("Bestudeer patronen in de context van emoties en sfeer."));
 		}
 		else if (button.Equals("PlayGame"))
-        {
-			int topic = LevelSwiper.GetLevel();
+		{
 			if (topic == 5)
 				StartCoroutine(DownloadTheAudio("Speel spel in de algemene context"));
 			else
 				StartCoroutine(DownloadTheAudio("Speel spel in de context van emoties en sfeer"));
 		}
-			
+		else if (button.Equals("NextLevel"))
+			if (topic == 5)
+				StartCoroutine(DownloadTheAudio("Volgend level in de algemene context"));
+			else
+				StartCoroutine(DownloadTheAudio("Volgend level in de context van emoties en sfeer"));
+
 	}
 
 	void OnSingleClick(string button)
@@ -102,7 +106,7 @@ public class LevelsTTS : MonoBehaviour, IPointerClickHandler
 			LevelSwiper.Instance.PreviousPattern();
 		else if (button.Equals("StudySymbols"))
 			SceneManager.LoadScene("scn_StudyEnvironment");
-		else if (button.Equals("PlayGame"))
+		else if (button.Equals("PlayGame") || button.Equals("NextLevel"))
 			SceneManager.LoadScene("scn_MainGameScreen");
 	}
 

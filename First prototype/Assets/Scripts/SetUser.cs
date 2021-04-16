@@ -142,7 +142,8 @@ public class SetUser : MonoBehaviour
         else
             BlindSet.image.overrideSprite = NoVisualPerception;
             
-        UserManager.Instance.AddUser(new UserDescription(name, Level.Easy, Level.Easy, 3, remainingHearing, remainingVision));
+        UserManager.Instance.AddUser(new UserDescription(name, Level.Easy, Level.Easy, 3, remainingHearing, remainingVision, 0, 0));
+        UserManager.Instance.Save();
         currentUser = UserManager.Instance.CurrentUser;
    
         AddUserPanel.SetActive(false);

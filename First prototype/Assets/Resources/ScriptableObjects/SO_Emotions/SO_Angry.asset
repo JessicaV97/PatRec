@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PatternName: Boos
   PatternJson: {fileID: 4900000, guid: c4cd03f502f56454e8a9940701e7d890, type: 3}
-  PatternImage: {fileID: 21300000, guid: aa2912ef82243fe41aa977c3c315e7dc, type: 3}
+  PatternImage: {fileID: 21300000, guid: 1a2c873877520e544858a16c62acd9c5, type: 3}
   Difficulty: 1

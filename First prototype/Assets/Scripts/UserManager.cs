@@ -2,6 +2,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -63,14 +64,15 @@ namespace Happify.User
 
         private void Start()
         {
-            AddUser(new UserDescription("Jessica", Level.Easy, Level.Easy, 3, false, false));
+            AddUser(new UserDescription("Jessica", Level.Easy, Level.Easy, 3, false, false, 0, 0));
         }
 
         public void AddUser(UserDescription user, bool setAsCurrentUser = true)
         {
             if (user == null)
                 throw new ArgumentNullException(nameof(user));
-
+            //else if (_allUsers.Any(item => item.Name == user.Name))
+            //    throw new Exception("The user already exists");
             // Add to list
             _allUsers.Add(user);
 

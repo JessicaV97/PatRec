@@ -63,7 +63,8 @@ public class QuizManager : MonoBehaviour
 
 	public void Start()
 	{
-        currentUser = UserManager.Instance.CurrentUser;
+		LevelCompletePanel.SetActive(false);
+		currentUser = UserManager.Instance.CurrentUser;
 		_lives = currentUser.NrOfLives;
 		Lives.text = _lives.ToString();
 		LevelIndex = LevelSwiper.GetLevel();

@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 using System.Linq;
+using Happify.Scores;
 
 public class AchievementsCollector : MonoBehaviour
 {
@@ -20,6 +21,7 @@ public class AchievementsCollector : MonoBehaviour
     public GameObject Status;
     public GameObject Next;
     public GameObject Previous;
+    public GameObject ScoreBoard;
 
     public AudioSource _audio;
 
@@ -30,6 +32,7 @@ public class AchievementsCollector : MonoBehaviour
     private void Awake()
     {
         currentUser = UserManager.Instance.CurrentUser;
+        ScoreBoard.SetActive(false);
     }
 
     void Start()
@@ -86,6 +89,17 @@ public class AchievementsCollector : MonoBehaviour
         
     }
 
+    public void ShowScores()
+    {
+        HighScoreList.Instance.CreateList();
+        ScoreBoard.SetActive(true);
+    }
+
+    public void HideScores()
+    {
+        ScoreBoard.SetActive(false);
+    }
+
     public static string PopUpAchievement(string topic, Level userLevel)
     {
         PossibleAchievements = Resources.LoadAll<SOAchievement>("ScriptableObjects/SO_Achievements");
@@ -99,6 +113,8 @@ public class AchievementsCollector : MonoBehaviour
         }
 
         EarnedAchievements.Add(badge);
+        UserManager.Instance.CurrentUser.NumberOfObtainedBadges++;
+        UserManager.Instance.Save();
         string PUText = badge.PopUpText;
         return PUText;
     }
@@ -152,6 +168,10 @@ public class AchievementsCollector : MonoBehaviour
             string PUText = badge.PopUpText;
             return PUText;
         }
+
+        UserManager.Instance.CurrentUser.NumberOfObtainedBadges++;
+        UserManager.Instance.Save();
+
         return "";
     }
 

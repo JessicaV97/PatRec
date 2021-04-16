@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PatternName: Aandacht
   PatternJson: {fileID: 4900000, guid: b874224c626d1a4408547689f79a75cb, type: 3}
-  PatternImage: {fileID: 21300000, guid: f4ed81e1d54554541b1133dee71396f1, type: 3}
+  PatternImage: {fileID: 21300000, guid: 60ec4517396576e4bb0622c3bfd9d00e, type: 3}
   Difficulty: 2

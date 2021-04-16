@@ -17,13 +17,16 @@ namespace Happify.User
         public int NrOfLives { get; set; }
         public bool RemainingHearing { get; set; }
         public bool RemainingVision { get; set; }
+        public int ExperiencePoints { get; set; }
+
+        public int NumberOfObtainedBadges { get; set; }
 
         /// <summary>
         /// Stores the last time a user received a new life as a unix timestamp.
         /// </summary>
         public double LastLifeReceivedTimestamp { get; set; }
 
-        public UserDescription (string name, Level emotionsLevel, Level generalLevel, int lives, bool hearing, bool vision)
+        public UserDescription (string name, Level emotionsLevel, Level generalLevel, int lives, bool hearing, bool vision, int XP, int nrOfBadges)
         {
             Name = name;
             EmotionsLevel = emotionsLevel;
