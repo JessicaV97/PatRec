@@ -37,6 +37,8 @@ namespace Happify.User
             NrOfLives = lives;
             RemainingHearing = hearing;
             RemainingVision = vision;
+            ExperiencePoints = XP;
+            NumberOfObtainedBadges = nrOfBadges;
         }
     }
 }

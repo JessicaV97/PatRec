@@ -36,8 +36,8 @@ namespace Happify.Scores
             foreach (UserDescription user in UserList)
             {
                 NamesSpace.text = NamesSpace.text + user.Name + "\n";
-                XpSpace.text = XpSpace.text + user.NumberOfObtainedBadges + "\n";
-                BadgesSpace.text = BadgesSpace.text + user.ExperiencePoints + "\n";
+                XpSpace.text = XpSpace.text + user.ExperiencePoints + "\n";
+                BadgesSpace.text = BadgesSpace.text + user.NumberOfObtainedBadges + "\n";
             }
         }
 

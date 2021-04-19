@@ -21,7 +21,7 @@ namespace Happify.Levels
 
 
 		private Object[] _levels;
-		string[] levelNames = new string[] { "Emoties en Sfeer", "Eten en drinken", "Personen", "Objecten", "Ruimtes en Richting", "Algemeen" };
+		string[] levelNames = new string[] { "Emoties en Sfeer", /*"Eten en drinken", "Personen", "Objecten", "Ruimtes en Richting",*/ "Algemeen" };
 
 
 		// Start is called before the first frame update
@@ -31,7 +31,7 @@ namespace Happify.Levels
 			_levelSwiper = this;
 		}
 
-		public void NextPattern()
+		public void NextLevelTopic()
 		{
 			if (LevelIndex == _levels.Length - 1)
 				LevelIndex = 0;
@@ -41,7 +41,7 @@ namespace Happify.Levels
 			LevelTitle.GetComponent<TextMeshProUGUI>().text = levelNames[LevelIndex];
 		}
 
-		public void PreviousPattern()
+		public void PreviousLevelTopic()
 		{
 			Debug.Log(_levels.Length);
 			if (LevelIndex == 0)

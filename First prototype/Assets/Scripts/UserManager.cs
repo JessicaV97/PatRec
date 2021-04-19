@@ -2,17 +2,13 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using TMPro;
 using UnityEngine;
-using UnityEngine.Assertions;
-using UnityEngine.UI;
 
 namespace Happify.User
 {
     public class UserManager : MonoBehaviour
     {
-        private const string UserDatabaseFilename = "Users.json";
+        private const string UserDatabaseFilename = "Users1.json";
 
         [SerializeField]
         private float _maximumLives = 3;
@@ -54,7 +50,6 @@ namespace Happify.User
                 // Ensure that script does not get destroyed when changing scene.
                 DontDestroyOnLoad(this);
                 Load();
-                 //Maybe position this elsewhere
             }
             else
             {

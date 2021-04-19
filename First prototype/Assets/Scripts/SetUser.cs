@@ -1,6 +1,6 @@
 using Happify.User;
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -41,17 +41,9 @@ public class SetUser : MonoBehaviour
         SelectUserPanel.SetActive(false);
         PlayerName.text = currentUser.Name;
         CurrentPlayerName.text = currentUser.Name;
-        userIndex = GetIndex.IndexOf(allUsers, currentUser);
+        //userIndex = GetIndex.IndexOf(allUsers, currentUser);
   
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-
 
     public void ChangeUser()
     {
@@ -70,15 +62,21 @@ public class SetUser : MonoBehaviour
 
     public void PreviousUser()
     {
+        allUsers = UserManager.Instance.AllUsers;
+        allUsers = allUsers.GroupBy(x => x.Name).Select(x => x.First()).ToList();
+        Debug.Log(allUsers.Count);
         if (userIndex == 0)
             userIndex = allUsers.Count - 1; 
         else
             userIndex--;
         PlayerName.text = allUsers[userIndex].Name;
     }
-
+    
     public void NextUser()
     {
+        allUsers = UserManager.Instance.AllUsers;
+        allUsers = allUsers.GroupBy(x => x.Name).Select(x => x.First()).ToList();
+        Debug.Log(allUsers.Count);
         if (userIndex == allUsers.Count - 1)
             userIndex = 0; 
         else 
@@ -87,7 +85,7 @@ public class SetUser : MonoBehaviour
 
     }
 
-    public void setUser()
+    public void SwitchUser()
     {
         UserManager.Instance.SetCurrentUser(allUsers[userIndex]);
         currentUser = UserManager.Instance.CurrentUser;

@@ -51,8 +51,23 @@ public class QuizManager : MonoBehaviour
 
 	private UserDescription currentUser;
 
+	private static QuizManager  _instance;
+	public static QuizManager Instance => _instance;
+
+	public int NrOfLives => _lives;
+	public int GetScore => _score;
+	public String GetContext => Topic;
+
 	public async void Awake()
 	{
+		if (_instance == null)
+		{
+			_instance = this;
+            // Ensure that script does not get destroyed when changing scene.
+            //DontDestroyOnLoad(this);
+        }
+		//else
+		//	Destroy(this);
 		//Ensure sounds don't play at start
 		this.CorrectSound.playOnAwake = false;
 		this.IncorrectSound.playOnAwake = false;
@@ -69,7 +84,7 @@ public class QuizManager : MonoBehaviour
 		Lives.text = _lives.ToString();
 		LevelIndex = LevelSwiper.GetLevel();
 		Debug.Log(currentUser.EmotionsLevel);
-		if (LevelIndex != 5)
+		if (LevelIndex != 1)
 		{
 			PatternsComplete = Resources.LoadAll("ScriptableObjects/SO_Emotions", typeof(SOPattern));
 			UserSkill = currentUser.EmotionsLevel;
@@ -170,15 +185,16 @@ public class QuizManager : MonoBehaviour
 
 		//If wrong answer was chosen remove 1 live and score - 1 
 		//UserManager.Instance.CurrentUser.NrOfLives--;
-		_lives--;
-		UserManager.Instance.CurrentUser.NrOfLives = _lives;
-		UserManager.Instance.Save();
+		//_lives--;
+		/*UserManager.Instance.CurrentUser*/currentUser.NrOfLives--;/* = _lives;*/
+		Debug.Log("usermanager lives" + UserManager.Instance.CurrentUser.NrOfLives);
+
 		_score--;
 
 		//Update texts
 		ScoreTxt.text = "Score: " + _score;
-		//Lives.text = UserManager.Instance.CurrentUser.NrOfLives.ToString();
-		Lives.text = _lives.ToString();
+		Lives.text = UserManager.Instance.CurrentUser.NrOfLives.ToString();
+		//Lives.text = _lives.ToString();
 
 		//Show red screen with cross
 		if (currentUser.RemainingVision)
@@ -189,9 +205,9 @@ public class QuizManager : MonoBehaviour
 		if (/*currentUser.NrOfLives*/_lives == 0)
 		{
 			GoScreen.SetActive(true);
-			UserManager.Instance.CurrentUser.NrOfLives = 0;
-			UserManager.Instance.Save();
-		}
+			/*UserManager.Instance.C*/currentUser.NrOfLives = 0;
+            UserManager.Instance.Save();
+        }
 		
 		//Start coroutine to deactive the red screen and initate a new question
 		StartCoroutine(WaitForNext());
@@ -224,7 +240,10 @@ public class QuizManager : MonoBehaviour
 			// By default set answer to be incorrect
 			Options[i].GetComponent<AnswerScript>().IsCorrect = false;
 			// Change text of option buttons to text of possible answers
-			Options[i].transform.GetChild(0).GetComponent<Image>().sprite = QnA[CurrentQuestion].Answers[i];
+			if (currentUser.RemainingVision)
+				Options[i].transform.GetChild(0).GetComponent<Image>().sprite = QnA[CurrentQuestion].Answers[i];
+			else
+				Options[i].transform.GetChild(0).GetComponent<Image>().sprite = (Sprite) Resources.Load("sprt_empty", typeof(Sprite));
 			Options[i].GetComponent<AnswerScript>().AudioName = QnA[CurrentQuestion].AnswersAudio[i];
 
 			// Set answer to be the correct one if it has been indicated as corrrect answer to the question.
@@ -243,7 +262,7 @@ public class QuizManager : MonoBehaviour
 
 			// Connect possible answers to question to the buttons 
 			SetAnswers();
-			if (!currentUser.RemainingVision && currentUser.RemainingHearing)
+			if (!currentUser.RemainingVision /*&& currentUser.RemainingHearing*/)
 			{
 				QuestionTxt.text = "... ";
 				StartCoroutine(DownloadTheAudio(QnA[CurrentQuestion].Question));
@@ -298,15 +317,18 @@ public class QuizManager : MonoBehaviour
 
 			if (Topic == "Emoties en sfeer")
 				currentUser.EmotionsLevel++;
+				
 			else
 				currentUser.GeneralLevel++;
+			UserManager.Instance.Save();
 			LevelCompletePanel.SetActive(true);
-			//UserManager.Instance.Save();
 		}
 	}
 
 	public async void PlayPattern()
 	{
+		if (!currentUser.RemainingVision && currentUser.RemainingHearing) 
+			StartCoroutine(DownloadTheAudio(QnA[CurrentQuestion].Question));
 		string json = QnA[CurrentQuestion].Json.text;
 		json = Regex.Replace(json, @"\t|\n|\r", "");
 		json = json.Replace(" ", "");
@@ -342,6 +364,4 @@ public class QuizManager : MonoBehaviour
 	{
 		StartCoroutine(DownloadTheAudio(message));
 	}
-
-
 }

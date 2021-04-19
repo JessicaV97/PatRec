@@ -32,7 +32,7 @@ public class StudyManager : MonoBehaviour
 		_audio = gameObject.GetComponent<AudioSource>();
 
 		LevelIndex = LevelSwiper.GetLevel();
-		if (LevelIndex != 5)
+		if (LevelIndex != 1)
 			patternsComplete = Resources.LoadAll("ScriptableObjects/SO_Emotions", typeof(SOPattern));
 		else
 			patternsComplete = Resources.LoadAll("ScriptableObjects/SO_General", typeof(SOPattern));
@@ -48,7 +48,7 @@ public class StudyManager : MonoBehaviour
 			PatternIndex++;
 
 		SetPattern();
-		if (!currentUser.RemainingVision)
+		if (!currentUser.RemainingVision && currentUser.RemainingHearing)
 			StartCoroutine(DownloadTheAudio((patternsComplete[PatternIndex] as SOPattern).PatternName));
 	}
 	
@@ -60,7 +60,7 @@ public class StudyManager : MonoBehaviour
 			PatternIndex--;
 
 		SetPattern();
-        if (!currentUser.RemainingVision)
+        if (!currentUser.RemainingVision && currentUser.RemainingHearing)
             StartCoroutine(DownloadTheAudio((patternsComplete[PatternIndex] as SOPattern).PatternName));
     }
 	

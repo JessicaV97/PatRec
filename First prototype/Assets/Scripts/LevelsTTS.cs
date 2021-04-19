@@ -1,4 +1,5 @@
 using Happify.Levels;
+using Happify.TextToSpeech;
 using Happify.User;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using UnityEngine.SceneManagement;
 public class LevelsTTS : MonoBehaviour, IPointerClickHandler
 {
 
-    public AudioSource _audio;
+    public AudioSource Audio;
 	// Start is called before the first frame update
 
 	private UserDescription currentUser;
@@ -25,24 +26,7 @@ public class LevelsTTS : MonoBehaviour, IPointerClickHandler
 
 	public void OnPointerClick(PointerEventData eventData)
 	{
-		//int clickCount = eventData.clickCount;
 		string objName = eventData.selectedObject.name;
-		//if (!currentUser.RemainingVision && currentUser.RemainingHearing)
-		//{
-		//	if (clickCount == 2)
-		//	{
-		//		OnSingleClick(objName);
-		//	}
-		//	else if (clickCount == 1)
-		//	{
-		//		OnDoubleClick(objName);
-		//	}
-		//}
-		//else
-		//{
-		//	//string objName = eventData.selectedObject.name;
-		//	OnSingleClick(objName);
-		//}
 
 		if (!currentUser.RemainingVision && currentUser.RemainingHearing)
 		{
@@ -51,16 +35,16 @@ public class LevelsTTS : MonoBehaviour, IPointerClickHandler
 			if (tap == 1)
 			{
 				StartCoroutine(DoubleTapInterval());
-				OnDoubleClick(objName);
+				OverarchingTTS.Instance.OnDoubleClick(objName, Audio);
 			}
 			else if (tap > 1)
 			{
-				OnSingleClick(objName);
+				OverarchingTTS.Instance.OnSingleClick(objName);
 				tap = 0;
 			}
 		}
 		else
-			OnSingleClick(objName);
+			OverarchingTTS.Instance.OnSingleClick(objName);
 	}
 
 	IEnumerator DoubleTapInterval()
@@ -69,63 +53,4 @@ public class LevelsTTS : MonoBehaviour, IPointerClickHandler
 		this.tap = 0;
 	}
 
-	void OnDoubleClick(string button)
-	{
-		int topic = LevelSwiper.GetLevel();
-		if (button.Equals("Next"))
-			StartCoroutine(DownloadTheAudio("Volgende"));
-		else if (button.Equals("Previous"))
-			StartCoroutine(DownloadTheAudio("Vorige"));
-		else if (button.Equals("StudySymbols"))
-		{ 
-			if (topic == 5)
-				StartCoroutine(DownloadTheAudio("Bestudeer patronen in de algemene context"));
-			else
-				StartCoroutine(DownloadTheAudio("Bestudeer patronen in de context van emoties en sfeer."));
-		}
-		else if (button.Equals("PlayGame"))
-		{
-			if (topic == 5)
-				StartCoroutine(DownloadTheAudio("Speel spel in de algemene context"));
-			else
-				StartCoroutine(DownloadTheAudio("Speel spel in de context van emoties en sfeer"));
-		}
-		else if (button.Equals("NextLevel"))
-			if (topic == 5)
-				StartCoroutine(DownloadTheAudio("Volgend level in de algemene context"));
-			else
-				StartCoroutine(DownloadTheAudio("Volgend level in de context van emoties en sfeer"));
-
-	}
-
-	void OnSingleClick(string button)
-	{
-		if (button.Equals("Next"))
-			LevelSwiper.Instance.NextPattern();
-		else if (button.Equals("Previous"))
-			LevelSwiper.Instance.PreviousPattern();
-		else if (button.Equals("StudySymbols"))
-			SceneManager.LoadScene("scn_StudyEnvironment");
-		else if (button.Equals("PlayGame") || button.Equals("NextLevel"))
-			SceneManager.LoadScene("scn_MainGameScreen");
-	}
-
-	IEnumerator DownloadTheAudio(string message)
-	{
-		using (UnityWebRequest website = UnityWebRequestMultimedia.GetAudioClip("https://translate.google.com/translate_tts?ie=UTF-8&total=1&idx=0&textlen=32&client=tw-ob&q=" + message + "&tl=NL", AudioType.MPEG))
-		{
-			yield return website.SendWebRequest();
-
-			if (website.result == UnityWebRequest.Result.ConnectionError)
-			{
-				Debug.Log(website.error);
-			}
-			else
-			{
-				AudioClip myClip = DownloadHandlerAudioClip.GetContent(website);
-				_audio.clip = myClip;
-				_audio.Play();
-			}
-		}
-	}
 }

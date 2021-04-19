@@ -1,5 +1,4 @@
 using Happify.User;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -11,6 +10,9 @@ using Happify.Scores;
 
 public class AchievementsCollector : MonoBehaviour
 {
+    private static AchievementsCollector _instance;
+    public static AchievementsCollector Instance => _instance;
+
     public static SOAchievement[] PossibleAchievements; 
     public static List<SOAchievement> EarnedAchievements = new List<SOAchievement>();
 	private int _badgeIndex = 0;
@@ -29,8 +31,19 @@ public class AchievementsCollector : MonoBehaviour
     private Queue<IEnumerator> _coroutineQueue = new Queue<IEnumerator>();
 
     private UserDescription currentUser;
+
     private void Awake()
     {
+        if (_instance == null)
+        {
+            _instance = this;
+            // Ensure that script does not get destroyed when changing scene.
+            //DontDestroyOnLoad(this);
+        }
+        //else
+        //{
+        //    Destroy(this);
+        //}
         currentUser = UserManager.Instance.CurrentUser;
         ScoreBoard.SetActive(false);
     }
@@ -57,6 +70,8 @@ public class AchievementsCollector : MonoBehaviour
                 _coroutineQueue.Enqueue(DownloadTheAudio(ScoreManager.TotalXP.ToString()));
         }
         Status.GetComponent<TextMeshProUGUI>().text = ScoreManager.TotalXP + "XP";
+        currentUser.ExperiencePoints = ScoreManager.TotalXP;
+        UserManager.Instance.Save();
 
         if (EarnedAchievements.Count == 0)
         {
