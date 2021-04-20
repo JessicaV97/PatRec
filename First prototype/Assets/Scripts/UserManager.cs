@@ -2,6 +2,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 
 namespace Happify.User
@@ -59,7 +60,14 @@ namespace Happify.User
 
         private void Start()
         {
-            AddUser(new UserDescription("Jessica", Level.Easy, Level.Easy, 3, false, false, 0, 0));
+            if(_allUsers.Any(user => user.Name == "Jessica"))
+            {
+                SetCurrentUser(_allUsers.FirstOrDefault(user => user.Name == "Jessica"));
+            }
+            else
+            {
+                AddUser(new UserDescription("Jessica", Level.Easy, Level.Easy, 3, false, false, 0, 0));
+            }
         }
 
         public void AddUser(UserDescription user, bool setAsCurrentUser = true)

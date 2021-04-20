@@ -35,7 +35,6 @@ public class QuizManager : MonoBehaviour
 	public bool CorrectActive = false;
 
 	private int _score = 0;
-	private int _lives;
 
 	//Get sound effects
 	public AudioSource CorrectSound;
@@ -53,8 +52,6 @@ public class QuizManager : MonoBehaviour
 
 	private static QuizManager  _instance;
 	public static QuizManager Instance => _instance;
-
-	public int NrOfLives => _lives;
 	public int GetScore => _score;
 	public String GetContext => Topic;
 
@@ -80,8 +77,7 @@ public class QuizManager : MonoBehaviour
 	{
 		LevelCompletePanel.SetActive(false);
 		currentUser = UserManager.Instance.CurrentUser;
-		_lives = currentUser.NrOfLives;
-		Lives.text = _lives.ToString();
+		Lives.text = currentUser.NrOfLives.ToString();
 		LevelIndex = LevelSwiper.GetLevel();
 		Debug.Log(currentUser.EmotionsLevel);
 		if (LevelIndex != 1)
@@ -178,6 +174,8 @@ public class QuizManager : MonoBehaviour
 
 	public void Wrong()
 	{
+		currentUser = UserManager.Instance.CurrentUser;
+
 		//Play sound effect
 		if (currentUser.RemainingHearing)
 			IncorrectSound.Play();
@@ -186,7 +184,7 @@ public class QuizManager : MonoBehaviour
 		//If wrong answer was chosen remove 1 live and score - 1 
 		//UserManager.Instance.CurrentUser.NrOfLives--;
 		//_lives--;
-		/*UserManager.Instance.CurrentUser*/currentUser.NrOfLives--;/* = _lives;*/
+		currentUser.NrOfLives--;
 		Debug.Log("usermanager lives" + UserManager.Instance.CurrentUser.NrOfLives);
 
 		_score--;
@@ -202,10 +200,10 @@ public class QuizManager : MonoBehaviour
 			WrongPanel.SetActive(true);
 			WrongActive = true;
 		}
-		if (/*currentUser.NrOfLives*/_lives == 0)
+		if (currentUser.NrOfLives == 0)
 		{
 			GoScreen.SetActive(true);
-			/*UserManager.Instance.C*/currentUser.NrOfLives = 0;
+			currentUser.NrOfLives = 0;
             UserManager.Instance.Save();
         }
 		
@@ -278,7 +276,6 @@ public class QuizManager : MonoBehaviour
 		{
 			//Level Complete
 			ScoreManager.UpdateScore(_score);
-			UserManager.Instance.CurrentUser.NrOfLives = _lives;
 			UserManager.Instance.Save();
 
 			////Check for xp badges

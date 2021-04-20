@@ -11,10 +11,25 @@ namespace Happify.User
 
     public class UserDescription
     {
+        private int _numberOfLives;
+
         public string Name { get; set; }
         public Level EmotionsLevel { get; set; }
         public Level GeneralLevel { get; set; }
-        public int NrOfLives { get; set; }
+
+        public int NrOfLives
+        {
+            get => _numberOfLives;
+            set
+            {
+                if (_numberOfLives == value)
+                    return;
+
+                _numberOfLives = value;
+                LastLifeReceivedTimestamp = DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+            }
+        }
+
         public bool RemainingHearing { get; set; }
         public bool RemainingVision { get; set; }
         public int ExperiencePoints { get; set; }
