@@ -30,6 +30,7 @@ public class QuizManager : MonoBehaviour
 	public TextMeshProUGUI Lives;
 	public TextMeshProUGUI LevelCompleteTxt;
 	public TextMeshProUGUI XPBadgeTxt;
+	public TextMeshProUGUI ContextTxt;
 
 	public bool WrongActive = false;
 	public bool CorrectActive = false;
@@ -85,12 +86,14 @@ public class QuizManager : MonoBehaviour
 			PatternsComplete = Resources.LoadAll("ScriptableObjects/SO_Emotions", typeof(SOPattern));
 			UserSkill = currentUser.EmotionsLevel;
 			Topic = "Emoties en sfeer";
+			ContextTxt.text = "Emoties en sfeer";
 		}
 		else
 		{
 			PatternsComplete = Resources.LoadAll("ScriptableObjects/SO_General", typeof(SOPattern));
 			UserSkill = currentUser.GeneralLevel;
 			Topic = "Algemeen";
+			ContextTxt.text = "Algemeen";
 		}
 
 		GoScreen.SetActive(false);
@@ -168,6 +171,7 @@ public class QuizManager : MonoBehaviour
 			CorrectPanel.SetActive(true);
 			CorrectActive = true;
 		}
+
 		//Start Coroutine to deactivate the green screen and initiate a new question
 		StartCoroutine(WaitForNext());
 	}
@@ -206,7 +210,7 @@ public class QuizManager : MonoBehaviour
 			currentUser.NrOfLives = 0;
             UserManager.Instance.Save();
         }
-		
+
 		//Start coroutine to deactive the red screen and initate a new question
 		StartCoroutine(WaitForNext());
 		
@@ -263,19 +267,19 @@ public class QuizManager : MonoBehaviour
 			if (!currentUser.RemainingVision /*&& currentUser.RemainingHearing*/)
 			{
 				QuestionTxt.text = "... ";
-				StartCoroutine(DownloadTheAudio(QnA[CurrentQuestion].Question));
+				//StartCoroutine(DownloadTheAudio(QnA[CurrentQuestion].Question));
 			}
 			else
-			{
-				// Set question text (i.e. context)
 				QuestionTxt.text = QnA[CurrentQuestion].Question;
-			}
 			PlayPattern();
 		}
 		else
 		{
 			//Level Complete
+			currentUser = UserManager.Instance.CurrentUser;
+			ScoreManager.TotalXP = currentUser.ExperiencePoints;
 			ScoreManager.UpdateScore(_score);
+			currentUser.ExperiencePoints = ScoreManager.TotalXP;
 			UserManager.Instance.Save();
 
 			////Check for xp badges
@@ -324,8 +328,8 @@ public class QuizManager : MonoBehaviour
 
 	public async void PlayPattern()
 	{
-		if (!currentUser.RemainingVision && currentUser.RemainingHearing) 
-			StartCoroutine(DownloadTheAudio(QnA[CurrentQuestion].Question));
+		//if (!currentUser.RemainingVision && currentUser.RemainingHearing) 
+		//	StartCoroutine(DownloadTheAudio(QnA[CurrentQuestion].Question));
 		string json = QnA[CurrentQuestion].Json.text;
 		json = Regex.Replace(json, @"\t|\n|\r", "");
 		json = json.Replace(" ", "");

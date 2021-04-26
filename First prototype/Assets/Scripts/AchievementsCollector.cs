@@ -44,12 +44,13 @@ public class AchievementsCollector : MonoBehaviour
         //{
         //    Destroy(this);
         //}
-        currentUser = UserManager.Instance.CurrentUser;
+        //currentUser = UserManager.Instance.CurrentUser;
         ScoreBoard.SetActive(false);
     }
 
     void Start()
     {
+        currentUser = UserManager.Instance.CurrentUser;
         if (runningCoroutine == null && currentUser.RemainingHearing && !currentUser.RemainingVision)
         {
             runningCoroutine = (DownloadTheAudio("Badges"));
@@ -69,9 +70,9 @@ public class AchievementsCollector : MonoBehaviour
             else
                 _coroutineQueue.Enqueue(DownloadTheAudio(ScoreManager.TotalXP.ToString()));
         }
-        Status.GetComponent<TextMeshProUGUI>().text = ScoreManager.TotalXP + "XP";
-        currentUser.ExperiencePoints = ScoreManager.TotalXP;
-        UserManager.Instance.Save();
+        Status.GetComponent<TextMeshProUGUI>().text = UserManager.Instance.CurrentUser.ExperiencePoints + "XP";
+        //currentUser.ExperiencePoints = ScoreManager.TotalXP;
+        //UserManager.Instance.Save();
 
         if (EarnedAchievements.Count == 0)
         {

@@ -51,7 +51,7 @@ namespace Happify.TextToSpeech
 				SceneManager.LoadScene("scn_MainGameScreen");
 			else if (button.Equals("Play") || button.Equals("BackToLevels"))
 				SceneManager.LoadScene("scn_Levels");
-			else if (button.Equals("Settings") || button.Equals("BackToSettings"))
+			else if (button.Equals("Settings") /*|| button.Equals("BackToSettings")*/)
 				SceneManager.LoadScene("scn_Settings");
 			else if (button.Equals("Achievements") || button.Equals("BackToAchievements"))
 				SceneManager.LoadScene("scn_Achievements");
@@ -101,7 +101,7 @@ namespace Happify.TextToSpeech
 				StartCoroutine(DownloadTheAudio("Naar badges collectie", audio));
 			else if (button.Equals("ListOfScores"))
 				StartCoroutine(DownloadTheAudio("Naar de lijst met scores per persoon", audio));
-			else if (button.Equals("BackToHome"))
+			else if (button.Equals("BackToHome") || button.Equals("BackFromSettings"))
 				StartCoroutine(DownloadTheAudio("Terug naar menu", audio));
 			else if (button.Equals("replayPattern"))
 				StartCoroutine(DownloadTheAudio("Speel patroon opnieuw", audio));

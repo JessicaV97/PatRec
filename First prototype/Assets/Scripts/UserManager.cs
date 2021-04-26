@@ -9,7 +9,7 @@ namespace Happify.User
 {
     public class UserManager : MonoBehaviour
     {
-        private const string UserDatabaseFilename = "Users1.json";
+        private const string UserDatabaseFilename = "Users4.json";
 
         [SerializeField]
         private float _maximumLives = 3;
@@ -66,7 +66,7 @@ namespace Happify.User
             }
             else
             {
-                AddUser(new UserDescription("Jessica", Level.Easy, Level.Easy, 3, false, false, 0, 0));
+                AddUser(new UserDescription("Jessica", Level.Easy, Level.Easy, 3, true, true, 0, 0));
             }
         }
 

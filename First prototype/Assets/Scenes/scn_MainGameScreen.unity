@@ -4228,6 +4228,7 @@ MonoBehaviour:
   Lives: {fileID: 1883806753}
   LevelCompleteTxt: {fileID: 2061435404}
   XPBadgeTxt: {fileID: 21422674}
+  ContextTxt: {fileID: 2103844830}
   WrongActive: 0
   CorrectActive: 0
   CorrectSound: {fileID: 1032437875}
@@ -5387,8 +5388,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 105
-  m_fontSizeBase: 105
+  m_fontSize: 100
+  m_fontSizeBase: 100
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

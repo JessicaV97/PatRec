@@ -31,8 +31,8 @@ namespace Happify.Scores
         {
             UserList = (List<UserDescription>)UserManager.Instance.AllUsers;
             UserList = UserList.GroupBy(x => x.Name).Select(x => x.First()).ToList(); //To do: Fix all double users
-            SortedOnBadges = UserList.OrderBy(o => o.NumberOfObtainedBadges).ToList();
-            SortedOnXP = UserList.OrderBy(o => o.ExperiencePoints).ToList();
+            SortedOnBadges = UserList.OrderByDescending(o => o.NumberOfObtainedBadges).ToList();
+            SortedOnXP = UserList.OrderByDescending(o => o.ExperiencePoints).ToList();
             foreach (UserDescription user in UserList)
             {
                 NamesSpace.text = NamesSpace.text + user.Name + "\n";

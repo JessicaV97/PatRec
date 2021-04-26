@@ -15,10 +15,12 @@ public class SetUser : MonoBehaviour
     public TextMeshProUGUI CurrentPlayerName;
 
     public Button DeafSet;
+    public Button DeafSetSettings;
     public Sprite NoAudioPerception;
     public Sprite AudioPerception;
 
     public Button BlindSet;
+    public Button BlindSetSettings;
     public Sprite NoVisualPerception;
     public Sprite VisualPerception;
 
@@ -41,18 +43,22 @@ public class SetUser : MonoBehaviour
         SelectUserPanel.SetActive(false);
         PlayerName.text = currentUser.Name;
         CurrentPlayerName.text = currentUser.Name;
-        //userIndex = GetIndex.IndexOf(allUsers, currentUser);
+        userIndex = GetIndex.IndexOf(allUsers, currentUser);
   
     }
 
     public void ChangeUser()
     {
         SelectUserPanel.SetActive(true);
+        //PlayerName.text = currentUser.Name;
+        //CurrentPlayerName.text = currentUser.Name;
     }
 
     public void AddUser()
     {
         AddUserPanel.SetActive(true);
+        //PlayerName.text = currentUser.Name;
+        //CurrentPlayerName.text = currentUser.Name;
     }
 
     public void CancelAddUser()
@@ -64,7 +70,7 @@ public class SetUser : MonoBehaviour
     {
         allUsers = UserManager.Instance.AllUsers;
         allUsers = allUsers.GroupBy(x => x.Name).Select(x => x.First()).ToList();
-        Debug.Log(allUsers.Count);
+        //Debug.Log(allUsers.Count);
         if (userIndex == 0)
             userIndex = allUsers.Count - 1; 
         else
@@ -82,22 +88,23 @@ public class SetUser : MonoBehaviour
         else 
             userIndex++;
         PlayerName.text = allUsers[userIndex].Name;
-
     }
 
     public void SwitchUser()
     {
         UserManager.Instance.SetCurrentUser(allUsers[userIndex]);
         currentUser = UserManager.Instance.CurrentUser;
+        PlayerName.text = currentUser.Name;
         CurrentPlayerName.text = currentUser.Name;
-        if (currentUser.RemainingHearing)
-            DeafSet.image.overrideSprite = AudioPerception;
-        else
-            DeafSet.image.overrideSprite = NoAudioPerception;
-        if (currentUser.RemainingVision)
-            BlindSet.image.overrideSprite = VisualPerception;
-        else
-            BlindSet.image.overrideSprite = NoVisualPerception;
+        //if (currentUser.RemainingHearing)
+        //    DeafSetSettings.image.overrideSprite = AudioPerception;
+        //else
+        //    DeafSetSettings.image.overrideSprite = NoAudioPerception;
+        //if (currentUser.RemainingVision)
+        //    BlindSetSettings.image.overrideSprite = VisualPerception;
+        //else
+        //    BlindSetSettings.image.overrideSprite = NoVisualPerception;
+        UpdateSettings();
         SelectUserPanel.SetActive(false);
     }
 
@@ -123,28 +130,52 @@ public class SetUser : MonoBehaviour
         nameInput.GetComponent<TMP_InputField>().text = "";
         
         bool remainingHearing = false;
-        if (DeafSet.image.overrideSprite.Equals("doof"))
+
+        //if (DeafSet.image.sprite.name.Equals( "Doof"))
+        if (DeafSet.image.overrideSprite.name == "Doof")
         {
             remainingHearing = true;
-            DeafSet.image.overrideSprite = AudioPerception;
+            DeafSetSettings.image.overrideSprite = AudioPerception;
         }
         else
-            DeafSet.image.overrideSprite = NoAudioPerception;
+            DeafSetSettings.image.overrideSprite = NoAudioPerception;
  
         bool remainingVision = false;
-        if (BlindSet.image.overrideSprite.Equals("blind"))
+        if (BlindSet.image.overrideSprite.name == "Blind")
         {
             remainingVision = true;
-            BlindSet.image.overrideSprite = VisualPerception;
+            BlindSetSettings.image.overrideSprite = VisualPerception;
         }
         else
-            BlindSet.image.overrideSprite = NoVisualPerception;
+            BlindSetSettings.image.overrideSprite = NoVisualPerception;
             
         UserManager.Instance.AddUser(new UserDescription(name, Level.Easy, Level.Easy, 3, remainingHearing, remainingVision, 0, 0));
+        Debug.Log("rh" + remainingHearing);
+        Debug.Log("rv " + remainingVision);
         UserManager.Instance.Save();
         currentUser = UserManager.Instance.CurrentUser;
-   
+        
         AddUserPanel.SetActive(false);
+    }
+
+    public void UpdateSettings()
+    {
+
+        if (currentUser.RemainingVision)
+            BlindSetSettings.image.overrideSprite = VisualPerception;
+        else
+            BlindSetSettings.image.overrideSprite = NoVisualPerception;
+
+        if (currentUser.RemainingHearing)
+            DeafSetSettings.image.overrideSprite = AudioPerception;
+        else
+            DeafSetSettings.image.overrideSprite = NoAudioPerception;
+    }
+
+    public void BackToSettings()
+    {
+        UpdateSettings();
+        SelectUserPanel.SetActive(false);
     }
 
 

@@ -29,6 +29,7 @@ namespace Happify.Levels
 		{
 			CreateListOfLevelSprites();
 			_levelSwiper = this;
+			LevelIndex = 0;
 		}
 
 		public void NextLevelTopic()
