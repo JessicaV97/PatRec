@@ -49,16 +49,14 @@ public class SetUser : MonoBehaviour
 
     public void ChangeUser()
     {
+        PlayerName.text = currentUser.Name;
+        CurrentPlayerName.text = currentUser.Name;
         SelectUserPanel.SetActive(true);
-        //PlayerName.text = currentUser.Name;
-        //CurrentPlayerName.text = currentUser.Name;
     }
 
     public void AddUser()
     {
         AddUserPanel.SetActive(true);
-        //PlayerName.text = currentUser.Name;
-        //CurrentPlayerName.text = currentUser.Name;
     }
 
     public void CancelAddUser()
@@ -150,11 +148,11 @@ public class SetUser : MonoBehaviour
             BlindSetSettings.image.overrideSprite = NoVisualPerception;
             
         UserManager.Instance.AddUser(new UserDescription(name, Level.Easy, Level.Easy, 3, remainingHearing, remainingVision, 0, 0));
-        Debug.Log("rh" + remainingHearing);
-        Debug.Log("rv " + remainingVision);
         UserManager.Instance.Save();
         currentUser = UserManager.Instance.CurrentUser;
-        
+        PlayerName.text = currentUser.Name;
+        CurrentPlayerName.text = currentUser.Name;
+
         AddUserPanel.SetActive(false);
     }
 

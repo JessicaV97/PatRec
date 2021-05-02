@@ -32,6 +32,8 @@ public class AchievementsCollector : MonoBehaviour
 
     private UserDescription currentUser;
 
+    private string _audioString; 
+
     private void Awake()
     {
         if (_instance == null)
@@ -51,25 +53,25 @@ public class AchievementsCollector : MonoBehaviour
     void Start()
     {
         currentUser = UserManager.Instance.CurrentUser;
-        if (runningCoroutine == null && currentUser.RemainingHearing && !currentUser.RemainingVision)
-        {
-            runningCoroutine = (DownloadTheAudio("Badges"));
-            StartCoroutine(runningCoroutine);
-        }
-        else
-            _coroutineQueue.Enqueue(DownloadTheAudio("Badge"));
-
+        //if (/*runningCoroutine == null &&*/ currentUser.RemainingHearing && !currentUser.RemainingVision)
+        //{
+        //    runningCoroutine = (DownloadTheAudio("Badges omgeving. Je hebt " + ScoreManager.TotalXP.ToString() + "experience puntenen"));
+        //    StartCoroutine(runningCoroutine);
+        //}
+        //else
+        //    _coroutineQueue.Enqueue(DownloadTheAudio("Badge"));
+        _audioString = "Badges omgeving. Je hebt " + ScoreManager.TotalXP.ToString() + "experience puntenen";
         
-        if (!currentUser.RemainingVision && currentUser.RemainingHearing)
-        {
-            if (runningCoroutine == null)
-            {
-                runningCoroutine = DownloadTheAudio(ScoreManager.TotalXP.ToString());
-                StartCoroutine(runningCoroutine);
-            }
-            else
-                _coroutineQueue.Enqueue(DownloadTheAudio(ScoreManager.TotalXP.ToString()));
-        }
+        //if (!currentUser.RemainingVision && currentUser.RemainingHearing)
+        //{
+        //    if (runningCoroutine == null)
+        //    {
+        //        runningCoroutine = DownloadTheAudio(ScoreManager.TotalXP.ToString());
+        //        StartCoroutine(runningCoroutine);
+        //    }
+        //    else
+        //        _coroutineQueue.Enqueue(DownloadTheAudio(ScoreManager.TotalXP.ToString()));
+        //}
         Status.GetComponent<TextMeshProUGUI>().text = UserManager.Instance.CurrentUser.ExperiencePoints + "XP";
         //currentUser.ExperiencePoints = ScoreManager.TotalXP;
         //UserManager.Instance.Save();
@@ -82,11 +84,12 @@ public class AchievementsCollector : MonoBehaviour
             BadgeTopic.SetActive(false);
             Next.SetActive(false);
             Previous.SetActive(false);
-            if (!currentUser.RemainingVision && currentUser.RemainingHearing)
-                if (runningCoroutine == null)
-                    StartCoroutine(DownloadTheAudio("Helaas! Je hebt nog geen badges behaald. Probeer de quiz om een badge te verdienen."));
-                else
-                    _coroutineQueue.Enqueue(DownloadTheAudio("Helaas! Je hebt nog geen badges behaald. Probeer de quiz om een badge te verdienen."));
+            //if (!currentUser.RemainingVision && currentUser.RemainingHearing)
+            //    if (runningCoroutine == null)
+            //        StartCoroutine(DownloadTheAudio("Helaas! Je hebt nog geen badges behaald. Probeer de quiz om een badge te verdienen."));
+            //    else
+            //        _coroutineQueue.Enqueue(DownloadTheAudio("Helaas! Je hebt nog geen badges behaald. Probeer de quiz om een badge te verdienen."));
+            _audioString = _audioString + "Je hebt nog geen badges behaald. Probeer de quiz om een badge te verdienen.";
         }
         else
         {
@@ -100,9 +103,9 @@ public class AchievementsCollector : MonoBehaviour
             Previous.SetActive(true);
 
             if (!currentUser.RemainingVision && currentUser.RemainingHearing)
-                ReadBadges();
+                _audioString = _audioString + "Onderwerp is " + EarnedAchievements[_badgeIndex].AchievementTopic + ". Badge is " + EarnedAchievements[_badgeIndex].AchievementText; 
         }
-        
+        StartCoroutine(DownloadTheAudio(_audioString));
     }
 
     public void ShowScores()
@@ -147,7 +150,7 @@ public class AchievementsCollector : MonoBehaviour
         BadgeTopic.GetComponent<TextMeshProUGUI>().text = EarnedAchievements[_badgeIndex].AchievementTopic;
         
         if (!currentUser.RemainingVision && currentUser.RemainingHearing)
-            ReadBadges();
+            _audioString = "Onderwerp is " + EarnedAchievements[_badgeIndex].AchievementTopic + ". Badge is " + EarnedAchievements[_badgeIndex].AchievementText;
     }
 
 
@@ -162,7 +165,7 @@ public class AchievementsCollector : MonoBehaviour
         BadgeTopic.GetComponent<TextMeshProUGUI>().text = EarnedAchievements[_badgeIndex].AchievementTopic;
 
         if (!currentUser.RemainingVision && currentUser.RemainingHearing)
-            ReadBadges();
+            _audioString = "Onderwerp is " + EarnedAchievements[_badgeIndex].AchievementTopic + ". Badge is " + EarnedAchievements[_badgeIndex].AchievementText;
     }
 
     public static string AddXpBadge(int level)
@@ -217,18 +220,18 @@ public class AchievementsCollector : MonoBehaviour
         }
     }
 
-    void ReadBadges()
-    {
-        if (runningCoroutine == null)
-        {
-            runningCoroutine = DownloadTheAudio("Onderwerp");
-            StartCoroutine(runningCoroutine);
-        }
-        else
-            _coroutineQueue.Enqueue(runningCoroutine);
+    //void ReadBadges()
+    //{
+    //    if (runningCoroutine == null)
+    //    {
+    //        runningCoroutine = DownloadTheAudio("Onderwerp");
+    //        StartCoroutine(runningCoroutine);
+    //    }
+    //    else
+    //        _coroutineQueue.Enqueue(runningCoroutine);
 
-        _coroutineQueue.Enqueue(DownloadTheAudio(EarnedAchievements[_badgeIndex].AchievementTopic));
-        _coroutineQueue.Enqueue(DownloadTheAudio("Inhoud"));
-        _coroutineQueue.Enqueue(DownloadTheAudio(EarnedAchievements[_badgeIndex].AchievementText));
-    }
+    //    _coroutineQueue.Enqueue(DownloadTheAudio(EarnedAchievements[_badgeIndex].AchievementTopic));
+    //    _coroutineQueue.Enqueue(DownloadTheAudio("Inhoud"));
+    //    _coroutineQueue.Enqueue(DownloadTheAudio(EarnedAchievements[_badgeIndex].AchievementText));
+    //}
 }

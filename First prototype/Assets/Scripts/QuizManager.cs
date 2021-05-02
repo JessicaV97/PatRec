@@ -166,11 +166,11 @@ public class QuizManager : MonoBehaviour
 		//Remove question from list
 		QnA.RemoveAt(CurrentQuestion);
 		//Activate green screen with check mark
-		if (currentUser.RemainingVision)
-		{
+		//if (currentUser.RemainingVision)
+		//{
 			CorrectPanel.SetActive(true);
 			CorrectActive = true;
-		}
+		//}
 
 		//Start Coroutine to deactivate the green screen and initiate a new question
 		StartCoroutine(WaitForNext());
@@ -199,21 +199,22 @@ public class QuizManager : MonoBehaviour
 		//Lives.text = _lives.ToString();
 
 		//Show red screen with cross
-		if (currentUser.RemainingVision)
-		{
+		//if (currentUser.RemainingVision)
+		//{
 			WrongPanel.SetActive(true);
 			WrongActive = true;
-		}
+		//}
 		if (currentUser.NrOfLives == 0)
 		{
 			GoScreen.SetActive(true);
 			currentUser.NrOfLives = 0;
             UserManager.Instance.Save();
+			return; 
         }
 
 		//Start coroutine to deactive the red screen and initate a new question
 		StartCoroutine(WaitForNext());
-		
+
 	}
 
 	IEnumerator WaitForNext()

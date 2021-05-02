@@ -39,7 +39,7 @@ namespace Happify.TextToSpeech
 
 		}
 
-		public void OnSingleClick(string button)
+		public void OnSingleClick(string button, AudioSource audio)
 		{
 			if (button.Equals("Next"))
 				LevelSwiper.Instance.NextLevelTopic();
@@ -47,8 +47,9 @@ namespace Happify.TextToSpeech
 				LevelSwiper.Instance.PreviousLevelTopic();
 			else if (button.Equals("StudySymbols"))
 				SceneManager.LoadScene("scn_StudyEnvironment");
-			else if (button.Equals("PlayGame") || button.Equals("NextLevel"))
+			else if ((button.Equals("PlayGame") || button.Equals("NextLevel")) && _currentUser.NrOfLives != 0)
 				SceneManager.LoadScene("scn_MainGameScreen");
+
 			else if (button.Equals("Play") || button.Equals("BackToLevels"))
 				SceneManager.LoadScene("scn_Levels");
 			else if (button.Equals("Settings") /*|| button.Equals("BackToSettings")*/)

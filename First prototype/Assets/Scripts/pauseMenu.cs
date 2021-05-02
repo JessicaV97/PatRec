@@ -62,12 +62,12 @@ public class PauseMenu : MonoBehaviour, IPointerClickHandler
 			}
 			else if (tap > 1)
 			{
-				OverarchingTTS.Instance.OnSingleClick(objName);
+				OverarchingTTS.Instance.OnSingleClick(objName, Audio);
 				tap = 0;
 			}
 		}
 		else
-			OverarchingTTS.Instance.OnSingleClick(objName);
+			OverarchingTTS.Instance.OnSingleClick(objName, Audio);
 	}
 
 	IEnumerator DoubleTapInterval()

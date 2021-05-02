@@ -18,18 +18,19 @@ public class StudyManager : MonoBehaviour
 	public int PatternIndex = 0;
 	public static int LevelIndex;
 
-    public AudioSource _audio;
+	public GameObject MainCamera;
+    private AudioSource _audio;
 
 	private UserDescription currentUser;
 
-	public async void Awake()
+    public async void Awake()
 	{ 
 		await MqttService.Instance.ConnectAsync();
 		currentUser = UserManager.Instance.CurrentUser;
 	}
 	public void Start()
 	{
-		_audio = gameObject.GetComponent<AudioSource>();
+		_audio = MainCamera.GetComponent<AudioSource>();
 
 		LevelIndex = LevelSwiper.GetLevel();
 		if (LevelIndex != 1)
