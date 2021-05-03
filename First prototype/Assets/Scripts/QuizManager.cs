@@ -32,6 +32,8 @@ public class QuizManager : MonoBehaviour
 	public TextMeshProUGUI XPBadgeTxt;
 	public TextMeshProUGUI ContextTxt;
 
+	private int _badgeearned = 0;
+
 	public bool WrongActive = false;
 	public bool CorrectActive = false;
 
@@ -284,33 +286,37 @@ public class QuizManager : MonoBehaviour
 			UserManager.Instance.Save();
 
 			////Check for xp badges
-			if (ScoreManager.TotalXP >= 100)
+			if (ScoreManager.TotalXP >= 100 && _badgeearned < 4)
 			{
 				XPBadgeTxt.text = AchievementsCollector.AddXpBadge(4);
 				XPBadgePanel.SetActive(true);
 				if (!currentUser.RemainingVision && currentUser.RemainingHearing)
 					ReadPattern(XPBadgeTxt.text);
+				_badgeearned++;
 			}
-			else if (ScoreManager.TotalXP >= 50)
+			else if (ScoreManager.TotalXP >= 50 && _badgeearned < 3)
 			{
 				XPBadgeTxt.text = AchievementsCollector.AddXpBadge(3);
 				XPBadgePanel.SetActive(true);
 				if (!currentUser.RemainingVision && currentUser.RemainingHearing)
 					ReadPattern(XPBadgeTxt.text);
+				_badgeearned++;
 			}
-			else if (ScoreManager.TotalXP >= 25)
+			else if (ScoreManager.TotalXP >= 25 && _badgeearned < 2)
 			{
 				XPBadgeTxt.text = AchievementsCollector.AddXpBadge(2);
 				XPBadgePanel.SetActive(true);
 				if (!currentUser.RemainingVision && currentUser.RemainingHearing)
 					ReadPattern(XPBadgeTxt.text);
+				_badgeearned++;
 			}
-			else if (ScoreManager.TotalXP >= 10)
+			else if (ScoreManager.TotalXP >= 10 && _badgeearned < 1)
 			{
 				XPBadgeTxt.text = AchievementsCollector.AddXpBadge(1);
 				XPBadgePanel.SetActive(true);
 				if (!currentUser.RemainingVision && currentUser.RemainingHearing)
 					ReadPattern(XPBadgeTxt.text);
+				_badgeearned++;
 			}
 
 			LevelCompleteTxt.text = AchievementsCollector.PopUpAchievement(Topic, UserSkill);

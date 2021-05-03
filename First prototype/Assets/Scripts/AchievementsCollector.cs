@@ -60,7 +60,7 @@ public class AchievementsCollector : MonoBehaviour
         //}
         //else
         //    _coroutineQueue.Enqueue(DownloadTheAudio("Badge"));
-        _audioString = "Badges omgeving. Je hebt " + ScoreManager.TotalXP.ToString() + "experience puntenen";
+        _audioString = "Badges omgeving. Je hebt " + ScoreManager.TotalXP.ToString() + "experience punten";
         
         //if (!currentUser.RemainingVision && currentUser.RemainingHearing)
         //{
@@ -105,7 +105,9 @@ public class AchievementsCollector : MonoBehaviour
             if (!currentUser.RemainingVision && currentUser.RemainingHearing)
                 _audioString = _audioString + "Onderwerp is " + EarnedAchievements[_badgeIndex].AchievementTopic + ". Badge is " + EarnedAchievements[_badgeIndex].AchievementText; 
         }
-        StartCoroutine(DownloadTheAudio(_audioString));
+        
+        if (!currentUser.RemainingVision && currentUser.RemainingHearing)
+            StartCoroutine(DownloadTheAudio(_audioString));
     }
 
     public void ShowScores()
@@ -148,9 +150,12 @@ public class AchievementsCollector : MonoBehaviour
         BadgeText.GetComponent<TextMeshProUGUI>().text = EarnedAchievements[_badgeIndex].AchievementText;
         BadgeSprite.GetComponent<Image>().sprite = EarnedAchievements[_badgeIndex].BadgeImage;
         BadgeTopic.GetComponent<TextMeshProUGUI>().text = EarnedAchievements[_badgeIndex].AchievementTopic;
-        
+
         if (!currentUser.RemainingVision && currentUser.RemainingHearing)
-            _audioString = "Onderwerp is " + EarnedAchievements[_badgeIndex].AchievementTopic + ". Badge is " + EarnedAchievements[_badgeIndex].AchievementText;
+        {
+            _audioString = "Volgende. Onderwerp is " + EarnedAchievements[_badgeIndex].AchievementTopic + ". Badge is " + EarnedAchievements[_badgeIndex].AchievementText;
+            StartCoroutine(DownloadTheAudio(_audioString));
+        }
     }
 
 
@@ -165,7 +170,10 @@ public class AchievementsCollector : MonoBehaviour
         BadgeTopic.GetComponent<TextMeshProUGUI>().text = EarnedAchievements[_badgeIndex].AchievementTopic;
 
         if (!currentUser.RemainingVision && currentUser.RemainingHearing)
-            _audioString = "Onderwerp is " + EarnedAchievements[_badgeIndex].AchievementTopic + ". Badge is " + EarnedAchievements[_badgeIndex].AchievementText;
+        {
+            _audioString = "Vorige. Onderwerp is " + EarnedAchievements[_badgeIndex].AchievementTopic + ". Badge is " + EarnedAchievements[_badgeIndex].AchievementText;
+            StartCoroutine(DownloadTheAudio(_audioString));
+        }
     }
 
     public static string AddXpBadge(int level)

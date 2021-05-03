@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PatternName: Verbaasd
   PatternJson: {fileID: 4900000, guid: e63d60c96c359ce41889cd2c0113c7bc, type: 3}
-  PatternImage: {fileID: 21300000, guid: 98760f73d403fa04baf8dc2f4f5fa8f8, type: 3}
+  PatternImage: {fileID: 21300000, guid: 012d3d2b47bcf9a4aa52a0f5e24f954f, type: 3}
   Difficulty: 2

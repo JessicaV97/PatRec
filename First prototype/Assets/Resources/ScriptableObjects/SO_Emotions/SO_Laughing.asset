@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PatternName: Lachen
   PatternJson: {fileID: 4900000, guid: e4ecd4b39b235b949b3596d058bb5f6e, type: 3}
-  PatternImage: {fileID: 21300000, guid: f3899f86f7185d746994f6c26db3773c, type: 3}
+  PatternImage: {fileID: 21300000, guid: 537a9f0e3eb24484689644a7e9d69f1c, type: 3}
   Difficulty: 3
