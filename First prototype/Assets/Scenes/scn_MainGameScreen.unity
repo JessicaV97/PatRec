@@ -1995,7 +1995,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 368250f92c4296f41a5fd22e0275ea66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Audio: {fileID: 0}
+  Audio: {fileID: 1230776638}
 --- !u!1 &796641819
 GameObject:
   m_ObjectHideFlags: 0
@@ -2364,6 +2364,7 @@ GameObject:
   - component: {fileID: 883431697}
   - component: {fileID: 883431696}
   - component: {fileID: 883431695}
+  - component: {fileID: 883431698}
   m_Layer: 5
   m_Name: replayPattern
   m_TagString: Untagged
@@ -2446,6 +2447,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 883431698}
+        m_TargetAssemblyTypeName: QuizManager, Assembly-CSharp
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &883431696
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2484,6 +2497,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 883431693}
   m_CullTransparentMesh: 1
+--- !u!114 &883431698
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 883431693}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 368250f92c4296f41a5fd22e0275ea66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Audio: {fileID: 1230776638}
 --- !u!1 &893814302
 GameObject:
   m_ObjectHideFlags: 0
@@ -3464,8 +3490,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1194f25c4de7ca641881c1f8cae8e7d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PauseMenuUI: {fileID: 2001436242}
-  Audio: {fileID: 1230776638}
+  pauseMenuUI: {fileID: 2001436242}
+  _audio: {fileID: 1230776638}
 --- !u!1 &1529078652
 GameObject:
   m_ObjectHideFlags: 0
@@ -4209,29 +4235,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 401595e0f6b0e754b85ee19c1935952e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  QnA: []
-  Options:
+  _options:
   - {fileID: 793961889}
   - {fileID: 616991369}
   - {fileID: 27332277}
   - {fileID: 568930847}
-  CurrentQuestion: 0
-  Quizpanel: {fileID: 1194913572}
-  WrongPanel: {fileID: 1565079313}
-  CorrectPanel: {fileID: 2100680609}
-  GoScreen: {fileID: 1566520116}
-  LevelCompletePanel: {fileID: 781745382}
-  XPBadgePanel: {fileID: 1634134703}
-  QuestionTxt: {fileID: 434322729}
-  ScoreTxt: {fileID: 883326402}
-  Lives: {fileID: 1883806753}
-  LevelCompleteTxt: {fileID: 2061435404}
-  XPBadgeTxt: {fileID: 21422674}
-  ContextTxt: {fileID: 2103844830}
-  WrongActive: 0
-  CorrectActive: 0
-  CorrectSound: {fileID: 1032437875}
-  IncorrectSound: {fileID: 242935433}
+  _QnA: []
+  _quizPanel: {fileID: 1194913572}
+  _wrongPanel: {fileID: 1565079313}
+  _correctPanel: {fileID: 2100680609}
+  _gameOverScreen: {fileID: 1566520116}
+  _levelCompletePanel: {fileID: 781745382}
+  _xpBadgePanel: {fileID: 1634134703}
+  _questionText: {fileID: 434322729}
+  _scoreText: {fileID: 883326402}
+  _numberOfLives: {fileID: 1883806753}
+  _levelCompleteText: {fileID: 2061435404}
+  _xpBadgeText: {fileID: 21422674}
+  _contextText: {fileID: 2103844830}
+  _correctSound: {fileID: 1032437875}
+  _incorrectSound: {fileID: 242935433}
   _audio: {fileID: 1230776638}
 --- !u!1 &1854807367
 GameObject:
@@ -4812,7 +4835,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2025254917}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ac09fafd2252df4a8d7f6e2e0a8e89b, type: 3}
+  m_Script: {fileID: 11500000, guid: 368250f92c4296f41a5fd22e0275ea66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Audio: {fileID: 1230776638}

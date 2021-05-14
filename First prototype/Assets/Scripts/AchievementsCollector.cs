@@ -8,99 +8,93 @@ using UnityEngine.UI;
 using System.Linq;
 using Happify.Scores;
 
+/// <summary>
+/// Class is used in 'scn_achievements'. Takes care of the list of earned achievements
+/// </summary>
 public class AchievementsCollector : MonoBehaviour
 {
+    // Create instance of achievements collector
     private static AchievementsCollector _instance;
     public static AchievementsCollector Instance => _instance;
 
+    // Create list of the available achievements
     public static SOAchievement[] PossibleAchievements; 
+    // Create list of the earned achievements
     public static List<SOAchievement> EarnedAchievements = new List<SOAchievement>();
+    // Set index for the badge in earned badges
 	private int _badgeIndex = 0;
-    public GameObject NoBadges;
-    public GameObject BadgeSprite;
-    public GameObject BadgeText;
-    public GameObject BadgeTopic;
-    public GameObject Status;
-    public GameObject Next;
-    public GameObject Previous;
-    public GameObject ScoreBoard;
 
-    public AudioSource _audio;
-
-    IEnumerator runningCoroutine = null;
-    private Queue<IEnumerator> _coroutineQueue = new Queue<IEnumerator>();
+    //Collect game objects used in this script
+    [SerializeField]
+    private GameObject _noBadges;
+    [SerializeField]
+    private GameObject _badgeSprite;
+    [SerializeField]
+    private GameObject _badgeText;
+    [SerializeField]
+    private GameObject _badgeTopic;
+    [SerializeField]
+    private GameObject _status;
+    [SerializeField]
+    private GameObject _next;
+    [SerializeField]
+    private GameObject _previous;
+    [SerializeField]
+    public GameObject _scoreBoard;
+    [SerializeField]
+    private AudioSource _audio;
 
     private UserDescription currentUser;
+    
+    //String that used to combine pieces of information of the achievements scene to read out loud to a user using the app in blind mode
+    private string _audioString;
 
-    private string _audioString; 
-
+    /// <summary>
+    /// Create AchievementsCollector instance and deactivate scoreboard panel
+    /// </summary>
     private void Awake()
     {
         if (_instance == null)
         {
             _instance = this;
-            // Ensure that script does not get destroyed when changing scene.
-            //DontDestroyOnLoad(this);
         }
-        //else
-        //{
-        //    Destroy(this);
-        //}
-        //currentUser = UserManager.Instance.CurrentUser;
-        ScoreBoard.SetActive(false);
+        
+        _scoreBoard.SetActive(false);
     }
 
+    /// <summary>
+    /// Set the current user and note its experience points
+    /// If the user has earned no badges yet, show message to encourage playing and deactivate the buttons related to moving through the list of earned badges.
+    /// Otherwise show 1 badge with corresponding information and activate buttons to move through the list. 
+    /// In addition, add information to the audioString used in blind mode. 
+    /// If the user is playing in blind mode, play the collected audio information at opening of the achievements scene. 
+    /// </summary>
     void Start()
     {
         currentUser = UserManager.Instance.CurrentUser;
-        //if (/*runningCoroutine == null &&*/ currentUser.RemainingHearing && !currentUser.RemainingVision)
-        //{
-        //    runningCoroutine = (DownloadTheAudio("Badges omgeving. Je hebt " + ScoreManager.TotalXP.ToString() + "experience puntenen"));
-        //    StartCoroutine(runningCoroutine);
-        //}
-        //else
-        //    _coroutineQueue.Enqueue(DownloadTheAudio("Badge"));
         _audioString = "Badges omgeving. Je hebt " + ScoreManager.TotalXP.ToString() + "experience punten";
-        
-        //if (!currentUser.RemainingVision && currentUser.RemainingHearing)
-        //{
-        //    if (runningCoroutine == null)
-        //    {
-        //        runningCoroutine = DownloadTheAudio(ScoreManager.TotalXP.ToString());
-        //        StartCoroutine(runningCoroutine);
-        //    }
-        //    else
-        //        _coroutineQueue.Enqueue(DownloadTheAudio(ScoreManager.TotalXP.ToString()));
-        //}
-        Status.GetComponent<TextMeshProUGUI>().text = UserManager.Instance.CurrentUser.ExperiencePoints + "XP";
-        //currentUser.ExperiencePoints = ScoreManager.TotalXP;
-        //UserManager.Instance.Save();
+        _status.GetComponent<TextMeshProUGUI>().text = UserManager.Instance.CurrentUser.ExperiencePoints + "XP";
 
         if (EarnedAchievements.Count == 0)
         {
-            NoBadges.SetActive(true);
-            BadgeSprite.SetActive(false);
-            BadgeText.SetActive(false);
-            BadgeTopic.SetActive(false);
-            Next.SetActive(false);
-            Previous.SetActive(false);
-            //if (!currentUser.RemainingVision && currentUser.RemainingHearing)
-            //    if (runningCoroutine == null)
-            //        StartCoroutine(DownloadTheAudio("Helaas! Je hebt nog geen badges behaald. Probeer de quiz om een badge te verdienen."));
-            //    else
-            //        _coroutineQueue.Enqueue(DownloadTheAudio("Helaas! Je hebt nog geen badges behaald. Probeer de quiz om een badge te verdienen."));
+            _noBadges.SetActive(true);
+            _badgeSprite.SetActive(false);
+            _badgeText.SetActive(false);
+            _badgeTopic.SetActive(false);
+            _next.SetActive(false);
+            _previous.SetActive(false);
             _audioString = _audioString + "Je hebt nog geen badges behaald. Probeer de quiz om een badge te verdienen.";
         }
         else
         {
-            NoBadges.SetActive(false);
-            BadgeSprite.SetActive(true);
-            BadgeText.SetActive(true);
-            BadgeText.GetComponent<TextMeshProUGUI>().text = EarnedAchievements[_badgeIndex].AchievementText;
-            BadgeSprite.GetComponent<Image>().sprite = EarnedAchievements[_badgeIndex].BadgeImage;
-            BadgeTopic.GetComponent<TextMeshProUGUI>().text = EarnedAchievements[_badgeIndex].AchievementTopic;
-            Next.SetActive(true);
-            Previous.SetActive(true);
+            _noBadges.SetActive(false);
+            _badgeSprite.SetActive(true);
+            _badgeText.SetActive(true);
+            _badgeText.GetComponent<TextMeshProUGUI>().text = EarnedAchievements[_badgeIndex].AchievementText;
+            _badgeSprite.GetComponent<Image>().sprite = EarnedAchievements[_badgeIndex].BadgeImage;
+            _badgeTopic.GetComponent<TextMeshProUGUI>().text = EarnedAchievements[_badgeIndex].AchievementTopic;
+            _next.SetActive(true);
+            _previous.SetActive(true);
 
             if (!currentUser.RemainingVision && currentUser.RemainingHearing)
                 _audioString = _audioString + "Onderwerp is " + EarnedAchievements[_badgeIndex].AchievementTopic + ". Badge is " + EarnedAchievements[_badgeIndex].AchievementText; 
@@ -110,17 +104,31 @@ public class AchievementsCollector : MonoBehaviour
             StartCoroutine(DownloadTheAudio(_audioString));
     }
 
+    /// <summary>
+    /// Function used to activate creation list of scores and activate the panel that belongs to it. 
+    /// </summary>
     public void ShowScores()
     {
         HighScoreList.Instance.CreateList();
-        ScoreBoard.SetActive(true);
+        _scoreBoard.SetActive(true);
     }
 
+    /// <summary>
+    /// Deactivate the panel with list of scores per person. 
+    /// </summary>
     public void HideScores()
     {
-        ScoreBoard.SetActive(false);
+        _scoreBoard.SetActive(false);
     }
 
+    /// <summary>
+    /// Function that provides the QuizManager with the pop up text that belongs to a badge that is earned by the user. 
+    /// </summary>
+    /// <param name="topic"></param>
+    /// Refers to the context in which the badge is earned
+    /// <param name="userLevel"></param>
+    /// Refers to the level of experience a user has in a certain context. 
+    /// <returns></returns>
     public static string PopUpAchievement(string topic, Level userLevel)
     {
         PossibleAchievements = Resources.LoadAll<SOAchievement>("ScriptableObjects/SO_Achievements");
@@ -140,6 +148,10 @@ public class AchievementsCollector : MonoBehaviour
         return PUText;
     }
 
+    /// <summary>
+    /// Go to next badge in list of earned achievements. Adjust information on screen to the next badge. 
+    /// If the user uses blind mode, read out loud the badge that is shown on the screen. 
+    /// </summary>
 	public void NextBadge()
 	{
         if (_badgeIndex == EarnedAchievements.Count - 1)
@@ -147,9 +159,9 @@ public class AchievementsCollector : MonoBehaviour
 		else
 			_badgeIndex += 1;
         
-        BadgeText.GetComponent<TextMeshProUGUI>().text = EarnedAchievements[_badgeIndex].AchievementText;
-        BadgeSprite.GetComponent<Image>().sprite = EarnedAchievements[_badgeIndex].BadgeImage;
-        BadgeTopic.GetComponent<TextMeshProUGUI>().text = EarnedAchievements[_badgeIndex].AchievementTopic;
+        _badgeText.GetComponent<TextMeshProUGUI>().text = EarnedAchievements[_badgeIndex].AchievementText;
+        _badgeSprite.GetComponent<Image>().sprite = EarnedAchievements[_badgeIndex].BadgeImage;
+        _badgeTopic.GetComponent<TextMeshProUGUI>().text = EarnedAchievements[_badgeIndex].AchievementTopic;
 
         if (!currentUser.RemainingVision && currentUser.RemainingHearing)
         {
@@ -158,16 +170,19 @@ public class AchievementsCollector : MonoBehaviour
         }
     }
 
-
-	public void PreviousBadge()
+    /// <summary>
+    /// Go to next badge in list of earned achievements. Adjust information on screen to the next badge. 
+    /// If the user uses blind mode, read out loud the badge that is shown on the screen. 
+    /// </summary>
+    public void PreviousBadge()
 	{
         if (_badgeIndex == 0)
 			_badgeIndex = EarnedAchievements.Count - 1;
 		else
 			_badgeIndex -= 1;
-        BadgeText.GetComponent<TextMeshProUGUI>().text = EarnedAchievements[_badgeIndex].AchievementText;
-        BadgeSprite.GetComponent<Image>().sprite = EarnedAchievements[_badgeIndex].BadgeImage;
-        BadgeTopic.GetComponent<TextMeshProUGUI>().text = EarnedAchievements[_badgeIndex].AchievementTopic;
+        _badgeText.GetComponent<TextMeshProUGUI>().text = EarnedAchievements[_badgeIndex].AchievementText;
+        _badgeSprite.GetComponent<Image>().sprite = EarnedAchievements[_badgeIndex].BadgeImage;
+        _badgeTopic.GetComponent<TextMeshProUGUI>().text = EarnedAchievements[_badgeIndex].AchievementTopic;
 
         if (!currentUser.RemainingVision && currentUser.RemainingHearing)
         {
@@ -176,6 +191,13 @@ public class AchievementsCollector : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Function used to add badges to the list of earned badges based on experience points. 
+    /// Provides QuizManager with pop up text that belongs to the earned badge. 
+    /// </summary>
+    /// <param name="level"></param>
+    /// Level refers to the amount of experience of the user in general (10XP, 25XP, 50XP, 100XP)
+    /// <returns></returns>
     public static string AddXpBadge(int level)
     {
         PossibleAchievements = Resources.LoadAll<SOAchievement>("ScriptableObjects/SO_Achievements");
@@ -202,6 +224,12 @@ public class AchievementsCollector : MonoBehaviour
         return "";
     }
 
+    /// <summary>
+    /// Function to produce speech synthesis using google translate. Wifi needed. 
+    /// </summary>
+    /// <param name="message"></param>
+    /// Message is the string of information you want to have read out loud
+    /// <returns></returns>
     IEnumerator DownloadTheAudio(string message)
     {
         using (UnityWebRequest website = UnityWebRequestMultimedia.GetAudioClip("https://translate.google.com/translate_tts?ie=UTF-8&total=1&idx=0&textlen=32&client=tw-ob&q=" + message + "&tl=NL", AudioType.MPEG))
@@ -219,27 +247,6 @@ public class AchievementsCollector : MonoBehaviour
                 _audio.Play();
             }
         }
-
-        runningCoroutine = null; 
-        if (_coroutineQueue.Count > 0)
-        {
-            runningCoroutine = _coroutineQueue.Dequeue();
-            StartCoroutine(runningCoroutine);
-        }
     }
 
-    //void ReadBadges()
-    //{
-    //    if (runningCoroutine == null)
-    //    {
-    //        runningCoroutine = DownloadTheAudio("Onderwerp");
-    //        StartCoroutine(runningCoroutine);
-    //    }
-    //    else
-    //        _coroutineQueue.Enqueue(runningCoroutine);
-
-    //    _coroutineQueue.Enqueue(DownloadTheAudio(EarnedAchievements[_badgeIndex].AchievementTopic));
-    //    _coroutineQueue.Enqueue(DownloadTheAudio("Inhoud"));
-    //    _coroutineQueue.Enqueue(DownloadTheAudio(EarnedAchievements[_badgeIndex].AchievementText));
-    //}
 }

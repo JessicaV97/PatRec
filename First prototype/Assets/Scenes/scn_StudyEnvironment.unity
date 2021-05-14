@@ -875,10 +875,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d032478ed136a34cac057cf9be6c735, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PatternVisual: {fileID: 1961766660}
-  PatternTitle: {fileID: 1780699003}
-  PatternIndex: 0
-  MainCamera: {fileID: 1326477255}
+  _patternVisual: {fileID: 1961766660}
+  _patternTitle: {fileID: 1780699003}
+  _mainCamera: {fileID: 1326477255}
 --- !u!1 &1780699001
 GameObject:
   m_ObjectHideFlags: 0

@@ -8,11 +8,14 @@ using UnityEngine;
 
 namespace Happify.Client
 {
+    /// <summary>
+    /// Class used to send messages from app to chairable. Used in the study environment and quiz. 
+    /// </summary>
     public class MqttService 
     {
+        // Create instance of MQTT service
         private static MqttService _instance;
         private IMqttClient _mqttClient;
-
         public static MqttService Instance
         {
             get
@@ -29,6 +32,10 @@ namespace Happify.Client
         {
         }
         
+        /// <summary>
+        /// Create connection between client and broker
+        /// </summary>
+        /// <returns></returns>
         public async Task<MqttClientConnectResultCode> ConnectAsync()
         {
             MqttFactory factory = new MqttFactory();
@@ -55,8 +62,18 @@ namespace Happify.Client
             return result.ResultCode;
         }
 
+        //Check if the connection between broker and client is existent. 
         private bool IsConnected() => _mqttClient.IsConnected;
 
+        /// <summary>
+        /// Class to send the messages to the client
+        /// </summary>
+        /// <param name="topic"></param>
+        /// Refers to the channel that is used to send/receive messages.
+        /// <param name="payload"></param>
+        /// Refers to the message that is being sent. 
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         public async Task PublishAsync(string topic, string payload, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (!IsConnected())

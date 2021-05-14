@@ -3,50 +3,62 @@ using TMPro;
 using Happify.User;
 using UnityEngine.UI;
 
+/// <summary>
+/// Class that takes care off recharging lives when user has at least lost 1. Used in 'scn_Levels'.
+/// </summary>
 public class LivesManagement : MonoBehaviour
 {
-    public TextMeshProUGUI LivesLeft;
-    //public TextMeshProUGUI DurationBeforeNewLife;
-
-    public Slider loadingBar;
-    public TMP_Text loadingText;
+    //Collect game objects used in this script
+    [SerializeField]
+    private TextMeshProUGUI _livesLeft;
+    [SerializeField]
+    private Slider _loadingBar;
+    [SerializeField]
+    private TMP_Text _loadingText;
 
 	private UserDescription currentUser;
 
-    // Start is called before the first frame update
+    /// <summary>
+    /// Collect the information of the current user. Set the value for number of lives. 
+    /// If the user has 3 lives, visualize the charging bar as full. 
+    /// </summary>
     void Start()
     {
         currentUser = UserManager.Instance.CurrentUser;
-        Debug.Log(currentUser.Name);
-        Debug.Log(currentUser.NrOfLives);
-        Debug.Log("livesmanagement lives" + UserManager.Instance.CurrentUser.NrOfLives);
-        LivesLeft.text = UserManager.Instance.CurrentUser.NrOfLives.ToString();
+        _livesLeft.text = UserManager.Instance.CurrentUser.NrOfLives.ToString();
         if (currentUser == null || currentUser.NrOfLives == 3)
         {
-            loadingBar.value = 100;
-            loadingText.text = "Compleet";
+            _loadingBar.value = 100;
+            _loadingText.text = "Compleet";
         }
 	}
 
-    // Update is called once per frame
+    /// <summary>
+    /// Check if the user still has 3 lives. If so, visualize charging bar as full. 
+    /// Otherwise visualize the value of charging based on data from the 'UserManager'
+    /// </summary>
 	private void Update()
 	{
 		//Time.timeScale = 1.0f;
-		LivesLeft.text = UserManager.Instance.CurrentUser.NrOfLives.ToString();
+		_livesLeft.text = UserManager.Instance.CurrentUser.NrOfLives.ToString();
 
         if (currentUser == null || currentUser.NrOfLives == 3)
         {
-            loadingBar.value = 100;
-            loadingText.text = "Compleet";
+            _loadingBar.value = 100;
+            _loadingText.text = "Compleet";
         }
         else
         {
-            loadingText.text = Mathf.Round(UserManager.Instance.Difference / UserManager.Instance.NewLifeDuration*100).ToString() + "%";
-            loadingBar.value = Mathf.Clamp01(UserManager.Instance.Difference / UserManager.Instance.NewLifeDuration );
+            _loadingText.text = Mathf.Round(UserManager.Instance.Difference / UserManager.Instance.NewLifeDuration*100).ToString() + "%";
+            _loadingBar.value = Mathf.Clamp01(UserManager.Instance.Difference / UserManager.Instance.NewLifeDuration );
         }
     }
 
-    public static string getValue()
+    /// <summary>
+    /// Function that returns the value of charging for speech synthesis in blind mode. 
+    /// </summary>
+    /// <returns></returns>
+    public static string GetValue()
     {
         float value = Mathf.Round(UserManager.Instance.Difference / UserManager.Instance.NewLifeDuration * 100);
         if (value >= 100 || value <= 0)

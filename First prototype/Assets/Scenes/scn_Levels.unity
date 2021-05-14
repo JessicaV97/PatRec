@@ -194,10 +194,10 @@ RectTransform:
   m_Father: {fileID: 895461839}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 72.052, y: 149.31104}
-  m_SizeDelta: {x: 189.84, y: 92.951}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: -532, y: 149.31104}
+  m_SizeDelta: {x: 189.83997, y: 92.951}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &90063143
 MonoBehaviour:
@@ -330,9 +330,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41bb3cc42db63984d87991eb219cec9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LivesLeft: {fileID: 1927961738}
-  loadingBar: {fileID: 90063143}
-  loadingText: {fileID: 961725773}
+  _livesLeft: {fileID: 1927961738}
+  _loadingBar: {fileID: 90063143}
+  _loadingText: {fileID: 961725773}
 --- !u!114 &305168744
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -345,8 +345,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b302b51a3996b1846894bbcac970de97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LevelVisual: {fileID: 1241321124}
-  LevelTitle: {fileID: 326324880}
+  levelVisual: {fileID: 1241321124}
+  _levelTitle: {fileID: 326324880}
 --- !u!1 &315576103
 GameObject:
   m_ObjectHideFlags: 0
@@ -955,7 +955,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 902181700}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ac09fafd2252df4a8d7f6e2e0a8e89b, type: 3}
+  m_Script: {fileID: 11500000, guid: 368250f92c4296f41a5fd22e0275ea66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Audio: {fileID: 1611621176}
@@ -1235,7 +1235,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1241321124}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ac09fafd2252df4a8d7f6e2e0a8e89b, type: 3}
+  m_Script: {fileID: 11500000, guid: 368250f92c4296f41a5fd22e0275ea66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Audio: {fileID: 1611621176}
@@ -1855,7 +1855,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1647905638}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ac09fafd2252df4a8d7f6e2e0a8e89b, type: 3}
+  m_Script: {fileID: 11500000, guid: 368250f92c4296f41a5fd22e0275ea66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Audio: {fileID: 1611621176}
@@ -2001,7 +2001,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1702049714}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ac09fafd2252df4a8d7f6e2e0a8e89b, type: 3}
+  m_Script: {fileID: 11500000, guid: 368250f92c4296f41a5fd22e0275ea66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Audio: {fileID: 1611621176}

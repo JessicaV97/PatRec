@@ -619,6 +619,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 294856198}
+        m_TargetAssemblyTypeName: SettingsHandler, Assembly-CSharp
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &294856196
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1056,7 +1068,7 @@ GameObject:
   - component: {fileID: 553158678}
   - component: {fileID: 553158677}
   m_Layer: 5
-  m_Name: Button
+  m_Name: btn_addUser
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1712,7 +1724,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 50.201, y: -235.564}
+  m_AnchoredPosition: {x: 50.201, y: -236}
   m_SizeDelta: {x: 1052.4, y: 471.138}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1161151085
@@ -1849,7 +1861,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0.000015259, y: -203.632}
+  m_AnchoredPosition: {x: 0.000015259, y: -204}
   m_SizeDelta: {x: 1536, y: 407.263}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1171025606
@@ -2717,7 +2729,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1394300030
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2875,12 +2887,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86fff2cec3388d349adeabdecda93299, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeafSet: {fileID: 1842335157}
-  NoAudioPerception: {fileID: 21300000, guid: 2c09355f95c977a4fad6c58d0b9e5e6c, type: 3}
-  AudioPerception: {fileID: 21300000, guid: 4737469bb66ce194b861a27e4d161c0f, type: 3}
-  blindset: {fileID: 1120056110}
-  NoVisualPerception: {fileID: 21300000, guid: 985255f7436bebf4d949d69cba41bb0f, type: 3}
-  VisualPerception: {fileID: 21300000, guid: e3094517ebef05e4bb5a34027f884682, type: 3}
+  _deafSet: {fileID: 1842335157}
+  _noAudioPerception: {fileID: 21300000, guid: 2c09355f95c977a4fad6c58d0b9e5e6c, type: 3}
+  _audioPerception: {fileID: 21300000, guid: 4737469bb66ce194b861a27e4d161c0f, type: 3}
+  _blindSet: {fileID: 1120056110}
+  _noVisualPerception: {fileID: 21300000, guid: 985255f7436bebf4d949d69cba41bb0f,
+    type: 3}
+  _visualPerception: {fileID: 21300000, guid: e3094517ebef05e4bb5a34027f884682, type: 3}
 --- !u!114 &1453767077
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2893,19 +2906,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5821bdeb9673fe4ab8ea2591b0bb07e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nameInput: {fileID: 719175802}
-  AddUserPanel: {fileID: 1394300029}
-  SelectUserPanel: {fileID: 1263301253}
-  PlayerName: {fileID: 278797613}
-  CurrentPlayerName: {fileID: 1078401020}
-  DeafSet: {fileID: 1979874605}
-  DeafSetSettings: {fileID: 1842335157}
-  NoAudioPerception: {fileID: 21300000, guid: 2c09355f95c977a4fad6c58d0b9e5e6c, type: 3}
-  AudioPerception: {fileID: 21300000, guid: 4737469bb66ce194b861a27e4d161c0f, type: 3}
-  BlindSet: {fileID: 121152829}
-  BlindSetSettings: {fileID: 1120056110}
-  NoVisualPerception: {fileID: 21300000, guid: 985255f7436bebf4d949d69cba41bb0f, type: 3}
-  VisualPerception: {fileID: 21300000, guid: e3094517ebef05e4bb5a34027f884682, type: 3}
+  _nameInput: {fileID: 719175802}
+  _addUserPanel: {fileID: 1394300029}
+  _selectUserPanel: {fileID: 1263301253}
+  _playerName: {fileID: 278797613}
+  _currentPlayerName: {fileID: 1078401020}
+  _deafSet: {fileID: 1979874605}
+  _deafSetSettings: {fileID: 1842335157}
+  _noAudioPerception: {fileID: 21300000, guid: 2c09355f95c977a4fad6c58d0b9e5e6c, type: 3}
+  _audioPerception: {fileID: 21300000, guid: 4737469bb66ce194b861a27e4d161c0f, type: 3}
+  _blindSet: {fileID: 121152829}
+  _blindSetSettings: {fileID: 1120056110}
+  _noVisualPerception: {fileID: 21300000, guid: 985255f7436bebf4d949d69cba41bb0f,
+    type: 3}
+  _visualPerception: {fileID: 21300000, guid: e3094517ebef05e4bb5a34027f884682, type: 3}
 --- !u!1 &1563035967
 GameObject:
   m_ObjectHideFlags: 0
@@ -3472,7 +3486,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: e9147aa8f0c95774bbf2981181002778, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 67eace6cba618f54a8922a2a087ae315, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

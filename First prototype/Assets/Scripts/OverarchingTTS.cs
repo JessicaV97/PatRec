@@ -9,37 +9,50 @@ using UnityEngine.SceneManagement;
 
 namespace Happify.TextToSpeech
 {
+	/// <summary>
+	/// Class that produces the speech synthesis. 
+	/// In blind mode tapping a button reads out loud the message, tapping twice is using the button. 
+	/// What is said or where to go (scenes) is hard coded. 
+	/// </summary>
 	public class OverarchingTTS : MonoBehaviour
 	{
+		// Create instance of TTS (text to speech)
 		private static OverarchingTTS _instance;
 		public static OverarchingTTS Instance => _instance;
+
 		private UserDescription _currentUser;
 
+		/// <summary>
+		/// Create instance that does not get destroyed when switching scenes.
+		/// </summary>
 		private void Awake()
 		{
 			if (_instance == null)
 			{
 				_instance = this;
-				// Ensure that script does not get destroyed when changing scene.
 				DontDestroyOnLoad(this);
 			}
             else
                 Destroy(this);
         }
 
-		// Start is called before the first frame update
+		/// <summary>
+		/// Collect current user information
+		/// </summary>
 		void Start()
 		{
 			_currentUser = UserManager.Instance.CurrentUser;
 		}
 
-		// Update is called once per frame
-		void Update()
-		{
-
-		}
-
-		public void OnSingleClick(string button, AudioSource audio)
+		/// <summary>
+		/// On double tapping in blind mode, perform the action that belongs to the button 
+		/// (e.g. switching scenes, selecting next/previous element in list). 
+		/// </summary>
+		/// <param name="button"></param>
+		/// Corresponds to the button that is clicked
+		/// <param name="audio"></param>
+		/// Corresponds to the audio source that is available in the environment that is used. 
+		public void OndoubleClick(string button, AudioSource audio)
 		{
 			if (button.Equals("Next"))
 				LevelSwiper.Instance.NextLevelTopic();
@@ -49,10 +62,9 @@ namespace Happify.TextToSpeech
 				SceneManager.LoadScene("scn_StudyEnvironment");
 			else if ((button.Equals("PlayGame") || button.Equals("NextLevel")) && _currentUser.NrOfLives != 0)
 				SceneManager.LoadScene("scn_MainGameScreen");
-
 			else if (button.Equals("Play") || button.Equals("BackToLevels"))
 				SceneManager.LoadScene("scn_Levels");
-			else if (button.Equals("Settings") /*|| button.Equals("BackToSettings")*/)
+			else if (button.Equals("Settings"))
 				SceneManager.LoadScene("scn_Settings");
 			else if (button.Equals("Achievements") || button.Equals("BackToAchievements"))
 				SceneManager.LoadScene("scn_Achievements");
@@ -66,7 +78,12 @@ namespace Happify.TextToSpeech
 				PauseMenu.Instance.Resume();
 		}
 
-		public void OnDoubleClick(string button, AudioSource audio)
+		/// <summary>
+		/// On single tap, produce speech to inform the user what whill happen if the same button would be tapped twice. 
+		/// </summary>
+		/// <param name="button"></param>
+		/// <param name="audio"></param>
+		public void OnSingleClick(string button, AudioSource audio)
 		{
 			int topic = LevelSwiper.GetLevel();
 			if (button.Equals("Next") || button.Equals("NextBadge"))
@@ -117,10 +134,16 @@ namespace Happify.TextToSpeech
 			else if (button.Equals("ScoreButton"))
 				StartCoroutine(DownloadTheAudio("Score is " + QuizManager.Instance.GetScore.ToString(), audio));
 			else if (button.Equals("LivesCharge"))
-				StartCoroutine(DownloadTheAudio("Geladen voor "+ LivesManagement.getValue(), audio));
+				StartCoroutine(DownloadTheAudio("Geladen voor "+ LivesManagement.GetValue(), audio));
 
 		}
 
+		/// <summary>
+		/// Function to produce speech synthesis using google translate. Wifi needed. 
+		/// </summary>
+		/// <param name="message"></param>
+		/// Message is the string of information you want to have read out loud
+		/// <returns></returns>
 		private IEnumerator DownloadTheAudio(string message, AudioSource audio)
 		{
 			using (UnityWebRequest website = UnityWebRequestMultimedia.GetAudioClip("https://translate.google.com/translate_tts?ie=UTF-8&total=1&idx=0&textlen=32&client=tw-ob&q=" + message + "&tl=NL", AudioType.MPEG))

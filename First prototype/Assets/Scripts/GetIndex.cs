@@ -1,7 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
+/// <summary>
+/// Class used to find the index of a certain element in a readOnlyList (e.g. useful for finding player's name in the list of users). 
+/// </summary>
 public static class GetIndex
 {
     public static int IndexOf<T>(this System.Collections.Generic.IReadOnlyList<T> self, T elementToFind)

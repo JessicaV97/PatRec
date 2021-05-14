@@ -454,7 +454,7 @@ GameObject:
   - component: {fileID: 262976268}
   - component: {fileID: 262976267}
   m_Layer: 5
-  m_Name: NrOfBadges
+  m_Name: NrOfBadgesIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1528,7 +1528,7 @@ GameObject:
   - component: {fileID: 1174383532}
   - component: {fileID: 1174383531}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: BadgeText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1773,7 +1773,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 1
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 107.32492, y: 29.653198, z: 0, w: 0}
+  m_margin: {x: 107.32492, y: 29.653198, z: -53.356873, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -2597,14 +2597,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b45724c0f6111b44ab4134b714910eb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NoBadges: {fileID: 278740909}
-  BadgeSprite: {fileID: 38474442}
-  BadgeText: {fileID: 1174383529}
-  BadgeTopic: {fileID: 1504013470}
-  Status: {fileID: 332912816}
-  Next: {fileID: 1735452553}
-  Previous: {fileID: 2062389575}
-  ScoreBoard: {fileID: 648709788}
+  _noBadges: {fileID: 278740909}
+  _badgeSprite: {fileID: 38474442}
+  _badgeText: {fileID: 1174383529}
+  _badgeTopic: {fileID: 1504013470}
+  _status: {fileID: 332912816}
+  _next: {fileID: 1735452553}
+  _previous: {fileID: 2062389575}
+  _scoreBoard: {fileID: 648709788}
   _audio: {fileID: 2144554907}
 --- !u!4 &1827885738
 Transform:

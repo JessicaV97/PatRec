@@ -3,6 +3,10 @@ using UnityEngine.EventSystems;
 using Happify.User;
 using System.Collections;
 
+/// <summary>
+/// Class is used in 'scn_MainGameScreen'. Checks whether the chosen answer was correct or not.
+/// The single vs double tapping is used to determine whether something needs to be read out loud in blind mode. 
+/// </summary>
 public class AnswerScript : MonoBehaviour, IPointerClickHandler
 {
     public bool IsCorrect = false; 
@@ -14,7 +18,7 @@ public class AnswerScript : MonoBehaviour, IPointerClickHandler
     private UserDescription currentUser;
 
     private float interval = 0.3f;
-    int tap = 0;
+    private int tap = 0;
 
     private void Awake() 
     { 
@@ -24,7 +28,6 @@ public class AnswerScript : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        string objName = eventData.selectedObject.name;
         if (!currentUser.RemainingVision && currentUser.RemainingHearing)
         {
             tap++;
@@ -32,16 +35,16 @@ public class AnswerScript : MonoBehaviour, IPointerClickHandler
             if (tap == 1)
             {
                 StartCoroutine(DoubleTapInterval());
-                OnDoubleClick(/*objName*/);
+                OnSingleClick();
             }
             else if (tap > 1)
             {
-                OnSingleClick(/*objName*/);
+                OnDoubleClick();
                 tap = 0;
             }
         }
         else
-            OnSingleClick(/*objName*/);
+            OnDoubleClick();
     }
 
     IEnumerator DoubleTapInterval()
@@ -50,7 +53,7 @@ public class AnswerScript : MonoBehaviour, IPointerClickHandler
         this.tap = 0;
     }
 
-    void OnSingleClick()
+    void OnDoubleClick()
     {
         if (IsCorrect)
             QuizManager.Correct();
@@ -58,10 +61,8 @@ public class AnswerScript : MonoBehaviour, IPointerClickHandler
             QuizManager.Wrong();
     }
 
-    void OnDoubleClick()
+    void OnSingleClick()
     {
-        Debug.Log("Double Clicked");
         QuizManager.ReadPattern(AudioName);
     }
-
 }

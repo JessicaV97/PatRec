@@ -11,40 +11,58 @@ using UnityEngine.Networking;
 using Happify.User;
 using Happify.Levels;
 
+/// <summary>
+/// Class that handles the quiz element of the app. Found in 'scn_MainGameScreen'. 
+/// </summary>
 public class QuizManager : MonoBehaviour
 {
-	public List<QuestionAndAnswers> QnA;
+	private int _currentQuestion;
 
-	public GameObject[] Options;
-	public int CurrentQuestion;
+	//Collect game objects used in this script
+	[SerializeField]
+	private GameObject[] _options;
+	[SerializeField]
+	public List<QuestionAndAnswers> _QnA;
+	[SerializeField]
+	private GameObject _quizPanel;
+	[SerializeField]
+	private GameObject _wrongPanel;
+	[SerializeField]
+	private GameObject _correctPanel;
+	[SerializeField]
+	private GameObject _gameOverScreen;
+	[SerializeField]
+	private GameObject _levelCompletePanel;
+	[SerializeField]
+	private GameObject _xpBadgePanel;
+	[SerializeField]
+	private TextMeshProUGUI _questionText;
+	[SerializeField]
+	private TextMeshProUGUI _scoreText;
+	[SerializeField]
+	private TextMeshProUGUI _numberOfLives;
+	[SerializeField]
+	private TextMeshProUGUI _levelCompleteText;
+	[SerializeField]
+	private TextMeshProUGUI _xpBadgeText;
+	[SerializeField]
+	private TextMeshProUGUI _contextText;
+	//Get sound effects
+	[SerializeField]
+	private AudioSource _correctSound;
+	[SerializeField]
+	private AudioSource _incorrectSound;
+	[SerializeField]
+	private AudioSource _audio;
 
-	public GameObject Quizpanel;
-	public GameObject WrongPanel;
-	public GameObject CorrectPanel;
-	public GameObject GoScreen;
-	public GameObject LevelCompletePanel;
-	public GameObject XPBadgePanel;
+	private int _badgesEarned = 0;
 
-	public TextMeshProUGUI QuestionTxt;
-	public TextMeshProUGUI ScoreTxt;
-	public TextMeshProUGUI Lives;
-	public TextMeshProUGUI LevelCompleteTxt;
-	public TextMeshProUGUI XPBadgeTxt;
-	public TextMeshProUGUI ContextTxt;
-
-	private int _badgeearned = 0;
-
-	public bool WrongActive = false;
-	public bool CorrectActive = false;
+	private bool _wrongActive = false;
+	private bool _correctActive = false;
 
 	private int _score = 0;
 
-	//Get sound effects
-	public AudioSource CorrectSound;
-	public AudioSource IncorrectSound;
-	public AudioSource _audio;
-
-	public object[] PatternsComplete;
+	private object[] PatternsComplete;
 
 	public static int LevelIndex;
 	public static string Topic;
@@ -56,51 +74,59 @@ public class QuizManager : MonoBehaviour
 	private static QuizManager  _instance;
 	public static QuizManager Instance => _instance;
 	public int GetScore => _score;
-	public String GetContext => Topic;
+	public string GetContext => Topic;
 
+	public static Level UserSkill;
+
+	/// <summary>
+	/// Create instance of QuizManager and create an MQTT connection.
+	/// </summary>
 	public async void Awake()
 	{
 		if (_instance == null)
 		{
 			_instance = this;
-            // Ensure that script does not get destroyed when changing scene.
-            //DontDestroyOnLoad(this);
         }
-		//else
-		//	Destroy(this);
+
 		//Ensure sounds don't play at start
-		this.CorrectSound.playOnAwake = false;
-		this.IncorrectSound.playOnAwake = false;
+		_correctSound.playOnAwake = false;
+		_incorrectSound.playOnAwake = false;
 		await MqttService.Instance.ConnectAsync();
 	}
 
-	public static Level UserSkill;	
-
+	/// <summary>
+	/// Set other panels inactive so quiz is visible.
+	/// Collect current user information and provide info on screen (number of lives).
+	/// Collect information and data on the context that has been selected. 
+	/// Create list of questions. 
+	/// Randomize order of answer options. 
+	/// </summary>
 	public void Start()
 	{
-		LevelCompletePanel.SetActive(false);
+		_levelCompletePanel.SetActive(false);
+		_gameOverScreen.SetActive(false);
+		_levelCompletePanel.SetActive(false);
+
 		currentUser = UserManager.Instance.CurrentUser;
-		Lives.text = currentUser.NrOfLives.ToString();
+		_numberOfLives.text = currentUser.NrOfLives.ToString();
 		LevelIndex = LevelSwiper.GetLevel();
-		Debug.Log(currentUser.EmotionsLevel);
+
 		if (LevelIndex != 1)
 		{
 			PatternsComplete = Resources.LoadAll("ScriptableObjects/SO_Emotions", typeof(SOPattern));
 			UserSkill = currentUser.EmotionsLevel;
 			Topic = "Emoties en sfeer";
-			ContextTxt.text = "Emoties en sfeer";
+			_contextText.text = "Emoties en sfeer";
 		}
 		else
 		{
 			PatternsComplete = Resources.LoadAll("ScriptableObjects/SO_General", typeof(SOPattern));
 			UserSkill = currentUser.GeneralLevel;
 			Topic = "Algemeen";
-			ContextTxt.text = "Algemeen";
+			_contextText.text = "Algemeen";
 		}
 
-		GoScreen.SetActive(false);
-		LevelCompletePanel.SetActive(false);
-		ScoreTxt.GetComponent<TextMeshProUGUI>().text = "Score: " + _score;
+		_scoreText.GetComponent<TextMeshProUGUI>().text = "Score: " + _score;
 
 		//Create Q&A set
 		for (int i = 0; i < PatternsComplete.Length; i++)
@@ -150,65 +176,57 @@ public class QuizManager : MonoBehaviour
 				}
 
 				//Add question with options to the list of questions and answers
-				QnA.Add(new QuestionAndAnswers { Question = (PatternsComplete[i] as SOPattern).PatternName, Answers = AnswerOptions, AnswersAudio = AnswerStringsForTTS, CorrectAnswer = 1 + Array.IndexOf(AnswerOptions, (PatternsComplete[i] as SOPattern).PatternImage), Json = (PatternsComplete[i] as SOPattern).PatternJson });
+				_QnA.Add(new QuestionAndAnswers { Question = (PatternsComplete[i] as SOPattern).PatternName, Answers = AnswerOptions, AnswersAudio = AnswerStringsForTTS, CorrectAnswer = 1 + Array.IndexOf(AnswerOptions, (PatternsComplete[i] as SOPattern).PatternImage), Json = (PatternsComplete[i] as SOPattern).PatternJson });
 			}
 		}
 		GenerateQuestion();
 	}
 
+	/// <summary>
+	/// A correct answer was chosen so show a green screen and play sound effect (based on settings).
+	/// Update score and remove question from list of questions. 
+	/// </summary>
 	public void Correct()
 	{
-		//If correct answer was chosen
-		//Play sound effect	
 		if (currentUser.RemainingHearing)
-			CorrectSound.Play();
-		//add 1 to score
+			_correctSound.Play();
+
 		_score++;
-		ScoreTxt.GetComponent<TextMeshProUGUI>().text = "Score: " + _score;
-		//Remove question from list
-		QnA.RemoveAt(CurrentQuestion);
-		//Activate green screen with check mark
-		//if (currentUser.RemainingVision)
-		//{
-			CorrectPanel.SetActive(true);
-			CorrectActive = true;
-		//}
+		_scoreText.GetComponent<TextMeshProUGUI>().text = "Score: " + _score;
+
+		_QnA.RemoveAt(_currentQuestion);
+		_correctPanel.SetActive(true);
+		_correctActive = true;
 
 		//Start Coroutine to deactivate the green screen and initiate a new question
 		StartCoroutine(WaitForNext());
 	}
 
+	/// <summary>
+	/// An incorrect answer was chosen so show a red screen and play sound effect (based on settings).
+	/// Update score. Remove a live. 
+	/// In case the user has 0 lives, end the game. 
+	/// </summary>
 	public void Wrong()
 	{
 		currentUser = UserManager.Instance.CurrentUser;
 
 		//Play sound effect
 		if (currentUser.RemainingHearing)
-			IncorrectSound.Play();
+			_incorrectSound.Play();
 
-
-		//If wrong answer was chosen remove 1 live and score - 1 
-		//UserManager.Instance.CurrentUser.NrOfLives--;
-		//_lives--;
 		currentUser.NrOfLives--;
-		Debug.Log("usermanager lives" + UserManager.Instance.CurrentUser.NrOfLives);
 
 		_score--;
+		_scoreText.text = "Score: " + _score;
+		_numberOfLives.text = UserManager.Instance.CurrentUser.NrOfLives.ToString();
 
-		//Update texts
-		ScoreTxt.text = "Score: " + _score;
-		Lives.text = UserManager.Instance.CurrentUser.NrOfLives.ToString();
-		//Lives.text = _lives.ToString();
+		_wrongPanel.SetActive(true);
+		_wrongActive = true;
 
-		//Show red screen with cross
-		//if (currentUser.RemainingVision)
-		//{
-			WrongPanel.SetActive(true);
-			WrongActive = true;
-		//}
 		if (currentUser.NrOfLives == 0)
 		{
-			GoScreen.SetActive(true);
+			_gameOverScreen.SetActive(true);
 			currentUser.NrOfLives = 0;
             UserManager.Instance.Save();
 			return; 
@@ -219,61 +237,74 @@ public class QuizManager : MonoBehaviour
 
 	}
 
+	/// <summary>
+	/// Handles the temporary activation of a panel showing the user whether he answered correctly or not. 
+	/// Probes the next question. 
+	/// </summary>
+	/// <returns></returns>
 	IEnumerator WaitForNext()
 	{
 		// Wait for 1.5 second (deactive active screen) and then offer new question. 
 		yield return new WaitForSeconds(1.5f);
-		if (WrongActive)
+		if (_wrongActive)
 		{
-			WrongActive = false;
-			WrongPanel.SetActive(false);
+			_wrongActive = false;
+			_wrongPanel.SetActive(false);
 		}
-		else if (CorrectActive)
+		else if (_correctActive)
 		{
-			CorrectActive = false;
-			CorrectPanel.SetActive(false);
+			_correctActive = false;
+			_correctPanel.SetActive(false);
 		}
 		GenerateQuestion();
 	}
 
+	/// <summary>
+	/// This fuction handles showing the right visualizations of the answer options and providing TTS with the names of the answer options. 
+	/// In blind mode it will show empty body visualizations. 
+	/// </summary>
 	void SetAnswers()
 	{
 		// From given answer options
-		for (int i = 0; i < Options.Length; i++)
+		for (int i = 0; i < _options.Length; i++)
 		{
-			// options[i].GetComponent<Image>().color = options[i].GetComponent<AnswerScript>().startColor;
 			// By default set answer to be incorrect
-			Options[i].GetComponent<AnswerScript>().IsCorrect = false;
+			_options[i].GetComponent<AnswerScript>().IsCorrect = false;
 			// Change text of option buttons to text of possible answers
 			if (currentUser.RemainingVision)
-				Options[i].transform.GetChild(0).GetComponent<Image>().sprite = QnA[CurrentQuestion].Answers[i];
+				_options[i].transform.GetChild(0).GetComponent<Image>().sprite = _QnA[_currentQuestion].Answers[i];
 			else
-				Options[i].transform.GetChild(0).GetComponent<Image>().sprite = (Sprite) Resources.Load("sprt_empty", typeof(Sprite));
-			Options[i].GetComponent<AnswerScript>().AudioName = QnA[CurrentQuestion].AnswersAudio[i];
+				_options[i].transform.GetChild(0).GetComponent<Image>().sprite = (Sprite) Resources.Load("sprt_empty", typeof(Sprite));
+			_options[i].GetComponent<AnswerScript>().AudioName = _QnA[_currentQuestion].AnswersAudio[i];
 
 			// Set answer to be the correct one if it has been indicated as corrrect answer to the question.
-			if (QnA[CurrentQuestion].CorrectAnswer == i + 1)
-				Options[i].GetComponent<AnswerScript>().IsCorrect = true;
+			if (_QnA[_currentQuestion].CorrectAnswer == i + 1)
+				_options[i].GetComponent<AnswerScript>().IsCorrect = true;
 		}
 	}
 
-	//Select new question
+	/// <summary>
+	/// Select new question, probes the playPattern function. 
+	/// In case there are no questions left, the score will be added to the total number of experience points. 
+	/// The app will check whether the user has earned another badge based on experience points (hard coded).
+	/// In case a badge was earned, another panel will be activated. Otherwise a panel will be shown for completing a level.
+	/// The user's level of experience in the given context will be increased with 1. 
+	/// </summary>
 	void GenerateQuestion()
 	{
-		if (QnA.Count > 0)
+		if (_QnA.Count > 0)
 		{
 			// Select question randomly from list of questions
-			CurrentQuestion = Random.Range(0, QnA.Count);
+			_currentQuestion = Random.Range(0, _QnA.Count);
 
 			// Connect possible answers to question to the buttons 
 			SetAnswers();
-			if (!currentUser.RemainingVision /*&& currentUser.RemainingHearing*/)
+			if (!currentUser.RemainingVision && currentUser.RemainingHearing)
 			{
-				QuestionTxt.text = "... ";
-				//StartCoroutine(DownloadTheAudio(QnA[CurrentQuestion].Question));
+				_questionText.text = "... ";
 			}
 			else
-				QuestionTxt.text = QnA[CurrentQuestion].Question;
+				_questionText.text = _QnA[_currentQuestion].Question;
 			PlayPattern();
 		}
 		else
@@ -286,40 +317,40 @@ public class QuizManager : MonoBehaviour
 			UserManager.Instance.Save();
 
 			////Check for xp badges
-			if (ScoreManager.TotalXP >= 100 && _badgeearned < 4)
+			if (ScoreManager.TotalXP >= 100 && _badgesEarned < 4)
 			{
-				XPBadgeTxt.text = AchievementsCollector.AddXpBadge(4);
-				XPBadgePanel.SetActive(true);
+				_xpBadgeText.text = AchievementsCollector.AddXpBadge(4);
+				_xpBadgePanel.SetActive(true);
 				if (!currentUser.RemainingVision && currentUser.RemainingHearing)
-					ReadPattern(XPBadgeTxt.text);
-				_badgeearned++;
+					ReadPattern(_xpBadgeText.text);
+				_badgesEarned++;
 			}
-			else if (ScoreManager.TotalXP >= 50 && _badgeearned < 3)
+			else if (ScoreManager.TotalXP >= 50 && _badgesEarned < 3)
 			{
-				XPBadgeTxt.text = AchievementsCollector.AddXpBadge(3);
-				XPBadgePanel.SetActive(true);
+				_xpBadgeText.text = AchievementsCollector.AddXpBadge(3);
+				_xpBadgePanel.SetActive(true);
 				if (!currentUser.RemainingVision && currentUser.RemainingHearing)
-					ReadPattern(XPBadgeTxt.text);
-				_badgeearned++;
+					ReadPattern(_xpBadgeText.text);
+				_badgesEarned++;
 			}
-			else if (ScoreManager.TotalXP >= 25 && _badgeearned < 2)
+			else if (ScoreManager.TotalXP >= 25 && _badgesEarned < 2)
 			{
-				XPBadgeTxt.text = AchievementsCollector.AddXpBadge(2);
-				XPBadgePanel.SetActive(true);
+				_xpBadgeText.text = AchievementsCollector.AddXpBadge(2);
+				_xpBadgePanel.SetActive(true);
 				if (!currentUser.RemainingVision && currentUser.RemainingHearing)
-					ReadPattern(XPBadgeTxt.text);
-				_badgeearned++;
+					ReadPattern(_xpBadgeText.text);
+				_badgesEarned++;
 			}
-			else if (ScoreManager.TotalXP >= 10 && _badgeearned < 1)
+			else if (ScoreManager.TotalXP >= 10 && _badgesEarned < 1)
 			{
-				XPBadgeTxt.text = AchievementsCollector.AddXpBadge(1);
-				XPBadgePanel.SetActive(true);
+				_xpBadgeText.text = AchievementsCollector.AddXpBadge(1);
+				_xpBadgePanel.SetActive(true);
 				if (!currentUser.RemainingVision && currentUser.RemainingHearing)
-					ReadPattern(XPBadgeTxt.text);
-				_badgeearned++;
+					ReadPattern(_xpBadgeText.text);
+				_badgesEarned++;
 			}
 
-			LevelCompleteTxt.text = AchievementsCollector.PopUpAchievement(Topic, UserSkill);
+			_levelCompleteText.text = AchievementsCollector.PopUpAchievement(Topic, UserSkill);
 			if (!currentUser.RemainingVision && currentUser.RemainingHearing)
 				ReadPattern(AchievementsCollector.PopUpAchievement(Topic, UserSkill));
 
@@ -329,15 +360,17 @@ public class QuizManager : MonoBehaviour
 			else
 				currentUser.GeneralLevel++;
 			UserManager.Instance.Save();
-			LevelCompletePanel.SetActive(true);
+			_levelCompletePanel.SetActive(true);
 		}
 	}
 
+	/// <summary>
+	/// Send message to client (chairable) to play the pattern. Provide string on screen to see what is being played. 
+	/// Small json adoptations to match the expectations of the listener or improve readability. 
+	/// </summary>
 	public async void PlayPattern()
 	{
-		//if (!currentUser.RemainingVision && currentUser.RemainingHearing) 
-		//	StartCoroutine(DownloadTheAudio(QnA[CurrentQuestion].Question));
-		string json = QnA[CurrentQuestion].Json.text;
+		string json = _QnA[_currentQuestion].Json.text;
 		json = Regex.Replace(json, @"\t|\n|\r", "");
 		json = json.Replace(" ", "");
 		json = json.Replace("255", "1.0");
@@ -345,11 +378,20 @@ public class QuizManager : MonoBehaviour
 		await MqttService.Instance.PublishAsync("happify/play", json);
 	}
 
+	/// <summary>
+	/// Deactivates XP badge panel. 
+	/// </summary>
 	public void ClosePanel()
 	{
-		XPBadgePanel.SetActive(false);
+		_xpBadgePanel.SetActive(false);
 	}
 
+	/// <summary>
+	/// Function to produce speech synthesis using google translate. Wifi needed. 
+	/// </summary>
+	/// <param name="message"></param>
+	/// Message is the string of information you want to have read out loud
+	/// <returns></returns>
 	IEnumerator DownloadTheAudio(string message)
 	{
 		using (UnityWebRequest website = UnityWebRequestMultimedia.GetAudioClip("https://translate.google.com/translate_tts?ie=UTF-8&total=1&idx=0&textlen=32&client=tw-ob&q=" + message + "&tl=NL", AudioType.MPEG))

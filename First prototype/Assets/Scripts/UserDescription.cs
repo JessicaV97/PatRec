@@ -1,5 +1,9 @@
 using System;
 
+/// <summary>
+/// Class to create a user object, storing a user's name, level of experience per topic, number of lives, impairment settings,
+/// number of earned badges and the last time he has lost a live. 
+/// </summary>
 namespace Happify.User
 {
     public enum Level
@@ -41,6 +45,17 @@ namespace Happify.User
         /// </summary>
         public double LastLifeReceivedTimestamp { get; set; }
 
+        /// <summary>
+        /// Function to create a new user object. 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="emotionsLevel"></param>
+        /// <param name="generalLevel"></param>
+        /// <param name="lives"></param>
+        /// <param name="hearing"></param>
+        /// <param name="vision"></param>
+        /// <param name="XP"></param>
+        /// <param name="nrOfBadges"></param>
         public UserDescription (string name, Level emotionsLevel, Level generalLevel, int lives, bool hearing, bool vision, int XP, int nrOfBadges)
         {
             Name = name;

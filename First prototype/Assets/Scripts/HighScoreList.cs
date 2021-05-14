@@ -4,40 +4,52 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 
-
 namespace Happify.Scores
 {
     public class HighScoreList : MonoBehaviour
     {
+        // Create instance of achievements collector
         private static HighScoreList _instance;
-
         public static HighScoreList Instance => _instance;
 
-        private List<UserDescription> UserList;
-        private List<UserDescription> SortedOnBadges;
-        private List<UserDescription> SortedOnXP;
+        // Collect list of users. Create lists to organize them based on nr of badges or amount of earned experience points. 
+        private List<UserDescription> _userList;
+        private List<UserDescription> _sortedOnBadges;
+        private List<UserDescription> _sortedOnXP;
+        
+        // Select fields In GUI to provide the corresponding information
+        [SerializeField]
+        private TextMeshProUGUI _namesSpace;
+        [SerializeField]
+        private TextMeshProUGUI _xpSpace;
+        [SerializeField]
+        private TextMeshProUGUI _badgesSpace;
 
-        public TextMeshProUGUI NamesSpace;
-        public TextMeshProUGUI XpSpace;
-        public TextMeshProUGUI BadgesSpace;
-
-
+        /// <summary>
+        /// Create list of highscores instance, used in AchievementsCollector.
+        /// </summary>
         private void Awake()
         {
             _instance = this; 
         }
 
+        /// <summary>
+        /// Create the list for scoreboard
+        /// </summary>
         public void CreateList(/*List<UserDescription> list*/)
         {
-            UserList = (List<UserDescription>)UserManager.Instance.AllUsers;
-            UserList = UserList.GroupBy(x => x.Name).Select(x => x.First()).ToList(); //To do: Fix all double users
-            SortedOnBadges = UserList.OrderByDescending(o => o.NumberOfObtainedBadges).ToList();
-            SortedOnXP = UserList.OrderByDescending(o => o.ExperiencePoints).ToList();
-            foreach (UserDescription user in SortedOnBadges)
+            _userList = (List<UserDescription>)UserManager.Instance.AllUsers;
+            _userList = _userList.GroupBy(x => x.Name).Select(x => x.First()).ToList(); //If names are double it only uses the first occurence. 
+            
+            _sortedOnBadges = _userList.OrderByDescending(o => o.NumberOfObtainedBadges).ToList();
+            _sortedOnXP = _userList.OrderByDescending(o => o.ExperiencePoints).ToList();
+
+            //replace SortedOnBadges with SortedOnXP to order the scoreboard based on XP.
+            foreach (UserDescription user in _sortedOnBadges) 
             {
-                NamesSpace.text = NamesSpace.text + user.Name + "\n";
-                XpSpace.text = XpSpace.text + user.ExperiencePoints + "\n";
-                BadgesSpace.text = BadgesSpace.text + user.NumberOfObtainedBadges + "\n";
+                _namesSpace.text = _namesSpace.text + user.Name + "\n";
+                _xpSpace.text = _xpSpace.text + user.ExperiencePoints + "\n";
+                _badgesSpace.text = _badgesSpace.text + user.NumberOfObtainedBadges + "\n";
             }
         }
 

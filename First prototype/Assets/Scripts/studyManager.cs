@@ -8,78 +8,82 @@ using System.Collections;
 using Happify.User;
 using Happify.Levels;
 
+/// <summary>
+/// Class that handles everything around the study environment. 
+/// </summary>
 public class StudyManager : MonoBehaviour
 {
-	private Object[] patternsComplete;
+	private Object[] _patternsComplete;
+	private int _patternIndex = 0;
+	private AudioSource _audio;
+	//Collect game objects used in this script
+	[SerializeField]
+	private GameObject _patternVisual;
+	[SerializeField]
+	private TextMeshProUGUI _patternTitle;
+	[SerializeField]
+	private GameObject _mainCamera;
+	[SerializeField]
+	private UserDescription _currentUser;
 
-	//Get objects for study environment
-	public GameObject PatternVisual;
-	public TextMeshProUGUI PatternTitle;
-	public int PatternIndex = 0;
 	public static int LevelIndex;
-
-	public GameObject MainCamera;
-    private AudioSource _audio;
-
-	private UserDescription currentUser;
-
-    public async void Awake()
+	public async void Awake()
 	{ 
 		await MqttService.Instance.ConnectAsync();
-		currentUser = UserManager.Instance.CurrentUser;
+		_currentUser = UserManager.Instance.CurrentUser;
 	}
 	public void Start()
 	{
-		_audio = MainCamera.GetComponent<AudioSource>();
+		_audio = _mainCamera.GetComponent<AudioSource>();
 
 		LevelIndex = LevelSwiper.GetLevel();
 		if (LevelIndex != 1)
-			patternsComplete = Resources.LoadAll("ScriptableObjects/SO_Emotions", typeof(SOPattern));
+			_patternsComplete = Resources.LoadAll("ScriptableObjects/SO_Emotions", typeof(SOPattern));
 		else
-			patternsComplete = Resources.LoadAll("ScriptableObjects/SO_General", typeof(SOPattern));
+			_patternsComplete = Resources.LoadAll("ScriptableObjects/SO_General", typeof(SOPattern));
 
 		SetPattern();
 	}
 
 	public void NextPattern()
 	{
-		if (PatternIndex == patternsComplete.Length - 1)
-			PatternIndex = 0;
+		if (_patternIndex == _patternsComplete.Length - 1)
+			_patternIndex = 0;
 		else
-			PatternIndex++;
+			_patternIndex++;
 
 		SetPattern();
-		if (!currentUser.RemainingVision && currentUser.RemainingHearing)
-			StartCoroutine(DownloadTheAudio((patternsComplete[PatternIndex] as SOPattern).PatternName));
+		if (!_currentUser.RemainingVision && _currentUser.RemainingHearing)
+			StartCoroutine(DownloadTheAudio("Volgende. " + (_patternsComplete[_patternIndex] as SOPattern).PatternName));
 	}
 	
 	public void PreviousPattern()
 	{
-		if (PatternIndex == 0) 
-			PatternIndex = patternsComplete.Length - 1;
+		if (_patternIndex == 0) 
+			_patternIndex = _patternsComplete.Length - 1;
 		else 
-			PatternIndex--;
+			_patternIndex--;
 
 		SetPattern();
-        if (!currentUser.RemainingVision && currentUser.RemainingHearing)
-            StartCoroutine(DownloadTheAudio((patternsComplete[PatternIndex] as SOPattern).PatternName));
+        if (!_currentUser.RemainingVision && _currentUser.RemainingHearing)
+            StartCoroutine(DownloadTheAudio("Vorige. " + (_patternsComplete[_patternIndex] as SOPattern).PatternName));
     }
 	
 	
 	private void SetPattern()
     {
-		PatternVisual.GetComponent<Image>().sprite = (patternsComplete[PatternIndex] as SOPattern).PatternImage;
-		PatternTitle.GetComponent<TextMeshProUGUI>().text = (patternsComplete[PatternIndex] as SOPattern).PatternName;
+		_patternVisual.GetComponent<Image>().sprite = (_patternsComplete[_patternIndex] as SOPattern).PatternImage;
+		_patternTitle.GetComponent<TextMeshProUGUI>().text = (_patternsComplete[_patternIndex] as SOPattern).PatternName;
 	}
 
 	public async void PlayPattern()
     {
-		if (!currentUser.RemainingVision)
+		if (!_currentUser.RemainingVision)
 		{
-			StartCoroutine(DownloadTheAudio((patternsComplete[PatternIndex] as SOPattern).PatternName));
+			StartCoroutine(DownloadTheAudio((_patternsComplete[_patternIndex] as SOPattern).PatternName));
 		}
 
-		string json = (patternsComplete[PatternIndex] as SOPattern).PatternJson.text;
+		string json = (_patternsComplete[_patternIndex] as SOPattern).PatternJson.text;
         json = Regex.Replace(json, @"\t|\n|\r", "");
         json = json.Replace(" ", "");
         json = json.Replace("255", "1.0");

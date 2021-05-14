@@ -4,49 +4,69 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+/// <summary>
+/// Class that takes care of the pause panel in main game environment. 
+/// </summary>
 public class PauseMenu : MonoBehaviour, IPointerClickHandler
 {
-
+	//Create pause instance
 	private static PauseMenu _instance;
 	public static PauseMenu Instance => _instance;
 
-	public GameObject PauseMenuUI;
-	public AudioSource Audio;
+	//Collect game objects used in this script
+	[SerializeField]
+	private GameObject pauseMenuUI;
+	[SerializeField]
+	private AudioSource _audio;
 
 	private float interval = 0.3f;
 	int tap = 0;
 
 	private UserDescription currentUser;
 
+	/// <summary>
+	/// Create pause instance
+	/// </summary>
 	private void Awake()
 	{
 		if (_instance == null)
 		{
 			_instance = this;
-			// Ensure that script does not get destroyed when changing scene.
-			//DontDestroyOnLoad(this);
 		}
-		//else
-		//	Destroy(this);
 	}
 
+	/// <summary>
+	/// Deactivate pause panel. Collect current user information. 
+	/// </summary>
 	public void Start()
 	{
-		PauseMenuUI.SetActive(false);
+		pauseMenuUI.SetActive(false);
 		currentUser = UserManager.Instance.CurrentUser;
 	}
 	
+	/// <summary>
+	/// Deactivate pause panel
+	/// </summary>
 	public void Resume()
 	{
-        PauseMenuUI.SetActive(false);
+        pauseMenuUI.SetActive(false);
 	}
 	
+	/// <summary>
+	/// Activate pause panel. 
+	/// Store user manager instance.
+	/// </summary>
 	public void Pause()
 	{
 		UserManager.Instance.Save();
-		PauseMenuUI.SetActive(true);
+		pauseMenuUI.SetActive(true);
 	}
 
+	/// <summary>
+	/// Track double vs single tapping.
+	/// In blind mode, the buttons will be read out loud. 
+	/// </summary>
+	/// <param name="eventData"></param>
 	public void OnPointerClick(PointerEventData eventData)
 	{
 		string objName = eventData.selectedObject.name;
@@ -58,16 +78,16 @@ public class PauseMenu : MonoBehaviour, IPointerClickHandler
 			if (tap == 1)
 			{
 				StartCoroutine(DoubleTapInterval());
-				OverarchingTTS.Instance.OnDoubleClick(objName, Audio);
+				OverarchingTTS.Instance.OnSingleClick(objName, _audio);
 			}
 			else if (tap > 1)
 			{
-				OverarchingTTS.Instance.OnSingleClick(objName, Audio);
+				OverarchingTTS.Instance.OndoubleClick(objName, _audio);
 				tap = 0;
 			}
 		}
 		else
-			OverarchingTTS.Instance.OnSingleClick(objName, Audio);
+			OverarchingTTS.Instance.OndoubleClick(objName, _audio);
 	}
 
 	IEnumerator DoubleTapInterval()
