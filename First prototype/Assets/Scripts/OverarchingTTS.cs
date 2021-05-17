@@ -1,8 +1,6 @@
 using Happify.Levels;
 using Happify.User;
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
@@ -128,13 +126,16 @@ namespace Happify.TextToSpeech
 			else if (button.Equals("Continue"))
 				StartCoroutine(DownloadTheAudio("Speel verder", audio));
 			else if (button.Equals("Lives") || button.Equals("ImageLives"))
+			{
+				_currentUser = UserManager.Instance.CurrentUser;
 				StartCoroutine(DownloadTheAudio("Aantal levens is " + _currentUser.NrOfLives.ToString(), audio));
+			}
 			else if (button.Equals("ContextButton"))
 				StartCoroutine(DownloadTheAudio("Context is " + QuizManager.Instance.GetContext, audio));
 			else if (button.Equals("ScoreButton"))
 				StartCoroutine(DownloadTheAudio("Score is " + QuizManager.Instance.GetScore.ToString(), audio));
 			else if (button.Equals("LivesCharge"))
-				StartCoroutine(DownloadTheAudio("Geladen voor "+ LivesManagement.GetValue(), audio));
+				StartCoroutine(DownloadTheAudio("Geladen voor " + LivesManagement.GetValue(), audio));
 
 		}
 

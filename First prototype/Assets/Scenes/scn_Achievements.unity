@@ -1158,9 +1158,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9effb6fce564de14cbe2ffd2e600d87e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NamesSpace: {fileID: 1287802949}
-  XpSpace: {fileID: 740843696}
-  BadgesSpace: {fileID: 6911728}
+  _namesSpace: {fileID: 1287802949}
+  _xpSpace: {fileID: 740843696}
+  _badgesSpace: {fileID: 6911728}
 --- !u!1 &648709788
 GameObject:
   m_ObjectHideFlags: 0
@@ -1178,7 +1178,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &648709789
 RectTransform:
   m_ObjectHideFlags: 0

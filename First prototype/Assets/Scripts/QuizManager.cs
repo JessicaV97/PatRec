@@ -55,7 +55,7 @@ public class QuizManager : MonoBehaviour
 	[SerializeField]
 	private AudioSource _audio;
 
-	private int _badgesEarned = 0;
+	private static int _badgesEarned = 0;
 
 	private bool _wrongActive = false;
 	private bool _correctActive = false;
@@ -71,7 +71,7 @@ public class QuizManager : MonoBehaviour
 
 	private UserDescription currentUser;
 
-	private static QuizManager  _instance;
+	private static QuizManager _instance;
 	public static QuizManager Instance => _instance;
 	public int GetScore => _score;
 	public string GetContext => Topic;
@@ -140,7 +140,7 @@ public class QuizManager : MonoBehaviour
 				{
 					do
 					{
-						number = r.Next(1, PatternsComplete.Length);
+						number = r.Next(0, PatternsComplete.Length);
 					} while (listNumbers.Contains(number) || number == i);
 
 					listNumbers.Add(number);
@@ -164,7 +164,7 @@ public class QuizManager : MonoBehaviour
 
 
 				//Randomize answer options order
-				for (int k = 0; k < AnswerOptions.Length - 1; k++)
+				for (int k = 0; k < AnswerOptions.Length; k++)
 				{
 					int l = r.Next(k, AnswerOptions.Length);
 					Sprite temp = AnswerOptions[k];
