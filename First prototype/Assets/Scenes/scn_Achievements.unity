@@ -1436,7 +1436,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Scorebord
+  m_text: 'Leaderboard
 
 '
   m_isRightToLeft: 0

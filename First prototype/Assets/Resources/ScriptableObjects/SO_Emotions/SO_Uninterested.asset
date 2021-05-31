@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PatternName: "Onge\xEFnteresseerd"
   PatternJson: {fileID: 4900000, guid: 2ff0800c2840330418c44435282ea79e, type: 3}
-  PatternImage: {fileID: 21300000, guid: 6755f886378317443ba7cf5c75a80579, type: 3}
+  PatternImage: {fileID: 21300000, guid: bb60e1962feb0394e819f3fca8385163, type: 3}
   Difficulty: 3

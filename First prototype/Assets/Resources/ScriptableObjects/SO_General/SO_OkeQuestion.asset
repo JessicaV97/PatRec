@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PatternName: Oke?
   PatternJson: {fileID: 4900000, guid: 79d82b70fce8a0141aac4220b41043d7, type: 3}
-  PatternImage: {fileID: 21300000, guid: 2d9f5ebcd038ead49a4e1b111195f598, type: 3}
+  PatternImage: {fileID: 21300000, guid: 2d6bf6251b2e0bd4d9208bbbda1edd3b, type: 3}
   Difficulty: 2
